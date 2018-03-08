@@ -104,6 +104,61 @@ others {
 ```
 
 ## 2-3 Material介绍
+
+https://material.angular.io/
+
+https://material.io/
+
+http://materialdesignblog.com/
+
+什么场景适合采用官方的组件库？
+
+* 团队没有能力制作统一的UI风格时.考虑使用.
+
+* 优点:兼容性好，可扩展性好，可测试性好，对主题的支持好.
+
+* 缺点：目前组件仍不算丰富，只有 Material 风格
+
+SideNav
+
+    npm i --save @angular/material
+
+Q: Could not find Angular Material core theme. Most Material components may not work as expected. For more info refer to the theming guide:
+A: 引入主题css文件中 @import "~@angular/material/prebuilt-themes/deeppurple-amber.css";
+
+    <mat-sidenav #sidenav mode="over" align="end">
+
+一个container中可以有2个sidenav , align= start , 左边, end 右边
+
+    <mat-toolbar color="primary"></mat-toolbar>
+    <mat-toolbar color="accent"></mat-toolbar>
+
+主色，配色  accent 指配色
+
+## SideNav 
+
+1. 用途：侧边栏导航，同时可以作为容器
+2. 侧滑的三种模式： over, push , side
+3. 一般的 <md-sidenav-container> 联合使用
+
+## Toolbar
+
+1. 用途: 一般用于头部、标题栏
+2. 通过 <md-toolbar-row> 支持多行
+3. 默认内部布局是基于flex的
+
+        在coremodule 引入MatToolbarModule
+        在appmodule import MatSidenavModule
+
+header 并不知道 sidebar在哪儿 所以用output与根组件交互数据~
+
+```typescript
+header.ts
+@Output() toggle = new EventEmitter<void>();
+app.component.html
+<app-header (toggle)="sidenav1.toggle()"></app-header>
+```
+
 ## 2-4 MdIcon 组件
 ## 2-5 Input 组件
 ## 2-6 Card 和 Button 组件

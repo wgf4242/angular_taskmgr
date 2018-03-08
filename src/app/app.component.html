@@ -1,16 +1,19 @@
-<div class="site">
-  <header>
-    <app-header></app-header>
-  </header>
-  <main>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div class="box"></div>
-    <div class="box"></div>
-    <div class="box"></div>
-  </main>
-  <footer>
-    <app-footer></app-footer>
-  </footer>
-</div>
+<mat-sidenav-container>
+  <mat-sidenav #sidenav1 mode="over">
+    <app-sidebar></app-sidebar>
+  </mat-sidenav>
+
+  <div class="site">
+    <header>
+      <app-header (toggle)="sidenav1.toggle()"></app-header>
+    </header>
+    <main>
+      <button (click)="sidenav1.toggle()">打开左边侧边栏</button>
+    </main>
+    <footer>
+      <app-footer></app-footer>
+    </footer>
+  </div>
+
+
+</mat-sidenav-container>
