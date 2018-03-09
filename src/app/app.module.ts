@@ -5,6 +5,7 @@ import {AppComponent} from './app.component';
 import {CoreModule} from './core/core.module';
 import {MatSidenavModule} from '@angular/material';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {HttpClientModule} from '@angular/common/http';
 
 
 @NgModule({
@@ -13,6 +14,7 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
   ],
   imports: [
     BrowserModule,
+    HttpClientModule,
     CoreModule,
     MatSidenavModule,
     BrowserAnimationsModule

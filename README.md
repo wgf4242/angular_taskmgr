@@ -160,6 +160,44 @@ app.component.html
 ```
 
 ## 2-4 MdIcon 组件
+
+appModule 中导入 MatIconModule , header.html
+
+    <mat-icon svgIcon="gifts"></mat-icon>
+
+mat-icon 无损缩放，基于字体的
+
+    使用图标字体，内建 material icon 支持
+    支持 svg : 通过注入 mdiconRegistry 和 DomSanitizer
+
+报错找不到 HttpProvider，在appmodule中导入 HttpClientModule
+
+* 避免重复加载，创建utils/svg.utils.ts 
+
+```typescript
+export const loadSvgResources = (ir: MatIconRegistry, ds: DomSanitizer) => {
+  ir.addSvgIcon('gifts', ds.bypassSecurityTrustResourceUrl('assets/gifts.svg'));
+}
+```
+
+避免在header使用时还是要导入，麻烦。我们在coremodule中导入。
+
+
+```typescript
+export class CoreModule {
+  constructor(
+    @Optional() @SkipSelf() parent: CoreModule,
+    ir: MatIconRegistry,
+    ds: DomSanitizer) {
+    if (parent) {
+      throw new Error('模块已存在，不能再次加载!');
+    }
+    loadSvgResources(ir, ds);
+  }
+}
+```
+
+
 ## 2-5 Input 组件
 ## 2-6 Card 和 Button 组件
 ## 2-7 在侧滑菜单中使用 MdList
