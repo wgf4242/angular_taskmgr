@@ -171,6 +171,11 @@ mat-icon 无损缩放，基于字体的
     使用图标字体，内建 material icon 支持
     支持 svg : 通过注入 mdiconRegistry 和 DomSanitizer
 
+```typescript
+this.addSvgIcon('project', this.sanitizer.bypassSecurityTrustResourceUrl('assets/img/sidebar/project.svg'));
+```
+
+
 报错找不到 HttpProvider，在appmodule中导入 HttpClientModule
 
 * 避免重复加载，创建utils/svg.utils.ts 
@@ -273,6 +278,72 @@ imports: [BrowserModule, SharedModule, CoreModule, LoginModule, AppRoutingModule
 ```
 
 ## 2-6 Card 和 Button 组件
+
+__card __ 适合图文形式突出某一主题
+
+```typescript
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>每日佳句</mat-card-title>
+      <mat-card-subtitle>{{quote.cn}}</mat-card-subtitle>
+    </mat-card-header>
+    <img mat-card-xl-image src="/assets/quote_fallback.jpg" alt="">
+    <mat-card-content>
+      {{quote.en}}
+    </mat-card-content>
+  </mat-card>
+
+```
+
+__Button__
+
+md-button 是以指令形式提供的
+标准按钮: md-button, md-raised-button, md-icon-button
+浮动按钮: md-fab, md-fab-mini
+
+不指明 type 默认为submit, 指定为type=button
+
+    <button mat-raised-button type="button">登录</button>
+
+mat-类型|效果
+---|---
+mat-raised-button | 浮起的效果
+mat-fab-button  | 圆形效果
+mat-mini-fab    | 更小的圆形效果
+
+容器充满，用户、密码竖排，并将忘记密码放在 右侧
+```css
+# login.component.css
+mat-card{
+  height: 20em;
+  flex: 0 0 20em;
+}
+
+form {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+}
+
+.text-right {
+  margin: 10px;
+  text-align: end;
+}
+
+# style.css
+.full-width {
+  width: 100%;
+}
+```
+
+
+    <img mat-card-xl-image src="/assets/quote_fallback.jpg" alt="">
+
+
+
 ## 2-7 在侧滑菜单中使用 MdList
 ## 2-8 Angular Material 主题
 ## 2-9 GridList 打造注册页面头像列表
