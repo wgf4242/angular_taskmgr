@@ -122,6 +122,7 @@ http://materialdesignblog.com/
 SideNav
 
     npm i --save @angular/material
+    npm i --save @angular/material @angular/cdk
 
 Q: Could not find Angular Material core theme. Most Material components may not work as expected. For more info refer to the theming guide:
 A: 引入主题css文件中 @import "~@angular/material/prebuilt-themes/deeppurple-amber.css";
@@ -197,8 +198,80 @@ export class CoreModule {
 }
 ```
 
-
 ## 2-5 Input 组件
+
+__Install Component__
+
+```typescript
+ng g m login
+ng g c login/login
+```
+
+Routing
+
+```typescript
+login-routing.module.ts
+const routes: Routes = [{path: 'login', component: LoginComponent}, ];
+
+app-rouing.module.ts
+{path: '', redirectTo: '/login', pathMatch: 'full'},
+full--如果 login后面什么都不放就导航到 login
+
+```
+
+HTML 
+
+```html
+# app.component.html
+    <main> <router-outlet></router-outlet> </main>
+
+#login.compoennt.html
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>登录</mat-card-title>
+  </mat-card-header>
+
+  <mat-card-content>
+    <mat-input-container>
+      <span matPrefix="">wang</span>
+      <input matInput type="text" placeholder="您的email">
+      <span matSuffix>@gmail.com</span>
+      <mat-hint></mat-hint>
+      <mat-label></mat-label>
+    </mat-input-container>
+  </mat-card-content>
+
+  <mat-card-actions>
+    <p>还没有账户?<a href="">注册</a></p>
+    <p>忘记密码?<a href="">找回</a></p>
+  </mat-card-actions>
+</mat-card>
+
+color accent
+mat-input-container
+    floatPlaceholder float 默认
+    floatPlaceholder always 一直在动画
+    floatPlaceholder never 一直在动画
+hintLabel="必填项" 输入框下面有提示
+```
+
+Input
+
+    指令: mdInput 在 <md-input-container> 内部，有前缀后缀
+    <md-error> : 只能验证不通过时才出现，对两种类型表单都是如此
+    <md-hint> : 当error显示时, hint 会隐藏
+
+模块增多后，尽量放在sharedModule
+
+```typescript
+# login.module
+imports: [SharedModule, LoginRoutingModule]
+# core.module
+imports: [HttpClientModule, SharedModule, BrowserAnimationsModule, ]
+# app.module
+imports: [BrowserModule, SharedModule, CoreModule, LoginModule, AppRoutingModule, ]
+```
+
 ## 2-6 Card 和 Button 组件
 ## 2-7 在侧滑菜单中使用 MdList
 ## 2-8 Angular Material 主题

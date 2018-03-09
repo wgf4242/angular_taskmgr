@@ -11,8 +11,7 @@ export class HeaderComponent implements OnInit {
 
   constructor() {}
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   openSidebar() {
     this.toggle.emit();

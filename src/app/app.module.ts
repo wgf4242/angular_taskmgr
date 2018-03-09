@@ -3,9 +3,9 @@ import {NgModule} from '@angular/core';
 
 import {AppComponent} from './app.component';
 import {CoreModule} from './core/core.module';
-import {MatSidenavModule} from '@angular/material';
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {HttpClientModule} from '@angular/common/http';
+import {LoginModule} from './login/login.module';
+import {SharedModule} from './shared/shared.module';
+import {AppRoutingModule} from './app-routing.module';
 
 
 @NgModule({
@@ -14,12 +14,11 @@ import {HttpClientModule} from '@angular/common/http';
   ],
   imports: [
     BrowserModule,
-    HttpClientModule,
+    SharedModule,
     CoreModule,
-    MatSidenavModule,
-    BrowserAnimationsModule
+    LoginModule,
+    AppRoutingModule,
   ],
-  providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule {

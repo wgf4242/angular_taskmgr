@@ -16,21 +16,3 @@ main {
   flex: 1;
 }
 
-.fill-remaining-space {
-  /*使用 flexbox 填充剩余空间*/
-  /*@angular/material 中的很多控件使用了 felx 布局*/
-  flex: 1 1 auto;
-}
-
-main div {
-  width: 200px;
-  height: 200px;
-  background-color: red;
-  margin: 10px;
-}
-
-.box {
-  width: 300px;
-  height: 300px;
-}
-
