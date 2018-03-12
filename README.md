@@ -342,9 +342,48 @@ form {
 
     <img mat-card-xl-image src="/assets/quote_fallback.jpg" alt="">
 
-
-
 ## 2-7 在侧滑菜单中使用 MdList
+
+__List__
+
+* 用户：一般用于列表
+* `<mat-list>`和`<mat-nav-list>`
+
+List item 默认样式 `align:center,flex:row`
+
+使 list item 顶部对齐 
+
+    mat-icon {align-self: flex-start; }
+
+压缩列表.间距变小 `<mat-nav-list dense>`
+
+日视图变成当天的日期
+
+添加31天的日图标，使当日图标自动改变
+
+```typescript
+# svg.utils.ts
+const days = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11,
+  12, 13, 14, 15, 16, 17, 18, 19, 20,
+  21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31];
+days.forEach(d => ir.addSvgIcon(`day${d}`, ds.bypassSecurityTrustResourceUrl(`${dayDir}/day${d}.svg`)));
+
+# sidebar.component.ts
+today = 'day';
+ngOnInit() {
+  this.today = `day${getDate(new Date())}`;
+}
+
+# sidebar.component.html
+<mat-icon mat-list-icon [svgIcon]="today"></mat-icon>
+```
+
+添加类库
+```bash
+npm install --save date-fns
+npm install --save-dev @types/date-fns
+```
+
 ## 2-8 Angular Material 主题
 ## 2-9 GridList 打造注册页面头像列表
 ## 2-10 对话框的使用
