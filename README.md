@@ -1,61 +1,61 @@
-# ç¬¬1ç«  è¯¾ç¨‹ä»‹ç»
-## 1-2 ç¯å¢ƒæ­å»º
+# µÚ1ÕÂ ¿Î³Ì½éÉÜ
+## 1-2 »·¾³´î½¨
 
-npm i --save åŒ…å: è½¯ä»¶ä¾èµ–
+npm i --save °üÃû: Èí¼şÒÀÀµ
 
-npm i --save-dev åŒ…å: å¼€å‘ä¾èµ– ï¼Œ æ­£å¼ç¯å¢ƒä¸­ä¸ç”¨çš„åŒ…
+npm i --save-dev °üÃû: ¿ª·¢ÒÀÀµ £¬ ÕıÊ½»·¾³ÖĞ²»ÓÃµÄ°ü
 
-json-server: ç”¨äºå¿«é€Ÿæ­å»º REST API çš„åˆ©å™¨
+json-server: ÓÃÓÚ¿ìËÙ´î½¨ REST API µÄÀûÆ÷
 
-    å®‰è£…ï¼š npm install -g json-server
-    ä½¿ç”¨ json-server ./mock/data.json
+    °²×°£º npm install -g json-server
+    Ê¹ÓÃ json-server ./mock/data.json
 
-å‡ ç§å¸¸è§çš„APIæµ‹è¯•å·¥å…·
+¼¸ÖÖ³£¼ûµÄAPI²âÊÔ¹¤¾ß
 
     POSTMAN
     VSCode: REST Client
-    ä½¿ç”¨### å°†è¯·æ±‚éš”ç¦»å¼€
+    Ê¹ÓÃ### ½«ÇëÇó¸ôÀë¿ª
 
-cliå®‰è£…é”™è¯¯
+cli°²×°´íÎó
 
     npm uninstall -g @angular/cli
     npm cache clean
     npm instlal -g @angular/cli
 
-# ç¬¬2ç«  ç”¨ Angular Material ç»„ä»¶æ‰“é€ é¡µé¢
+# µÚ2ÕÂ ÓÃ Angular Material ×é¼ş´òÔìÒ³Ãæ
 
-## 2-1 é¡¹ç›®å·¥ç¨‹ç»“æ„
+## 2-1 ÏîÄ¿¹¤³Ì½á¹¹
 
     ng new taskmgr -si --style=scss
     ng g m core
     ng g m shared
 
 
-        @SkipSelf() , è·³è¿‡æœ¬èº«æ£€æµ‹
+        @SkipSelf() , Ìø¹ı±¾Éí¼ì²â
 
-é€šå¸¸è¦è¿™æ ·å†™ï¼Œ`import {CoreModule} from './core/core.module';`
+Í¨³£ÒªÕâÑùĞ´£¬`import {CoreModule} from './core/core.module';`
 
-ä½†æ˜¯æ”¹æˆ å°†core.moduleæ”¹æˆindex.tså°±åªå†™ 
+µ«ÊÇ¸Ä³É ½«core.module¸Ä³Éindex.ts¾ÍÖ»Ğ´ 
 
     import {CoreModule} from './core';
 
-å°±è¡Œäº†ï¼Œçœäº†å¾ˆå¤šè·¯å¾„
+¾ÍĞĞÁË£¬Ê¡ÁËºÜ¶àÂ·¾¶
 
-## 2-2 UIæ•´ä½“å¸ƒå±€
+## 2-2 UIÕûÌå²¼¾Ö
 
     ng g c core/header --spec=false
 
-æŠ¥é”™ï¼Œå¯¼å‡ºå‰åªèƒ½åœ¨coremoduleä½¿ç”¨ï¼Œ
+±¨´í£¬µ¼³öÇ°Ö»ÄÜÔÚcoremoduleÊ¹ÓÃ£¬
 
-    app-header' is not a known element: ï¼Œ
+    app-header' is not a known element: £¬
 
-åœ¨core.moduleæ·»åŠ 
+ÔÚcore.moduleÌí¼Ó
   
     exports: [HeaderComponent, FooterComponent, SidebarComponent]
 
-æœ¬è¯¾ä½¿ç”¨flexçš„æ–¹å¼æ¥è®¾ç½®cssã€‚
+±¾¿ÎÊ¹ÓÃflexµÄ·½Ê½À´ÉèÖÃcss¡£
 
-flex æ˜¯å¯¹å®¹å™¨å†…çš„æ’å¸ƒã€‚åªå¯¹ç›´æ¥å­å…ƒç´ æœ‰ç”¨ã€‚
+flex ÊÇ¶ÔÈİÆ÷ÄÚµÄÅÅ²¼¡£Ö»¶ÔÖ±½Ó×ÓÔªËØÓĞÓÃ¡£
 
 ```css
 
@@ -66,44 +66,44 @@ flex æ˜¯å¯¹å®¹å™¨å†…çš„æ’å¸ƒã€‚åªå¯¹ç›´æ¥å­å…ƒç´ æœ‰ç”¨ã€‚
 
 main {
   flex: 1;
-  /*flex å‚æ•°3ä¸ª æ˜¯å¦èƒ½æ”¾å¤§æ”¾å¤§å‡ å€ 0ä¸èƒ½ç¼©å° autoæé™å®½åº¦*/
+  /*flex ²ÎÊı3¸ö ÊÇ·ñÄÜ·Å´ó·Å´ó¼¸±¶ 0²»ÄÜËõĞ¡ auto¼«ÏŞ¿í¶È*/
 
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
 
-  /*æ¨ªè½´æ–¹å‘æ’åˆ—*/
+  /*ºáÖá·½ÏòÅÅÁĞ*/
   /*justify-content: flex-start;*/
   /*justify-content: flex-end;*/
   /*justify-content: space-around;*/
   justify-content: space-between;
 
-  /*çºµè½´æ–¹å‘æ’åˆ—*/
+  /*×İÖá·½ÏòÅÅÁĞ*/
   align-content: flex-end;
   /*default*/
   /*align-content: stretch;*/
 
-  /*ä¸€è¡Œä¸­æ€æ ·å¯¹é½*/
+  /*Ò»ĞĞÖĞÔõÑù¶ÔÆë*/
   align-items: center;
 }
 
 others {
-    /*æ¨ªè½´æ–¹å‘æ’åˆ—*/
-    justify-content: flex-start å·¦å¯¹é½,
-    justify-content: flex-end å³å¯¹é½,
-    justify-content: center å±…ä¸­,
-    justify-content: space-between åˆ†æ•£å¯¹é½,
-    justify-content: space-around é¡¹ç›®ä½äºå„è¡Œä¹‹å‰ã€ä¹‹é—´ã€ä¹‹åéƒ½ç•™æœ‰ç©ºç™½çš„å®¹å™¨å†…,
-    çºµè½´æ–¹å‘æ’åˆ—
-    align-content: stretch å……æ»¡å±å¹•,
-    align-content: center å±…ä¸­,
-    align-content: flex-start é¡¶éƒ¨å¯¹é½,
-    align-content: flex-end åº•éƒ¨å¯¹é½,
-    align-content: baseline    å…ƒç´ æ”¾ç½®åœ¨çˆ¶å…ƒç´ çš„åŸºçº¿ä¸Šã€‚,
+    /*ºáÖá·½ÏòÅÅÁĞ*/
+    justify-content: flex-start ×ó¶ÔÆë,
+    justify-content: flex-end ÓÒ¶ÔÆë,
+    justify-content: center ¾ÓÖĞ,
+    justify-content: space-between ·ÖÉ¢¶ÔÆë,
+    justify-content: space-around ÏîÄ¿Î»ÓÚ¸÷ĞĞÖ®Ç°¡¢Ö®¼ä¡¢Ö®ºó¶¼ÁôÓĞ¿Õ°×µÄÈİÆ÷ÄÚ,
+    ×İÖá·½ÏòÅÅÁĞ
+    align-content: stretch ³äÂúÆÁÄ»,
+    align-content: center ¾ÓÖĞ,
+    align-content: flex-start ¶¥²¿¶ÔÆë,
+    align-content: flex-end µ×²¿¶ÔÆë,
+    align-content: baseline    ÔªËØ·ÅÖÃÔÚ¸¸ÔªËØµÄ»ùÏßÉÏ¡£,
 }
 ```
 
-## 2-3 Materialä»‹ç»
+## 2-3 Material½éÉÜ
 
 https://material.angular.io/
 
@@ -111,13 +111,13 @@ https://material.io/
 
 http://materialdesignblog.com/
 
-ä»€ä¹ˆåœºæ™¯é€‚åˆé‡‡ç”¨å®˜æ–¹çš„ç»„ä»¶åº“ï¼Ÿ
+Ê²Ã´³¡¾°ÊÊºÏ²ÉÓÃ¹Ù·½µÄ×é¼ş¿â£¿
 
-* å›¢é˜Ÿæ²¡æœ‰èƒ½åŠ›åˆ¶ä½œç»Ÿä¸€çš„UIé£æ ¼æ—¶.è€ƒè™‘ä½¿ç”¨.
+* ÍÅ¶ÓÃ»ÓĞÄÜÁ¦ÖÆ×÷Í³Ò»µÄUI·ç¸ñÊ±.¿¼ÂÇÊ¹ÓÃ.
 
-* ä¼˜ç‚¹:å…¼å®¹æ€§å¥½ï¼Œå¯æ‰©å±•æ€§å¥½ï¼Œå¯æµ‹è¯•æ€§å¥½ï¼Œå¯¹ä¸»é¢˜çš„æ”¯æŒå¥½.
+* ÓÅµã:¼æÈİĞÔºÃ£¬¿ÉÀ©Õ¹ĞÔºÃ£¬¿É²âÊÔĞÔºÃ£¬¶ÔÖ÷ÌâµÄÖ§³ÖºÃ.
 
-* ç¼ºç‚¹ï¼šç›®å‰ç»„ä»¶ä»ä¸ç®—ä¸°å¯Œï¼Œåªæœ‰ Material é£æ ¼
+* È±µã£ºÄ¿Ç°×é¼şÈÔ²»Ëã·á¸»£¬Ö»ÓĞ Material ·ç¸ñ
 
 SideNav
 
@@ -125,33 +125,33 @@ SideNav
     npm i --save @angular/material @angular/cdk
 
 Q: Could not find Angular Material core theme. Most Material components may not work as expected. For more info refer to the theming guide:
-A: å¼•å…¥ä¸»é¢˜cssæ–‡ä»¶ä¸­ @import "~@angular/material/prebuilt-themes/deeppurple-amber.css";
+A: ÒıÈëÖ÷ÌâcssÎÄ¼şÖĞ @import "~@angular/material/prebuilt-themes/deeppurple-amber.css";
 
     <mat-sidenav #sidenav mode="over" align="end">
 
-ä¸€ä¸ªcontainerä¸­å¯ä»¥æœ‰2ä¸ªsidenav , align= start , å·¦è¾¹, end å³è¾¹
+Ò»¸öcontainerÖĞ¿ÉÒÔÓĞ2¸ösidenav , align= start , ×ó±ß, end ÓÒ±ß
 
     <mat-toolbar color="primary"></mat-toolbar>
     <mat-toolbar color="accent"></mat-toolbar>
 
-ä¸»è‰²ï¼Œé…è‰²  accent æŒ‡é…è‰²
+Ö÷É«£¬ÅäÉ«  accent Ö¸ÅäÉ«
 
 ## SideNav 
 
-1. ç”¨é€”ï¼šä¾§è¾¹æ å¯¼èˆªï¼ŒåŒæ—¶å¯ä»¥ä½œä¸ºå®¹å™¨
-2. ä¾§æ»‘çš„ä¸‰ç§æ¨¡å¼ï¼š over, push , side
-3. ä¸€èˆ¬çš„ <md-sidenav-container> è”åˆä½¿ç”¨
+1. ÓÃÍ¾£º²à±ßÀ¸µ¼º½£¬Í¬Ê±¿ÉÒÔ×÷ÎªÈİÆ÷
+2. ²à»¬µÄÈıÖÖÄ£Ê½£º over, push , side
+3. Ò»°ãµÄ <md-sidenav-container> ÁªºÏÊ¹ÓÃ
 
 ## Toolbar
 
-1. ç”¨é€”: ä¸€èˆ¬ç”¨äºå¤´éƒ¨ã€æ ‡é¢˜æ 
-2. é€šè¿‡ <md-toolbar-row> æ”¯æŒå¤šè¡Œ
-3. é»˜è®¤å†…éƒ¨å¸ƒå±€æ˜¯åŸºäºflexçš„
+1. ÓÃÍ¾: Ò»°ãÓÃÓÚÍ·²¿¡¢±êÌâÀ¸
+2. Í¨¹ı <md-toolbar-row> Ö§³Ö¶àĞĞ
+3. Ä¬ÈÏÄÚ²¿²¼¾ÖÊÇ»ùÓÚflexµÄ
 
-        åœ¨coremodule å¼•å…¥MatToolbarModule
-        åœ¨appmodule import MatSidenavModule
+        ÔÚcoremodule ÒıÈëMatToolbarModule
+        ÔÚappmodule import MatSidenavModule
 
-header å¹¶ä¸çŸ¥é“ sidebaråœ¨å“ªå„¿ æ‰€ä»¥ç”¨outputä¸æ ¹ç»„ä»¶äº¤äº’æ•°æ®~
+header ²¢²»ÖªµÀ sidebarÔÚÄÄ¶ù ËùÒÔÓÃoutputÓë¸ù×é¼ş½»»¥Êı¾İ~
 
 ```typescript
 header.ts
@@ -160,25 +160,25 @@ app.component.html
 <app-header (toggle)="sidenav1.toggle()"></app-header>
 ```
 
-## 2-4 MdIcon ç»„ä»¶
+## 2-4 MdIcon ×é¼ş
 
-appModule ä¸­å¯¼å…¥ MatIconModule , header.html
+appModule ÖĞµ¼Èë MatIconModule , header.html
 
     <mat-icon svgIcon="gifts"></mat-icon>
 
-mat-icon æ— æŸç¼©æ”¾ï¼ŒåŸºäºå­—ä½“çš„
+mat-icon ÎŞËğËõ·Å£¬»ùÓÚ×ÖÌåµÄ
 
-    ä½¿ç”¨å›¾æ ‡å­—ä½“ï¼Œå†…å»º material icon æ”¯æŒ
-    æ”¯æŒ svg : é€šè¿‡æ³¨å…¥ mdiconRegistry å’Œ DomSanitizer
+    Ê¹ÓÃÍ¼±ê×ÖÌå£¬ÄÚ½¨ material icon Ö§³Ö
+    Ö§³Ö svg : Í¨¹ı×¢Èë mdiconRegistry ºÍ DomSanitizer
 
 ```typescript
 this.addSvgIcon('project', this.sanitizer.bypassSecurityTrustResourceUrl('assets/img/sidebar/project.svg'));
 ```
 
 
-æŠ¥é”™æ‰¾ä¸åˆ° HttpProviderï¼Œåœ¨appmoduleä¸­å¯¼å…¥ HttpClientModule
+±¨´íÕÒ²»µ½ HttpProvider£¬ÔÚappmoduleÖĞµ¼Èë HttpClientModule
 
-* é¿å…é‡å¤åŠ è½½ï¼Œåˆ›å»ºutils/svg.utils.ts 
+* ±ÜÃâÖØ¸´¼ÓÔØ£¬´´½¨utils/svg.utils.ts 
 
 ```typescript
 export const loadSvgResources = (ir: MatIconRegistry, ds: DomSanitizer) => {
@@ -186,7 +186,7 @@ export const loadSvgResources = (ir: MatIconRegistry, ds: DomSanitizer) => {
 }
 ```
 
-é¿å…åœ¨headerä½¿ç”¨æ—¶è¿˜æ˜¯è¦å¯¼å…¥ï¼Œéº»çƒ¦ã€‚æˆ‘ä»¬åœ¨coremoduleä¸­å¯¼å…¥ã€‚
+±ÜÃâÔÚheaderÊ¹ÓÃÊ±»¹ÊÇÒªµ¼Èë£¬Âé·³¡£ÎÒÃÇÔÚcoremoduleÖĞµ¼Èë¡£
 
 
 ```typescript
@@ -196,14 +196,14 @@ export class CoreModule {
     ir: MatIconRegistry,
     ds: DomSanitizer) {
     if (parent) {
-      throw new Error('æ¨¡å—å·²å­˜åœ¨ï¼Œä¸èƒ½å†æ¬¡åŠ è½½!');
+      throw new Error('Ä£¿éÒÑ´æÔÚ£¬²»ÄÜÔÙ´Î¼ÓÔØ!');
     }
     loadSvgResources(ir, ds);
   }
 }
 ```
 
-## 2-5 Input ç»„ä»¶
+## 2-5 Input ×é¼ş
 
 __Install Component__
 
@@ -220,7 +220,7 @@ const routes: Routes = [{path: 'login', component: LoginComponent}, ];
 
 app-rouing.module.ts
 {path: '', redirectTo: '/login', pathMatch: 'full'},
-full--å¦‚æœ loginåé¢ä»€ä¹ˆéƒ½ä¸æ”¾å°±å¯¼èˆªåˆ° login
+full--Èç¹û loginºóÃæÊ²Ã´¶¼²»·Å¾Íµ¼º½µ½ login
 
 ```
 
@@ -233,13 +233,13 @@ HTML
 #login.compoennt.html
 <mat-card>
   <mat-card-header>
-    <mat-card-title>ç™»å½•</mat-card-title>
+    <mat-card-title>µÇÂ¼</mat-card-title>
   </mat-card-header>
 
   <mat-card-content>
     <mat-input-container>
       <span matPrefix="">wang</span>
-      <input matInput type="text" placeholder="æ‚¨çš„email">
+      <input matInput type="text" placeholder="ÄúµÄemail">
       <span matSuffix>@gmail.com</span>
       <mat-hint></mat-hint>
       <mat-label></mat-label>
@@ -247,26 +247,26 @@ HTML
   </mat-card-content>
 
   <mat-card-actions>
-    <p>è¿˜æ²¡æœ‰è´¦æˆ·?<a href="">æ³¨å†Œ</a></p>
-    <p>å¿˜è®°å¯†ç ?<a href="">æ‰¾å›</a></p>
+    <p>»¹Ã»ÓĞÕË»§?<a href="">×¢²á</a></p>
+    <p>Íü¼ÇÃÜÂë?<a href="">ÕÒ»Ø</a></p>
   </mat-card-actions>
 </mat-card>
 
 color accent
 mat-input-container
-    floatPlaceholder float é»˜è®¤
-    floatPlaceholder always ä¸€ç›´åœ¨åŠ¨ç”»
-    floatPlaceholder never ä¸€ç›´åœ¨åŠ¨ç”»
-hintLabel="å¿…å¡«é¡¹" è¾“å…¥æ¡†ä¸‹é¢æœ‰æç¤º
+    floatPlaceholder float Ä¬ÈÏ
+    floatPlaceholder always Ò»Ö±ÔÚ¶¯»­
+    floatPlaceholder never Ò»Ö±ÔÚ¶¯»­
+hintLabel="±ØÌîÏî" ÊäÈë¿òÏÂÃæÓĞÌáÊ¾
 ```
 
 Input
 
-    æŒ‡ä»¤: mdInput åœ¨ <md-input-container> å†…éƒ¨ï¼Œæœ‰å‰ç¼€åç¼€
-    <md-error> : åªèƒ½éªŒè¯ä¸é€šè¿‡æ—¶æ‰å‡ºç°ï¼Œå¯¹ä¸¤ç§ç±»å‹è¡¨å•éƒ½æ˜¯å¦‚æ­¤
-    <md-hint> : å½“erroræ˜¾ç¤ºæ—¶, hint ä¼šéšè—
+    Ö¸Áî: mdInput ÔÚ <md-input-container> ÄÚ²¿£¬ÓĞÇ°×ººó×º
+    <md-error> : Ö»ÄÜÑéÖ¤²»Í¨¹ıÊ±²Å³öÏÖ£¬¶ÔÁ½ÖÖÀàĞÍ±íµ¥¶¼ÊÇÈç´Ë
+    <md-hint> : µ±errorÏÔÊ¾Ê±, hint »áÒş²Ø
 
-æ¨¡å—å¢å¤šåï¼Œå°½é‡æ”¾åœ¨sharedModule
+Ä£¿éÔö¶àºó£¬¾¡Á¿·ÅÔÚsharedModule
 
 ```typescript
 # login.module
@@ -277,14 +277,14 @@ imports: [HttpClientModule, SharedModule, BrowserAnimationsModule, ]
 imports: [BrowserModule, SharedModule, CoreModule, LoginModule, AppRoutingModule, ]
 ```
 
-## 2-6 Card å’Œ Button ç»„ä»¶
+## 2-6 Card ºÍ Button ×é¼ş
 
-__card __ é€‚åˆå›¾æ–‡å½¢å¼çªå‡ºæŸä¸€ä¸»é¢˜
+__card __ ÊÊºÏÍ¼ÎÄĞÎÊ½Í»³öÄ³Ò»Ö÷Ìâ
 
 ```typescript
   <mat-card>
     <mat-card-header>
-      <mat-card-title>æ¯æ—¥ä½³å¥</mat-card-title>
+      <mat-card-title>Ã¿ÈÕ¼Ñ¾ä</mat-card-title>
       <mat-card-subtitle>{{quote.cn}}</mat-card-subtitle>
     </mat-card-header>
     <img mat-card-xl-image src="/assets/quote_fallback.jpg" alt="">
@@ -297,21 +297,21 @@ __card __ é€‚åˆå›¾æ–‡å½¢å¼çªå‡ºæŸä¸€ä¸»é¢˜
 
 __Button__
 
-md-button æ˜¯ä»¥æŒ‡ä»¤å½¢å¼æä¾›çš„
-æ ‡å‡†æŒ‰é’®: md-button, md-raised-button, md-icon-button
-æµ®åŠ¨æŒ‰é’®: md-fab, md-fab-mini
+md-button ÊÇÒÔÖ¸ÁîĞÎÊ½Ìá¹©µÄ
+±ê×¼°´Å¥: md-button, md-raised-button, md-icon-button
+¸¡¶¯°´Å¥: md-fab, md-fab-mini
 
-ä¸æŒ‡æ˜ type é»˜è®¤ä¸ºsubmit, æŒ‡å®šä¸ºtype=button
+²»Ö¸Ã÷ type Ä¬ÈÏÎªsubmit, Ö¸¶¨Îªtype=button
 
-    <button mat-raised-button type="button">ç™»å½•</button>
+    <button mat-raised-button type="button">µÇÂ¼</button>
 
-mat-ç±»å‹|æ•ˆæœ
+mat-ÀàĞÍ|Ğ§¹û
 ---|---
-mat-raised-button | æµ®èµ·çš„æ•ˆæœ
-mat-fab-button  | åœ†å½¢æ•ˆæœ
-mat-mini-fab    | æ›´å°çš„åœ†å½¢æ•ˆæœ
+mat-raised-button | ¸¡ÆğµÄĞ§¹û
+mat-fab-button  | Ô²ĞÎĞ§¹û
+mat-mini-fab    | ¸üĞ¡µÄÔ²ĞÎĞ§¹û
 
-å®¹å™¨å……æ»¡ï¼Œç”¨æˆ·ã€å¯†ç ç«–æ’ï¼Œå¹¶å°†å¿˜è®°å¯†ç æ”¾åœ¨ å³ä¾§
+ÈİÆ÷³äÂú£¬ÓÃ»§¡¢ÃÜÂëÊúÅÅ£¬²¢½«Íü¼ÇÃÜÂë·ÅÔÚ ÓÒ²à
 ```css
 # login.component.css
 mat-card{
@@ -342,24 +342,24 @@ form {
 
     <img mat-card-xl-image src="/assets/quote_fallback.jpg" alt="">
 
-## 2-7 åœ¨ä¾§æ»‘èœå•ä¸­ä½¿ç”¨ MdList
+## 2-7 ÔÚ²à»¬²Ëµ¥ÖĞÊ¹ÓÃ MdList
 
 __List__
 
-* ç”¨æˆ·ï¼šä¸€èˆ¬ç”¨äºåˆ—è¡¨
-* `<mat-list>`å’Œ`<mat-nav-list>`
+* ÓÃ»§£ºÒ»°ãÓÃÓÚÁĞ±í
+* `<mat-list>`ºÍ`<mat-nav-list>`
 
-List item é»˜è®¤æ ·å¼ `align:center,flex:row`
+List item Ä¬ÈÏÑùÊ½ `align:center,flex:row`
 
-ä½¿ list item é¡¶éƒ¨å¯¹é½ 
+Ê¹ list item ¶¥²¿¶ÔÆë 
 
     mat-icon {align-self: flex-start; }
 
-å‹ç¼©åˆ—è¡¨.é—´è·å˜å° `<mat-nav-list dense>`
+Ñ¹ËõÁĞ±í.¼ä¾à±äĞ¡ `<mat-nav-list dense>`
 
-æ—¥è§†å›¾å˜æˆå½“å¤©çš„æ—¥æœŸ
+ÈÕÊÓÍ¼±ä³Éµ±ÌìµÄÈÕÆÚ
 
-æ·»åŠ 31å¤©çš„æ—¥å›¾æ ‡ï¼Œä½¿å½“æ—¥å›¾æ ‡è‡ªåŠ¨æ”¹å˜
+Ìí¼Ó31ÌìµÄÈÕÍ¼±ê£¬Ê¹µ±ÈÕÍ¼±ê×Ô¶¯¸Ä±ä
 
 ```typescript
 # svg.utils.ts
@@ -378,30 +378,93 @@ ngOnInit() {
 <mat-icon mat-list-icon [svgIcon]="today"></mat-icon>
 ```
 
-æ·»åŠ ç±»åº“
+Ìí¼ÓÀà¿â
 ```bash
 npm install --save date-fns
 npm install --save-dev @types/date-fns
 ```
 
-## 2-8 Angular Material ä¸»é¢˜
-## 2-9 GridList æ‰“é€ æ³¨å†Œé¡µé¢å¤´åƒåˆ—è¡¨
-## 2-10 å¯¹è¯æ¡†çš„ä½¿ç”¨
-## 2-11 Autocomplete çš„ä½¿ç”¨
-## 2-12 ä»»åŠ¡åˆ—è¡¨ä¹‹èœå•
-## 2-13 ä»»åŠ¡åˆ—è¡¨ä¹‹ä»»åŠ¡ç»„ä»¶
-## 2-14 ä»»åŠ¡åˆ—è¡¨ä¹‹æ–°ä»»åŠ¡å¯¹è¯æ¡†
-## 2-15 ä»»åŠ¡åˆ—è¡¨ä¹‹ç§»åŠ¨å†…å®¹å¯¹è¯æ¡†
-## 2-16 å®Œæˆä¸»æ¡†æ¶ï¼ˆä¸Šï¼‰
-## 2-17 å®Œæˆä¸»æ¡†æ¶ï¼ˆä¸‹ï¼‰
+## 2-8 Angular Material Ö÷Ìâ
+
+Ö÷Ìâ£º µ÷É«°å+Ã÷°µ+µş¼Ó
+$my-app-accent: mat-palette($mat-pink,A200, A100, A400);
+Ä¬ÈÏÉîÇ³£¬ÁÁµÄÖ÷Ìâ£¬°µµÄÖ÷ÌâÁÁ¶È£¬
+```typescript
+
+# header.component.html
+<span class="fill-remaining-space"></span>
+<mat-slide-toggle (change)="onChange($event.checked)">Ä¬ÈÏÄ£Ê½</mat-slide-toggle>
+
+# shared.module.ts
+MatSlideToggleModule
+
+# app.component.css
+mat-sidenav-container.myapp-dark-theme {
+  background-color: black;
+}
+
+# app.component.html
+<app-header (toggle)="sidenav1.toggle()" (toggleDarkTheme)="switchTheme($event)"></app-header>
+<mat-sidenav-container [class.myapp-dark-theme]="darkTheme">
+  <mat-sidenav #sidenav1 mode="over">
+    <app-sidebar></app-sidebar>
+  </mat-sidenav>
+
+# app.component.html
+      <app-header (toggle)="sidenav1.toggle()" (toggleDarkTheme)="switchTheme($event)"></app-header>
+
+# app.component.ts
+darkTheme = false;
+switchTheme(dark) {
+  this.darkTheme = dark;
+}
+
+```
+
+```scss
+# styles.scss
+@import "theme.scss";
+
+# theme.scss
+@import "~@angular/material/theming";
+
+@include mat-core()
+
+$my-app-primary: mat-palette($mat-indigo);
+$my-app-accent: mat-palette($mat-pink,A200, A100, A400);
+$my-app-warn: mat-palette($mat-red);
+
+$my-app-theme: mat-light-theme($my-app-primary, $my-app-accent,$my-app-warn);
+
+@include angular-material-theme($my-app-theme)
+
+$my-dark-primary: mat-palette($mat-blue-gray);
+$my-dark-accent: mat-palette($mat-amber,A200, A100, A400);
+$my-dark-warn: mat-palette($mat-orange);
+
+$my-dark-theme: mat-dark-theme($my-dark-primary, $my-dark-accent,$my-dark-warn);
+
+.myapp-dark-theme {
+  @include angular-material-theme($my-dark-theme)
+}
+```
+## 2-9 GridList ´òÔì×¢²áÒ³ÃæÍ·ÏñÁĞ±í
+## 2-10 ¶Ô»°¿òµÄÊ¹ÓÃ
+## 2-11 Autocomplete µÄÊ¹ÓÃ
+## 2-12 ÈÎÎñÁĞ±íÖ®²Ëµ¥
+## 2-13 ÈÎÎñÁĞ±íÖ®ÈÎÎñ×é¼ş
+## 2-14 ÈÎÎñÁĞ±íÖ®ĞÂÈÎÎñ¶Ô»°¿ò
+## 2-15 ÈÎÎñÁĞ±íÖ®ÒÆ¶¯ÄÚÈİ¶Ô»°¿ò
+## 2-16 Íê³ÉÖ÷¿ò¼Ü£¨ÉÏ£©
+## 2-17 Íê³ÉÖ÷¿ò¼Ü£¨ÏÂ£©
 
 
-# ç¬¬3ç«  Angular åŠ¨ç”»
-# ç¬¬4ç«  Angular æ ¸å¿ƒæ¦‚å¿µå›é¡¾å’Œæé«˜
-# ç¬¬5ç«  Rxjså¸¸è§æ“ä½œç¬¦
-# ç¬¬6ç«  Angular ä¸­çš„å“åº”å¼ç¼–ç¨‹
-# ç¬¬7ç«  ä½¿ç”¨ Redux ç®¡ç†åº”ç”¨çŠ¶æ€
-# ç¬¬8ç«  Angular çš„æµ‹è¯•
-# ç¬¬9ç«  è¯¾ç¨‹æ€»ç»“
+# µÚ3ÕÂ Angular ¶¯»­
+# µÚ4ÕÂ Angular ºËĞÄ¸ÅÄî»Ø¹ËºÍÌá¸ß
+# µÚ5ÕÂ Rxjs³£¼û²Ù×÷·û
+# µÚ6ÕÂ Angular ÖĞµÄÏìÓ¦Ê½±à³Ì
+# µÚ7ÕÂ Ê¹ÓÃ Redux ¹ÜÀíÓ¦ÓÃ×´Ì¬
+# µÚ8ÕÂ Angular µÄ²âÊÔ
+# µÚ9ÕÂ ¿Î³Ì×Ü½á
 
     
