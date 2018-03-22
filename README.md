@@ -449,6 +449,43 @@ $my-dark-theme: mat-dark-theme($my-dark-primary, $my-dark-accent,$my-dark-warn);
 }
 ```
 ## 2-9 GridList 打造注册页面头像列表
+
+* GridList
+
+用途：用于相似的数据展示，尤其是图片，类似相册。
+
+行为很像表格，有colspan,rolspan等属性。
+
+    ng g c login/register --spec=false
+
+* mat-grid-list 属性
+
+ rowHeight="34px"或1,colspan,rowspan
+
+* map() 对每个元素处理返回新的元素
+
+* svg图标集合使用方法： name:svg-${id}
+
+```typescript
+# SharedModule
+MatGridListModule,
+
+# svg.utils.ts
+ir.addSvgIconSetInNamespace('avatars', ds.bypassSecurityTrustResourceUrl(`${avatarDir}/avatars.svg`));
+
+# login-routing.module.ts
+{path: 'register', component: RegisterComponent},
+```
+
+```html
+# register.component.html
+<mat-grid-list [cols]="6" rowHeight="2:1">
+  <mat-grid-tile *ngFor="let item of items">
+    <mat-icon class="avatar" [svgIcon]="item"></mat-icon>
+  </mat-grid-tile>
+</mat-grid-list>
+```
+
 ## 2-10 对话框的使用
 ## 2-11 Autocomplete 的使用
 ## 2-12 任务列表之菜单
