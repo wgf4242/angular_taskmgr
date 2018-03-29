@@ -617,7 +617,106 @@ export class ProjectItemComponent implements OnInit {
 }
 ```
 
+```css
+# project-list.component.css
+.card {
+  height: 360px;
+  flex: 0 0 360px;
+  margin: 10px;
+}
+
+:host {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.fab-button {
+  position: fixed;
+  right: 32px;
+  bottom: 96px;
+  z-index: 998;
+}
+```
+
+
 ## 2-11 Autocomplete 的使用
+
+要和 input 联合使用。
+
+```typescript
+<mat-form-field>
+  <input type="text" matInput [formControl]="myControl" [matAutocomplete]="auto">
+</mat-form-field>
+
+<mat-autocomplete #auto="matAutocomplete">
+  <mat-option *ngFor="let option of options" [value]="option">
+    {{ option }}
+  </mat-option>
+</mat-autocomplete>
+
+```
+
+实例代码
+
+```typescript
+# shared.module.ts
+  imports: [MatAutocompleteModule, ],
+  exports: [MatAutocompleteModule, ],
+
+# project-list.component.html
+<app-project-item *ngFor="let project of projects"
+  [item]="project" class="card" (onInvite)="launchInviteDialog()">
+
+# project-list.component.ts
+  launchInviteDialog() {const dialogRef = this.dialog.open(InviteComponent); }
+
+# project-item.component.ts
+  @Output() onInvite = new EventEmitter();
+
+  onInviteClick() {this.onInvite.emit(); }
+
+# project-item.component.html
+    <button mat-button type="button" (click)="onInviteClick()">
+
+# invite.component.html
+<form >
+  <h2 mat-dialog-title>邀请组员</h2>
+  <div mat-dialog-content>
+    <mat-input-container class="full-width">
+      <input matInput type="text" placeholder="组员姓名" [matAutocomplete]="autoMembers">
+    </mat-input-container>
+    <div mat-dialog-actions>
+      <button type="button" mat-raised-button color="primary" (click)="onClick()">保存</button>
+      <button type="button" mat-button mat-dialog-close>关闭</button>
+    </div>
+  </div>
+</form>
+
+<mat-autocomplete #autoMembers="matAutocomplete" [displayWith]="displayUser">
+  <mat-option *ngFor="let item of items" [value]="item">
+    {{item.name}}
+  </mat-option>
+</mat-autocomplete>
+
+# invite.component.ts
+export class InviteComponent implements OnInit {
+  items = [
+    {id: 1, name: 'name-1'},
+    {id: 2, name: 'name-2'},
+    {id: 3, name: 'name-3'}
+  ];
+
+  displayUser(user: { id: string, name: string }) {
+    return user ? user.name : '';
+  }
+}
+```
+
+[displayWith]="displayUser"> 而不是  displayUser()
+
+* 表示传入的是函数不是函数的返回结果
+
 ## 2-12 任务列表之菜单
 ## 2-13 任务列表之任务组件
 ## 2-14 任务列表之新任务对话框
