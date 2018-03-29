@@ -487,6 +487,136 @@ ir.addSvgIconSetInNamespace('avatars', ds.bypassSecurityTrustResourceUrl(`${avat
 ```
 
 ## 2-10 对话框的使用
+
+* 对话框很特殊，需要在模块中的 entrryComponents中声明
+* 传递数据： const dialogRef = dialog.open(YourDialog, {data:'your data'})
+* 接收数据： constructor(@Inject(MD_DIALOG_DATA) public data:any) {}
+
+```typescript
+ng g m project
+ng g c project/project-list --spec=false
+ng g c project/project-item --spec=false
+ng g c project/new-project --spec=false
+ng g c project/invite --spec=false
+
+# project.module.ts
+  declarations: [
+    ProjectListComponent,
+    ProjectItemComponent,
+    NewProjectComponent,
+    InviteComponent
+  ],
+  entryComponents: [
+    NewProjectComponent,
+    InviteComponent
+  ],
+
+# ProjectListComponent
+export class ProjectListComponent implements OnInit {
+  projects = [
+    {'name': 'itemMame-1', 'desc': 'this is a ent project', 'coverImg': 'assets/img/covers/0.jpg'},
+    {'name': 'Auto test', 'desc': 'this is a ent project', 'coverImg': 'assets/img/covers/1.jpg'} ];
+
+  constructor(private dialog: MatDialog) {}
+  ngOnInit() {}
+
+  openNewProjectDialog() {
+    const config = {width: '100px', height: '100px', position: {left: '0', top: '0'}};
+    const data = {data: {dark: true}};
+    const dialogRef = this.dialog.open(NewProjectComponent, data);
+    dialogRef.afterClosed().subscribe(result => console.log(result));
+  }
+}
+
+```
+
+```html
+# ProjectListComponent html
+<app-project-item *ngFor="let project of projects"
+  [item]="project"
+  class="card">
+
+</app-project-item>
+
+<button class="fab-button" mat-fab type="button" (click)="openNewProjectDialog()">
+  <mat-icon>add</mat-icon>
+</button>
+
+# project-item.component.html
+
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>
+      {{item.name}}
+    </mat-card-title>
+  </mat-card-header>
+  <img mat-card-image [src]="item.coverImg" alt="项目封面">
+  <mat-card-content>
+    {{item.desc}}
+  </mat-card-content>
+  <mat-card-actions>
+    <button mat-button type="button">
+      <mat-icon>note</mat-icon>
+      <span>编辑</span>
+    </button>
+    <button mat-button type="button">
+      <mat-icon>group_add</mat-icon>
+      <span>邀请</span>
+    </button>
+    <button mat-button type="button">
+      <mat-icon>delete</mat-icon>
+      <span>删除</span>
+    </button>
+  </mat-card-actions>
+</mat-card>
+```
+
+```typescript
+# project-item.component.ts
+export class ProjectItemComponent implements OnInit {
+  @Input() item;
+```
+
+```html
+# new-project.component.html
+
+<form >
+  <h2 mat-dialog-title>新建项目</h2>
+  <div mat-dialog-content>
+    <mat-input-container class="full-width">
+      <input matInput type="text" placeholder="项目名称">
+    </mat-input-container>
+    <mat-input-container class="full-width">
+      <input matInput type="text" placeholder="项目描述">
+    </mat-input-container>
+    <div mat-dialog-actions>
+      <button type="button" mat-raised-button color="primary" (click)="onClick()">保存</button>
+      <button type="button" mat-button mat-dialog-close>关闭</button>
+    </div>
+  </div>
+</form>
+```
+
+
+```typescript
+# new-project.component.ts
+  constructor(@Inject(MAT_DIALOG_DATA) private data,
+              private dialogRef: MatDialogRef<NewProjectComponent>,
+              // private oc: OverlayContainer
+  ) {
+  }
+
+  ngOnInit() {
+    console.log(JSON.stringify(this.data));
+    // this.oc.themeClass = this.data.dark ? 'myapp-dark-theme' : null;
+  }
+
+  onClick() {
+    this.dialogRef.close('I received your message');
+  }
+}
+```
+
 ## 2-11 Autocomplete 的使用
 ## 2-12 任务列表之菜单
 ## 2-13 任务列表之任务组件

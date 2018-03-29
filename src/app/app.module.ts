@@ -4,8 +4,9 @@ import {NgModule} from '@angular/core';
 import {AppComponent} from './app.component';
 import {CoreModule} from './core/core.module';
 import {LoginModule} from './login/login.module';
-import {SharedModule} from './shared/shared.module';
 import {AppRoutingModule} from './app-routing.module';
+import {ProjectModule} from './project/project.module';
+import {MatDialog, MatDialogModule, MatSidenavModule} from '@angular/material';
 
 
 @NgModule({
@@ -14,12 +15,15 @@ import {AppRoutingModule} from './app-routing.module';
   ],
   imports: [
     BrowserModule,
-    SharedModule,
-    CoreModule,
-    LoginModule,
     AppRoutingModule,
+    MatSidenavModule,
+    MatDialogModule,
+    LoginModule,
+    ProjectModule,
+    CoreModule,
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  providers: []
 })
 export class AppModule {
 }
