@@ -7,6 +7,7 @@ import {LoginModule} from './login/login.module';
 import {AppRoutingModule} from './app-routing.module';
 import {ProjectModule} from './project/project.module';
 import {MatDialog, MatDialogModule, MatSidenavModule} from '@angular/material';
+import {TaskModule} from './task/task.module';
 
 
 @NgModule({
@@ -20,6 +21,7 @@ import {MatDialog, MatDialogModule, MatSidenavModule} from '@angular/material';
     MatDialogModule,
     LoginModule,
     ProjectModule,
+    TaskModule,
     CoreModule,
   ],
   bootstrap: [AppComponent],

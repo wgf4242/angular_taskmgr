@@ -1,6 +1,9 @@
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {MatAutocompleteModule, MatButtonModule, MatCardModule, MatGridListModule, MatIconModule, MatInputModule, MatListModule, MatSidenavModule, MatSlideToggleModule} from '@angular/material';
+import {
+  MatAutocompleteModule, MatButtonModule, MatCardModule, MatGridListModule, MatIconModule, MatInputModule, MatListModule,
+  MatMenuModule, MatSidenavModule, MatSlideToggleModule
+} from '@angular/material';
 import {MatToolbarModule} from '@angular/material/toolbar';
 
 @NgModule({
@@ -16,6 +19,7 @@ import {MatToolbarModule} from '@angular/material/toolbar';
     MatSlideToggleModule,
     MatGridListModule,
     MatAutocompleteModule,
+    MatMenuModule,
   ],
   exports: [
     CommonModule,
@@ -29,6 +33,7 @@ import {MatToolbarModule} from '@angular/material/toolbar';
     MatSlideToggleModule,
     MatGridListModule,
     MatAutocompleteModule,
+    MatMenuModule,
   ],
   declarations: []
 })

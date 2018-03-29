@@ -718,6 +718,141 @@ export class InviteComponent implements OnInit {
 * 表示传入的是函数不是函数的返回结果
 
 ## 2-12 任务列表之菜单
+
+```typescript
+ng g m task
+ng g c task/task-home --spec=false
+ng g c task/task-list --spec=false
+ng g c task/task-item --spec=false
+ng g c task/task-header --spec=false
+```
+
+
+* 将 OverlayContainer 注入到 AppComponent比较方便
+
+```typescript
+# app.component.ts
+  constructor(private oc: OverlayContainer) { }
+
+  switchTheme(dark) {
+    this.darkTheme = dark;
+    // this.oc.themeClass = this.data.dark ? 'myapp-dark-theme' : null;
+  }
+
+# app-routing.module.ts
+    {path: 'tasklists', redirectTo: '/tasklists', pathMatch: 'full'},
+
+# svg.utils.ts
+  const iconDir = `${imgDir}/icons`;
+  ir.addSvgIcon('move', ds.bypassSecurityTrustResourceUrl(`${iconDir}/move.svg`));
+  ir.addSvgIcon('add', ds.bypassSecurityTrustResourceUrl(`${iconDir}/add.svg`));
+  ir.addSvgIcon('delete', ds.bypassSecurityTrustResourceUrl(`${iconDir}/delete.svg`));
+
+# task-header.component.css
+.fill {
+  flex: 1;
+  text-align: center;
+}
+
+.header-container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+  width: 100%;
+}
+
+# task-header.component.html
+<div mat-subheader class="header-container">
+  <div>
+    <h3>{{header}}</h3>
+  </div>
+  <div class="fill">
+    <button mat-button>
+      <mat-icon>add_circle_outline</mat-icon>
+      <span>新任务</span>
+    </button>
+  </div>
+  <div>
+    <button mat-icon-button [matMenuTriggerFor]="menu">
+      <mat-icon>keyboard_arrow_down</mat-icon>
+    </button>
+  </div>
+</div>
+
+<mat-menu #menu="matMenu">
+  <button mat-menu-item>
+    <mat-icon>mode_edit</mat-icon>
+    <span>修改列表名称</span>
+  </button>
+  <button mat-menu-item>
+    <mat-icon [svgIcon]="'move'"></mat-icon>
+    <span>移动本列表所有内容</span>
+  </button>
+  <button mat-menu-item>
+    <mat-icon>delete_forever</mat-icon>
+    <span>删除列表</span>
+  </button>
+</mat-menu>
+
+# task-header.component.ts
+  @Input() header = '';
+
+# task-home.component.css
+.fab-button {
+  position: fixed;
+  right: 32px;
+  bottom: 96px;
+  z-index: 998;
+}
+
+.task-lists {
+  min-width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  overflow: scroll;
+}
+
+.list-container {
+  flex: 0 0 360px;
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+
+# task-home.component.html
+<div class="task-lists">
+  <app-task-list *ngFor="let list of lists" class="list-container">
+    <app-task-header [header]="list.name"></app-task-header>
+    <app-task-item *ngFor="let task of list.tasks"></app-task-item>
+  </app-task-list>
+</div>
+
+<button class="fab-button" mat-fab type="button">
+  <mat-icon>add</mat-icon>
+</button>
+
+# task-home.component.ts
+  lists = [
+    {
+      id: 1, name: '待办',
+      tasks: [{id: 1, desc: '任务1：买咖啡', owner: {id: 1, name: '张三', avatar: 'avatars:svg-11'}, dueDate: new Date()}]
+    },
+   {
+      id: 2, name: '进行中',
+      tasks: [{id: 1, desc: '任务2：完成PPT', owner: {id: 1, name: '李四', avatar: 'avatars:svg-12'}, dueDate: new Date()}]
+    },
+  ];
+
+# task-list.component.html
+<mat-list>
+  <ng-content></ng-content>
+</mat-list>
+```
+
 ## 2-13 任务列表之任务组件
 ## 2-14 任务列表之新任务对话框
 ## 2-15 任务列表之移动内容对话框
