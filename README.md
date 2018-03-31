@@ -1080,9 +1080,156 @@ export class CopyTaskComponent implements OnInit {
 
 ```
 
-## 2-16 完成主框架（上）
-## 2-17 完成主框架（下）
+## 2-16 完成主框架
+完成下拉列表的几个按钮, 修改任务的 Dialog。
 
+task-item.component.html 中点击 Checkbox 也会弹出修改任务的对话框。怎样处理？
+
+```typescript
+  onCheckBoxClick(ev: Event) {ev.stopPropagation(); }
+```
+
+同样 projects 添加/编辑是一样的一个组件。
+
+删除列表按钮 -- 一个确认的对话框。比较通用建立在SharedModule中。
+
+完成修改列表名称，添加新列表。
+
+* __Cli 参数__
+
+it=--inline-template
+
+is=--inline-style
+
+* 控制台： Could not find HammerJS
+
+Material 组件 移动端会用 HammerJS。
+
+```typescript
+npm install --save hammerjs
+# core.module.ts
+import 'hammerjs';
+```
+
+* Coding:
+
+```typescript
+$ ng g c shared/confirm-dialog -it -is --spec=false
+$ ng g c task/new-task-list --spec=false
+
+# new-project.component.html
+  <h3 mat-dialog-title>{{title}}</h3>
+
+# new-project.component.ts
+  title = '';
+  ngOnInit() {this.title = this.data.title; }
+
+# project-item.component.html
+    <button mat-button type="button" (click)="onEditClick()">
+    <button mat-button type="button" (click)="onDelClick()">
+
+# project-item.component.ts
+  @Output() onEdit = new EventEmitter();
+  @Output() onDel = new EventEmitter();
+  onEditClick() {this.onEdit.emit(); }
+  onDelClick() {this.onDel.emit(); }
+
+# project-list.component.html
+  (onEdit)="launcherUpdateDialog()"
+  (onDel)="launcheConfirmDialog()"
+
+# project-list.component.ts
+  launcherUpdateDialog() {const dialogRef = this.dialog.open(NewProjectComponent, {data: {title: '编辑项目:'}}); }
+
+  launcheConfirmDialog() {
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {data: {title: '删除项目:', content: '您确认删除该项目么'}});
+    dialogRef.afterClosed().subscribe(result => console.log(result));
+  }
+
+# confirm-dialog.component.ts
+@Component({
+  selector: 'app-confirm-dialog',
+  template: `
+    <h3 mat-dialog-title>{{title}}</h3>
+    <mat-dialog-content>
+      {{content}}
+    </mat-dialog-content>
+    <mat-dialog-actions>
+      <button type="button" mat-raised-button color="primary" (click)="onClick(true)">确定</button>
+      <button type="button" mat-button [mat-dialog-close] (click)="onClick(false)">取消</button>
+    </mat-dialog-actions>
+  `,
+  styles: []
+})
+export class ConfirmDialogComponent implements OnInit {
+  title = ''; content = '';
+  constructor(@Inject(MAT_DIALOG_DATA) private data, private dialogRef: MatDialogRef<ConfirmDialogComponent>) { }
+  ngOnInit() {this.title = this.data.title; this.content = this.data.content; }
+  onClick(result: boolean) {this.dialogRef.close(result); }
+}
+
+# shared.module.ts
+  entryComponents: [ConfirmDialogComponent],
+
+# new-task-list.component.html
+<form>
+  <h3 mat-dialog-title>{{title}}</h3>
+  <mat-dialog-content>
+    <mat-input-container class="full-width">
+      <input type="text" matInput placeholder="列表名称">
+    </mat-input-container>
+  </mat-dialog-content>
+  <mat-dialog-actions>
+    <button type="button" mat-raised-button color="primary" (click)="onClick()">保存</button>
+    <button type="button" mat-button [mat-dialog-close]>关闭</button>
+  </mat-dialog-actions>
+</form>
+
+# new-task-list.component.ts
+  title = '';
+
+  constructor(@Inject(MAT_DIALOG_DATA) private data,
+              private dialogRef: MatDialogRef<NewTaskListComponent>) {
+  }
+
+  ngOnInit() {this.title = this.data.title; }
+
+  onClick() {this.dialogRef.close(this.title); }
+
+# task-home.component.html
+                     (moveAll)="launchCopyTaskDialog()"
+                     (delList)="launchConfirmDialog()"
+                     (editList)="launchEditListDialog()"
+    ></app-task-header>
+    <app-task-item *ngFor="let task of list.tasks" [item]="task" (taskClick)="launchUpdateTaskDialog(task)"></app-task-item>
+  </app-task-list>
+</div>
+
+<button class="fab-button" mat-fab type="button" (click)="launchNewListDialog()">
+
+# task-home.component.ts
+  launchUpdateTaskDialog(task) {
+    const dialogRef = this.dialog.open(NewTaskComponent, {width: '250px', data: {title: '修改任务:', task: task}});
+  }
+
+  launchConfirmDialog() {
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {data: {title: '删除任务列表:', content: '您确认删除该列表么'}});
+    dialogRef.afterClosed().subscribe(result => console.log(result));
+  }
+
+  launchEditListDialog() {
+    const dialogRef = this.dialog.open(NewTaskListComponent, {data: {title: '更改列表名称:'}});
+    dialogRef.afterClosed().subscribe(result => console.log(result));
+  }
+
+  launchNewListDialog() {
+    const dialogRef = this.dialog.open(NewTaskListComponent, {data: {title: '新建列表:'}});
+    dialogRef.afterClosed().subscribe(result => console.log(result));
+  }
+
+新增，修改删除 添加对应的控制。
+
+```
 
 # 第3章 Angular 动画
 # 第4章 Angular 核心概念回顾和提高
