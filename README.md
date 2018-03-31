@@ -1345,6 +1345,84 @@ __关键帧__
 
 
 ## 3-3 项目卡片和任务动画
+
+给动画新建一个文件夹 anims, projects 鼠标移入时放大，移出恢复。
+
+borderShadow 或 'border-shadow'，有横线当不了key
+
+@HostBinding('@card') cardState = 'out';  相当于写上　[@card]="cardState"
+
+鼠标进入时，离开时过场动画
+
+```typescript
+@HostListener() 监听宿主事件的。
+@HostListener('mouseenter')
+@HostListener('mouseenter', ['$event.target'])
+@HostListener('mouseleave')
+```
+
+task-item 中 list 不是绑定整个组件的动画，所以直接写不用 HostBinding。
+
+将 tasklists 将表示优先级的边扩大动画
+
+Code
+
+```typescript
+# project-item.component.ts
+  animations: [cardAnim]
+
+  @HostBinding('@card') cardState = 'out';
+
+  @HostListener('mouseenter')
+  onMouseEnter() {
+    this.cardState = 'hover';
+  }
+
+  @HostListener('mouseleave')
+  onMouseLeave() {
+    this.cardState = 'out';
+  }
+
+#task-item.component.html
+<mat-list-item class="container"
+               [@item]="widerPriority"
+               [ngClass]="{'priority-normal': item.priority === 3, 'priority-important': item.priority === 2, 'priority-emergency': item.priority === 1 }"
+
+#task-item.component.ts
+  animations: [itemAnim]
+
+  widerPriority = 'in';
+
+  @HostListener('mouseenter')
+  onMouseEnter() {
+    this.widerPriority = 'out';
+  }
+
+  @HostListener('mouseleave')
+  onMouseLeave() {
+    this.widerPriority = 'in';
+  }
+
+# card.anim.ts
+import {trigger, state, transition, style, animate} from '@angular/animations';
+
+export const cardAnim = trigger('card', [
+  state('out', style({transform: 'scale(1)', 'box-shadow': 'none'})),
+  state('hover', style({transform: 'scale(1.1)', 'box-shadow': '3px 3px 5px 6px #ccc'})),
+  transition('out => hover', animate('100ms ease-in')),
+  transition('hover => out', animate('100ms ease-out'))
+]);
+
+# item.anim.ts
+import {trigger, state, transition, style, animate, keyframes} from '@angular/animations';
+
+export const itemAnim = trigger('item', [
+  state('in', style({'border-left-width': '3px'})),
+  state('out', style({'border-left-width': '8px'})),
+  transition('out => in', animate('100ms ease-in')),
+  transition('in => out', animate('100ms ease-out'))
+])
+```
 ## 3-4 路由动画及高阶动画函数
 
 # 第4章 Angular 核心概念回顾和提高
