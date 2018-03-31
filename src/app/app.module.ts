@@ -8,6 +8,7 @@ import {AppRoutingModule} from './app-routing.module';
 import {ProjectModule} from './project/project.module';
 import {MatDialog, MatDialogModule, MatSidenavModule} from '@angular/material';
 import {TaskModule} from './task/task.module';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
 
 @NgModule({
@@ -23,6 +24,7 @@ import {TaskModule} from './task/task.module';
     ProjectModule,
     TaskModule,
     CoreModule,
+    BrowserAnimationsModule,
   ],
   bootstrap: [AppComponent],
   providers: []

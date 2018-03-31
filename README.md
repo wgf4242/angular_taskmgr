@@ -1232,6 +1232,63 @@ export class ConfirmDialogComponent implements OnInit {
 ```
 
 # 第3章 Angular 动画
+## 3-1 初识 Angular Animation
+
+为了减少Core体积, animation 不再放到核心库，但也很重要。
+
+https://www.w3.org/TR/web-animations-1/
+
+State 和 Transition
+
+* 动画其实就是从一个状态过渡到另一个状态
+
+* 状态本身包含形状、颜色、大小等等
+
+* State 就是定义状态而 Transitoin 是定义如何过渡 
+
+
+Animate 函数
+
+* Animate 规定了具体怎样过渡，比如时间、过渡的速度等
+
+* animate 有多个重载形式
+
+
+0.2秒的动画，延时一秒执行。
+        transition('green => red', animate('.2s 1s')), 
+        transition('green => red', animate('<持续时间> <延时时间>')), 
+
+加载BrowserAnimationsModule尽量放在最后。
+
+    trigger('square', 名称在响应的html中 [@触发器名字]
+=组件当中的成员变量或才函数
+
+```typescript
+npm i --save @angular/animations
+
+# html
+      <div class="square" [@square]="squareState" (click)="onClick()"></div>
+# ts
+@Component 中 添加
+  animations: [
+    trigger('square', [
+        state('green', style({backgroundColor: 'green', height: '100px', transform: 'translateX(0)' })),
+        state('red', style({backgroundColor: 'red', height: '50px', transform: 'translateX(100%)' })),
+        transition('green => red', animate('.2s 1s')),
+        transition('red => green', animate(1000)),
+      ]
+    )
+  ]
+class 中添加
+  onClick() {this.squareState = this.squareState === 'red' ? 'green' : 'red'; }
+
+# module 中引入BrowserAnimationsModule
+```
+
+## 3-2 缓动函数和关键帧
+## 3-3 项目卡片和任务动画
+## 3-4 路由动画及高阶动画函数
+
 # 第4章 Angular 核心概念回顾和提高
 # 第5章 Rxjs常见操作符
 # 第6章 Angular 中的响应式编程
