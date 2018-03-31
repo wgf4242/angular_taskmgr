@@ -1,9 +1,10 @@
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {
-  MatAutocompleteModule, MatButtonModule, MatCardModule, MatCheckboxModule, MatDatepickerModule, MatGridListModule, MatIconModule,
+  MatAutocompleteModule, MatButtonModule, MatCardModule, MatCheckboxModule, MatDatepickerModule, MatDialogModule, MatGridListModule,
+  MatIconModule,
   MatInputModule, MatListModule,
-  MatMenuModule, MatNativeDateModule, MatRadioModule, MatSidenavModule, MatSlideToggleModule, MatTooltipModule
+  MatMenuModule, MatNativeDateModule, MatRadioModule, MatSelectModule, MatSidenavModule, MatSlideToggleModule, MatTooltipModule
 } from '@angular/material';
 import {MatToolbarModule} from '@angular/material/toolbar';
 
@@ -26,6 +27,8 @@ import {MatToolbarModule} from '@angular/material/toolbar';
     MatRadioModule,
     MatNativeDateModule,
     MatDatepickerModule,
+    MatSelectModule,
+    MatDialogModule,
   ],
   exports: [
     CommonModule,
@@ -45,6 +48,8 @@ import {MatToolbarModule} from '@angular/material/toolbar';
     MatRadioModule,
     MatNativeDateModule,
     MatDatepickerModule,
+    MatSelectModule,
+    MatDialogModule,
   ],
   declarations: []
 })

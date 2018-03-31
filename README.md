@@ -1034,6 +1034,52 @@ export class NewTaskComponent implements OnInit {
 
 ```
 ## 2-15 任务列表之移动内容对话框
+
+ng g c task/copy-task --spec=false
+
+```typescript
+# copy-task.component.html
+<form>
+  <h3 mat-dialog-title>移动本列表所有内容</h3>
+  <div mat-dialog-content>
+    <mat-select placeholder="请所有目标列表">
+      <mat-option *ngFor="let list of lists">{{list.name}}</mat-option>
+    </mat-select>
+  </div>
+  <mat-dialog-actions>
+    <button type="button" mat-raised-button color="primary" (click)="onClick()">保存</button>
+    <button type="button" mat-button [mat-dialog-close]>关闭</button>
+  </mat-dialog-actions>
+</form>
+
+# copy-task.component.ts
+export class CopyTaskComponent implements OnInit {
+  lists: any[];
+  constructor(@Inject(MAT_DIALOG_DATA) private data,
+              private dialogRef: MatDialogRef<CopyTaskComponent> ) {}
+  ngOnInit() {this.lists = this.data.lists; }
+}
+
+# task-header.component.html
+  <button mat-menu-item (click)="onMoveAllClick()">
+
+# task-header.component.ts
+  @Output() moveAll = new EventEmitter<void>();
+  onMoveAllClick() {this.moveAll.emit(); }
+
+# task-home.component.html
+    <app-task-header [header]="list.name"
+                     (newTask)="launchNewTaskDialog()"
+                     (moveAll)="launchCopyTaskDialog()"></app-task-header>
+
+# task-home.component.ts
+  launchCopyTaskDialog() {
+    const dialogRef = this.dialog.open(CopyTaskComponent, {width: '250px', data: {lists: this.lists}});
+  }
+
+
+```
+
 ## 2-16 完成主框架（上）
 ## 2-17 完成主框架（下）
 
