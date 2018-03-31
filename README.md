@@ -854,6 +854,121 @@ ng g c task/task-header --spec=false
 ```
 
 ## 2-13 任务列表之任务组件
+
+几种和HTML对应组件非常像的 Material 组件：
+
+* 复选框 `<mat-checkbox>`
+
+* 单选组件 `<mat-radio>`
+
+* 下拉框 `<mat-select>`
+
+上节的下拉按钮对应的有点问题。添加上 line-height: 1.
+
+`[ngClass] = {'class': expression}` , 表达式为true时，使用该类
+
+```typescript
+# task-header.component.css
+.material-icon {line-height: 1; }
+
+# task-header.component.html
+    <mat-icon [svgIcon]="'move'" class="material-icon"></mat-icon>
+
+
+# task-home.component.html
+    <app-task-item *ngFor="let task of list.tasks" [item]="task"></app-task-item>
+
+# task-home.component.ts
+  lists = [
+    {
+      id: 1, name: '待办',
+      tasks: [
+        {id: 1, desc: '任务1：买咖啡', completed: true, priority: 3, owner: {id: 1, name: '张三', avatar: 'avatars:svg-11'}, dueDate: new Date()},
+        {id: 2, desc: '任务4：我是一个非常非常长的任务', priority: 3, owner: {id: 1, name: '张三', avatar: 'avatars:svg-11'}, dueDate: new Date()}
+        ]
+    },
+   {
+      id: 2, name: '进行中',
+      tasks: [
+        {id: 1, desc: '任务2：完成PPT', completed: false, priority: 2, owner: {id: 1, name: '李四', avatar: 'avatars:svg-12'}, dueDate: new Date(), reminder: new Date()},
+        {id: 2, desc: '任务3：task-3', completed: false, priority: 1, owner: {id: 1, name: '王五', avatar: 'avatars:svg-13'}, dueDate: new Date()}
+        ]
+    },
+  ];
+
+# task-item.component.css
+
+mat-icon.avatar {
+  overflow: hidden;
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  margin: 12px;
+  order: 3;
+}
+
+.priority-normal {border-left: 3px solid #a6a6a6; }
+.priority-important {border-left: 3px solid #ffaf38; }
+.priority-emergency {border-left: 3px solid red; }
+.completed {
+  opacity: 0.64;
+  color: #d9d9d9;
+  text-decoration: line-through;
+}
+
+.completion-status {order: -1; }
+.due-date {
+  background-color: #ff4f3e;
+  color: #fff;
+}
+
+.alarm {font-size: 18px; }
+.bottom-bar {
+  margin-top: 3px;
+  margin-bottom: 2px;
+  font-size: 10px;
+  width: 100%;
+  order: 1;
+}
+
+.content {
+  order: 1;
+  width: 100%;
+  padding: 5px;
+}
+
+.container {
+  width: 100%;
+  border-radius: 3px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+:host {width: 100%; }
+
+# task-item.component.html
+<mat-list-item class="container"
+               [ngClass]="{
+               'priority-normal': item.priority === 3,
+               'priority-important': item.priority === 2,
+               'priority-emergency': item.priority === 1
+               }">
+  <mat-checkbox class="completion-status" [checked]="item.completed"></mat-checkbox>
+  <div mat-line class="content" [ngClass]="{'completed': item.completed}"><span [matTooltip]="item.desc">{{item.desc}}</span></div>
+  <div mat-line class="bottom-bar" *ngIf="item.dueDate">
+    <span class="due-date">{{item.dueDate | date:'yy-MM-dd'}}</span>
+    <mat-icon *ngIf="item.reminder">alarm</mat-icon>
+  </div>
+  <mat-icon [svgIcon]="avatar" mat-list-avatar class="avatar"></mat-icon>
+</mat-list-item>
+
+# task-item.component.ts
+  @Input() item;
+  @Input() avatar;
+  constructor() { }
+
+  ngOnInit() {this.avatar = this.item.owner ? this.item.owner.avatar : 'unassigned'; }
+```
+
 ## 2-14 任务列表之新任务对话框
 ## 2-15 任务列表之移动内容对话框
 ## 2-16 完成主框架（上）
