@@ -1282,10 +1282,68 @@ npm i --save @angular/animations
 class 中添加
   onClick() {this.squareState = this.squareState === 'red' ? 'green' : 'red'; }
 
-# module 中引入BrowserAnimationsModule
+# app.module.ts 
+最后引入BrowserAnimationsModule
 ```
 
-## 3-2 缓动函数和关键帧
+## 3-2 缓动函数和关键帧 
+
+__缓动函数__
+
+* 缓动函数指定动画效果在执行时的速度，使其看起来更加真实。
+
+* 当皮球下落时，先是越掉越快，撞到地上后回弹最终才又碰触到地板。
+
+ease-in 开始慢，后边快， ease-out 相反
+
+ease实际是使用了 cubic-bezier(0.86, 0, 0.07, 1); 调整它的4个参数可得到相应效果，用网站进行查看。
+
+easings.net cubic-bezier.com
+
+__关键帧__
+
+* W3C的 Web Animation 标准暂时无法支持所有的 cubic-bezier 函数
+
+* 帧 - 就是动画中的最小单位影像画面
+
+* 关键帧 - 物体运动或变化中的关键动作所处的那一帧
+
+
+```typescript
+
+  animations: [
+    trigger('square', [
+        state('green', style({backgroundColor: 'green', height: '100px', transform: 'translateY(-100%)' })),
+        state('red', style({backgroundColor: 'red', height: '100px', transform: 'translateY(100%)' })),
+        transition('green => red', animate('.8s cubic-bezier(0.68, -0.55, 0.265, 1.55)')),
+        transition('red => green', animate(5000, keyframes([
+          style({transform: 'translateY(100%)'}),
+          style({transform: 'translateY(98%)'}),
+          style({transform: 'translateY(95%)'}),
+          style({transform: 'translateY(90%)'}),
+          style({transform: 'translateY(80%)'}),
+          style({transform: 'translateY(60%)'}),
+          style({transform: 'translateY(30%)'}),
+          style({transform: 'translateY(0%)'}),
+          style({transform: 'translateY(-10%)'}),
+          style({transform: 'translateY(-5%)'}),
+          style({transform: 'translateY(-2%)'}),
+          style({transform: 'translateY(0)'}),
+          style({transform: 'translateY(10%)'}),
+          style({transform: 'translateY(15%)'}),
+          style({transform: 'translateY(-15%)'}),
+          style({transform: 'translateY(-40%)'}),
+          style({transform: 'translateY(-80%)'}),
+          style({transform: 'translateY(-90%)'}),
+          style({transform: 'translateY(-95%)'}),
+        ]))),
+      ]
+    )
+  ]
+
+```
+
+
 ## 3-3 项目卡片和任务动画
 ## 3-4 路由动画及高阶动画函数
 
