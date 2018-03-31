@@ -970,6 +970,69 @@ mat-icon.avatar {
 ```
 
 ## 2-14 任务列表之新任务对话框
+ng g c task/new-task --spec=false
+
+matSuffix 当成后缀使用。
+
+SharedModule中需要引入     MatRadioModule, MatNativeDateModule, MatDatepickerModule,
+
+    MatDatepickerModule 需要引入MatNativeDateModule 进行一些序列化
+
+```typescript
+
+# new-task.component.html
+<form >
+  <h2 mat-dialog-title>新建任务</h2>
+  <div mat-dialog-content>
+    <mat-input-container class="full-width">
+      <input matInput type="text" placeholder="任务内容">
+    </mat-input-container>
+    <mat-radio-group>
+      <mat-radio-button *ngFor="let priority of priorities" [value]="priority.value">
+        {{priority.label}}
+      </mat-radio-button>
+    </mat-radio-group>
+    <mat-input-container class="full-width">
+      <input matInput [matDatepicker]="dueDatepicker" type="text" placeholder="任务截止日期">
+      <!--<button type="button" matSuffix [matDatepickerToggle]="dueDatepicker"></button>-->
+      <mat-datepicker-toggle matSuffix [for]="dueDatepicker"></mat-datepicker-toggle>
+    </mat-input-container>
+    <mat-datepicker #dueDatepicker></mat-datepicker>
+
+    <mat-input-container class="full-width">
+      <input matInput [matDatepicker]="reminderDatepicker" type="text" placeholder="提醒日期">
+      <mat-datepicker-toggle matSuffix [for]="reminderDatepicker"></mat-datepicker-toggle>
+    </mat-input-container>
+    <mat-datepicker #reminderDatepicker></mat-datepicker>
+
+    <div mat-dialog-actions>
+      <button type="button" mat-raised-button color="primary" (click)="onClick()">保存</button>
+      <button type="button" mat-button mat-dialog-close>关闭</button>
+    </div>
+  </div>
+</form>
+
+# new-task.component.ts
+export class NewTaskComponent implements OnInit {
+  priorities = [
+    {label: '紧急', value: '1', },
+    {label: '重要', value: '2', },
+    {label: '普通', value: '3', },
+ ];
+}
+
+# task-header.component.html
+    <button mat-button type="button" (click)="onNewTaskClick()">
+
+# task-header.component.ts
+  @Output() newTask = new EventEmitter<void>();
+  onNewTaskClick() {this.newTask.emit(); }
+
+# task-home.component.html
+    <app-task-header [header]="list.name" (newTask)="launchNewTaskDialog()"></app-task-header>
+# task-home.component.ts
+
+```
 ## 2-15 任务列表之移动内容对话框
 ## 2-16 完成主框架（上）
 ## 2-17 完成主框架（下）

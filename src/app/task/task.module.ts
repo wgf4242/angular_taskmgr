@@ -7,6 +7,7 @@ import { TaskItemComponent } from './task-item/task-item.component';
 import {TaskRoutingModule} from './task-routing.module';
 import {SharedModule} from '../shared/shared.module';
 import {MatIconModule, MatMenu, MatMenuModule} from '@angular/material';
+import { NewTaskComponent } from './new-task/new-task.component';
 
 @NgModule({
   imports: [
@@ -17,7 +18,11 @@ import {MatIconModule, MatMenu, MatMenuModule} from '@angular/material';
     TaskHomeComponent,
     TaskListComponent,
     TaskHeaderComponent,
-    TaskItemComponent
+    TaskItemComponent,
+    NewTaskComponent
+  ],
+  entryComponents: [
+    NewTaskComponent
   ]
 })
 export class TaskModule { }
