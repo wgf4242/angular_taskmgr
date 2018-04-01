@@ -9,11 +9,13 @@ import {SharedModule} from '../shared/shared.module';
 import {HttpClientModule} from '@angular/common/http';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import 'hammerjs';
+import {AppRoutingModule} from '../app-routing.module';
 
 @NgModule({
   imports: [
     HttpClientModule,
     SharedModule,
+    AppRoutingModule,
     BrowserAnimationsModule,
   ],
   declarations: [
@@ -25,6 +27,7 @@ import 'hammerjs';
     HeaderComponent,
     FooterComponent,
     SidebarComponent,
+    AppRoutingModule,
   ]
 })
 export class CoreModule {

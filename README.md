@@ -1425,6 +1425,115 @@ export const itemAnim = trigger('item', [
 ```
 ## 3-4 路由动画及高阶动画函数
 
+__实践__
+
+* 路由动画需要在host元数据中指定触发器
+
+* 动画注意不要过多，否则适得其反。
+
+__Group__
+
+* 用于同时进行一组的动画变换
+
+* `[animate(...), animate(...)...]`
+
+__Query & Stagger__
+
+* Query 用于父节点寻找子节点
+
+* Stagger 指定有多个满足 Query 的元素，每个动画之间有间隔
+
+路由动画和普通动画一样，因为是整个切换，要用 HostBinding, `@HostBinding('@routeAnim') state`
+
+position: 'fixed' 如果没有会上下串位置， flex容器让它居中会调整位置，所以要固定它。
+
+    transition('void => *', === ':enter'
+    transition('* => void', === ':leave'
+    别名 :enter,:leave 是一样的
+
+es6写法
+      
+    this.projects = [...this.projects, {key: value}];
+
+stagger 分别动画出来的。如果没有stagger, 是一起动画出来的。搜索全部的子节点，规定它们的进场动画。也可以是查div。为了让他们有些间隔，所以把间隔时间做出来，后面跟动画。
+```typescript
+# list.anim.ts
+export const listAnimation = trigger('listAnim', [
+  transition('* => *', [
+    query(':enter', style({opacity: 0}), { optional: true}),
+    query(':enter', stagger(100, [
+      animate('1s', style({opacity: 1}))
+    ]), { optional: true}),
+    query(':leave', style({opacity: 1}), { optional: true}),
+    query(':leave', stagger(100, [
+      animate('1s', style({opacity: 0}))
+    ]), { optional: true}),
+  ])
+]);
+
+# router.anim.ts
+export const slideToRight = trigger('routeAnim', [
+  state('void', style({position: 'fixed', width: '100%', height: '80%'})),
+  state('*', style({position: 'fixed', width: '100%', height: '80%'})),
+  transition(':enter', [
+    style({transform: 'translateX(-100%)', opacity: 0}),
+    group([
+      animate('.5s ease-in-out', style({transform: 'translateX(0)'})),
+      animate('.3s ease-in', style({opacity: 1})),
+    ])
+  ]),
+  transition(':leave', [
+    style({transform: 'translateX(0)', opacity: 1}),
+    group([
+      animate('.5s ease-in-out', style({transform: 'translateX(100%)'})),
+      animate('.3s ease-in', style({opacity: 0})),
+    ])
+  ]),
+]);
+
+# sidebar.component.html 添加路由
+  <mat-list-item [routerLink]="['/projects']" (click)="onNavClick()">
+  <mat-list-item [routerLink]="['/tasklists']" (click)="onNavClick()">
+
+# sidebar.component.ts 添加弹出事件
+  @Output() navClick = new EventEmitter();
+  onNavClick() {this.navClick.emit(); }
+
+# project-list.component.css
+:host 改为 .container
+
+# project-list.component.html
+<div class="container" [@listAnim]="projects.length">
+  <app-project-item ... (onDel)="launcheConfirmDialog(project)"> </app-project-item>
+</div>
+
+# project-list.component.ts
+
+  animations: [slideToRight, listAnimation]
+  @HostBinding('@routeAnim') state;
+
+  openNewProjectDialog() {...
+    dialogRef.afterClosed().subscribe(result => {
+      this.projects = [...this.projects,
+        {id: 3, name: '一个新项目', desc: '这是一个新项目', coverImg: 'assets/img/covers/1.jpg'},
+        {id: 4, name: '又一个新项目', desc: '这是又一个新项目', coverImg: 'assets/img/covers/0.jpg'},
+        ];
+    });
+  }
+
+
+  launcheConfirmDialog(project) {...
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(result);
+      this.projects = this.projects.filter(p => p.id !== project.id);
+    });
+  }
+
+# task-home.component.ts
+  animations: [slideToRight]
+  @HostBinding('@routeAnim') state;
+```
+
 # 第4章 Angular 核心概念回顾和提高
 # 第5章 Rxjs常见操作符
 # 第6章 Angular 中的响应式编程

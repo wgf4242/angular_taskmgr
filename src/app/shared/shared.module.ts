@@ -30,6 +30,7 @@ import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.componen
     MatDatepickerModule,
     MatSelectModule,
     MatDialogModule,
+    MatSidenavModule,
   ],
   exports: [
     CommonModule,
@@ -51,6 +52,7 @@ import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.componen
     MatDatepickerModule,
     MatSelectModule,
     MatDialogModule,
+    MatSidenavModule,
   ],
   entryComponents: [ConfirmDialogComponent],
   declarations: [ConfirmDialogComponent]
