@@ -1535,6 +1535,165 @@ export const slideToRight = trigger('routeAnim', [
 ```
 
 # 第4章 Angular 核心概念回顾和提高
+## 4-1 依赖性注入
+
+* 什么是依赖性注入？
+
+* 依赖性注入框架
+
+* 依赖性注入进阶
+
+```typescript
+令牌-构建-依赖
+Injector->Provider->Object
+
+class Id {
+  static getInstance(type: string): Id {
+    //设置
+    return new Id();
+  }
+}
+
+class Address {
+  province: string;
+  city: string;
+  district: string;
+  street: string;
+  constructor(province, city, district, street) {
+    this.province = province;
+    this.city = city;
+    this.district = district;
+    this.street = street;
+  }
+}
+class Person {
+  id: Id;
+  address: Address;
+
+  constructor() {
+    this.id = Id.getInstance('idcard');
+    this.address = new Address('北京', '北京', '朝阳区', 'XX 街道')
+  }
+}
+```
+
+这样显性构造需要知道细节，如果重构怎么办？工厂方法等， 其他类都需要改，比较麻烦。
+
+怎样处理？
+
+```typescript
+class Person {
+  id: Id;
+  address: Address;
+
+  constructor(id: Id, address: Address) {
+    this.id = Id;
+    this.address = address;
+  }
+}
+
+main() {
+  const id = Id.getInstance('idcard');
+  const address = new Address('北京', '北京', '朝阳区', 'XX 街道')
+  const person = new Person(id, address);
+}
+```
+
+
+简单的依赖注入，还是需要知道细节，只是把责任推到上级了。最后到入口解决，入口就要处理很多问题。还是很麻烦。
+
+所以我们还需要一般的依赖性注入的框架。
+
+`Provider` 告诉 `Injecter` 怎样去构造对象。
+
+根据 `Provider` 数组 构建一个提供给你依赖性的池子， Provider 数组包含多个 Provider 对象，
+
+Provider 对象，: 两个属性， 1. Provide <令牌>,  2. userClass/useFactory/useValue 
+
+```typescript
+  constructor(private oc: OverlayContainer) {
+    const injector = ReflectiveInjector.resolveAndCreate([
+      { provide: Person, useClass: Person},
+      { provide: Address, useFactory: () => {
+        if (environment.production) {
+          return new Address('北京', '北京', '朝阳区', 'XX 街道');
+        } else {
+          return new Address('西藏', '拉萨', 'xx区', 'XX 街道');
+        }
+        }},
+      { provide: Id, useFactory: () => {
+          return Id.getInstance('idcard');
+        }
+      },
+    ]);
+    const person = injector.get(Person);
+    console.log(JSON.stringify(person));
+  }
+
+```
+通过 Inject来使用
+
+```typescript
+class Person {
+  constructor(@Inject(Id) id, @Inject(Address) address) {
+    this.id = Id;
+    this.address = address;
+  }
+}
+```
+
+    static resolveAndCreate(providers: Provider[], parent?: Injector): ReflectiveInjector;
+
+Provider 中有 ClassProvider, 所以
+
+      { provide: Person, useClass: Person}, 简写成 Person,
+
+代码实例：
+```typescript
+# core.module.ts
+  providers: [{provide: 'BASE_CONFIG', useValue: 'http://localhost:3000'} ]
+
+# app.component.ts
+  constructor(private oc: OverlayContainer, @Inject('BASE_CONFIG') config) {
+    console.log(config);
+  }
+```
+
+池子里的都是同一个实例，如果我们想要一个新的实例怎么办？
+
+__方法1:__ 在返回一个工厂方法，而不是对象
+
+```typescript
+{ provide: Address, useFactory: () => {
+  return () => {
+    if (environment.production) {
+      return new Address('北京', '北京', '朝阳区', 'XX 街道');
+    } else {
+      return new Address('西藏', '拉萨', 'xx区', 'XX 街道');
+    }
+  } } },
+```
+
+__方法2: 父子方式__
+
+```typescript
+const childInjector = injector.resolveAndCreateChild([Person]);
+const person = injector.get(Person);
+const personFromChild =  childInjector.get(Person);
+console.log(person === personFromChild);
+```
+
+子注入者没有提供 Person ，为什么能找到依赖性呢： 如果子池子找不到，会上父级找。
+
+同理，所以在 module中provide的东西可以在 Component 中使用。在父 Component 中声明的东西子 Component 也可以使用。
+
+通常我们不用手动写， 在module或是类的 Provider中提供出来 ,然后在 constructor 中指明它的类型。
+## 4-2 ChangeDetection
+## 4-3 打造支持拖拽的
+## 4-4 结构型指令、模块和样式
+## 4-5 模板驱动型表单处理
+## 4-6 响应式表单处理和自定义表单控件（上）
+## 4-7 响应式表单处理和自定义表单控件（下）
 # 第5章 Rxjs常见操作符
 # 第6章 Angular 中的响应式编程
 # 第7章 使用 Redux 管理应用状态
