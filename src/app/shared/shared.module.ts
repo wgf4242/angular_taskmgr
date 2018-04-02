@@ -8,6 +8,7 @@ import {
 } from '@angular/material';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.component';
+import {DirectiveModule} from '../directive/directive.module';
 
 @NgModule({
   imports: [
@@ -31,6 +32,7 @@ import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.componen
     MatSelectModule,
     MatDialogModule,
     MatSidenavModule,
+    DirectiveModule,
   ],
   exports: [
     CommonModule,
@@ -53,6 +55,7 @@ import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.componen
     MatSelectModule,
     MatDialogModule,
     MatSidenavModule,
+    DirectiveModule,
   ],
   entryComponents: [ConfirmDialogComponent],
   declarations: [ConfirmDialogComponent]

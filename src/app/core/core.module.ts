@@ -10,6 +10,7 @@ import {HttpClientModule} from '@angular/common/http';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import 'hammerjs';
 import {AppRoutingModule} from '../app-routing.module';
+import 'rxjs/add/operator/take';
 
 @NgModule({
   imports: [
