@@ -1688,7 +1688,36 @@ console.log(person === personFromChild);
 同理，所以在 module中provide的东西可以在 Component 中使用。在父 Component 中声明的东西子 Component 也可以使用。
 
 通常我们不用手动写， 在module或是类的 Provider中提供出来 ,然后在 constructor 中指明它的类型。
+
 ## 4-2 ChangeDetection
+__ChangeDetection__
+
+* 检测程序内部状态，然后反映到UI上
+
+* 引起状态变化： Events，XHR，Timers
+
+* ApplicationRef 监听 NgZone 的 onTurnDone, 然后执行检测。
+
+默认策略是全局检查，一般不会引起性能问题，大型应用会影响性能。
+
+OnPush 策略，只有外部发生改变--设置的属性发生变化才进行检测。避免了整个树跑一遍。大型应用会提高性能。
+
+* 手动检测
+```typescript
+# project-list.component.ts
+  changeDetection: ChangeDetectionStrategy.OnPush
+```
+鼠标划过时，自动添加子组件---解决方法：
+
+constructor(private cd: ChangeDetectorRef) , 然后在要检查的地方添加 `this.cd.markForCheck();` 例:
+
+    dialogRef.afterClosed().subscribe(result => {
+      this.projects = this.projects.filter(p => p.id !== project.id);
+      this.cd.markForCheck();
+    });
+
+聪明组件手动检测，笨组件容易多了。输入值变了它才会变。
+
 ## 4-3 打造支持拖拽的
 ## 4-4 结构型指令、模块和样式
 ## 4-5 模板驱动型表单处理
