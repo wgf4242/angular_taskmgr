@@ -1934,7 +1934,7 @@ __模块__
 
 源码 是static 方法，两个工场方法
 
-ng g m services
+`ng g m services`
 
 动态定义元数据，返回Module。
 ```typescript
@@ -1983,6 +1983,86 @@ flex 容器是 按 order 属性的顺序进行排列的，只要设置了list的
 ```
 
 ## 4-5 模板驱动型表单处理
+
+__模板驱动型表单__
+
+* 表单的数据绑定
+
+* 令人困惑的 ngModel
+
+* 数据验证
+
+__响应式表单__
+
+* 三个重要： FormControl, FormGroup, FormBuilder
+
+* 验证器和异步验证器
+
+* 动态指定验证器
+
+__自定义表单控件__
+
+* 表单过于复杂之后，逻辑难以理清楚。
+
+* 复杂问题拆成若干简单问题问题永远是【万能钥匙】
+
+* 自定义 FormControl 的例子
+
+`ng g c task/quick-task --spec=false`
+
+    <input .. [(ngModel)]="desc" name="desc">
+
+必须要一个name属性，绑定ngModel后自动创建ControlForm, 为了找到它，使用了name属性。
+
+form 标签会自动变成ngForm。变成了angular的form，里面的控件就必须要有名字了。
+
+```typescript
+[(ngModel)]="desc" 语法糖等于
+[ngModel]="desc" (ngModelChange)="desc=$event"
+```
+
+Code:
+
+```typescript
+ imports: [
+    FormsModule,
+    ReactiveFormsModule,
+   ],
+  exports: [
+    FormsModule,
+    ReactiveFormsModule]
+
+# quick-task.component.html
+<mat-input-container class="full-width">
+  <input matInput type="text" placeholder="在这里快速建立一个任务" [(ngModel)]="desc" name="desc" required>
+  <button matSuffix mat-icon-button type="button" (click)="sendQuickTask()">
+    <mat-icon>send</mat-icon>
+  </button>
+  <mat-error>不能为空</mat-error>
+</mat-input-container>
+
+# quick-task.component.ts
+export class QuickTaskComponent implements OnInit {
+  desc: string;
+
+  @Output() quickTask = new EventEmitter();
+  constructor() { }
+
+  @HostListener('keyup.enter')
+  sendQuickTask() {
+    if (!this.desc || this.desc.length === 0 || !this.desc.trim()) {
+      return;
+    }
+    this.quickTask.emit(this.desc);
+    this.desc = '';
+  }
+}
+
+# task-home.component.html
+    <app-quick-task (quickTask)="handleQuickTask($event)"></app-quick-task>
+# task-home.component.ts
+  handleQuickTask(desc: string) {console.log(desc); }
+```
 ## 4-6 响应式表单处理和自定义表单控件（上）
 ## 4-7 响应式表单处理和自定义表单控件（下）
 # 第5章 Rxjs常见操作符
