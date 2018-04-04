@@ -1901,6 +1901,87 @@ export class DragDropService {
 ```
   
 ## 4-4 结构型指令、模块和样式
+
+`*`是一个语法糖
+
+```typescript
+<a *ngif="user.login">退出</a>
+和下面相等
+<ng-template ngif="user.login">
+    <a>退出</a>
+</ng-template>
+```
+
+ElementRef 是指 button节点，可以改变它的属性，如果要操作 内部子视图就是用ViewContainerRef
+
+Button 操作里面的 mat-icon ，那么button就是容器。
+```typescript
+<button class="fab-button" mat-fab type="button" (click)="launchNewListDialog()">
+  <mat-icon>add</mat-icon>
+</button>
+
+```
+
+__模块__
+
+* 什么是模块
+
+如果是共用的要export出来，默认只能自己用。
+
+* 模块的元数据
+
+* 经常看到的forRoot()
+
+源码 是static 方法，两个工场方法
+
+ng g m services
+
+动态定义元数据，返回Module。
+```typescript
+services.module.ts
+@NgModule()
+export class ServicesModule {
+  static forRoot(): ModuleWithProviders {
+    return {
+      ngModule: ServicesModule,
+      providers: []
+    };
+  }
+}
+```
+
+__ngClass, ngStyle, [class.yourstyle]__
+
+* ngClass 用于条件动态指定样式类，适合对样式做大量更改的情况。
+
+* ngStyle 用于条件动态指定样式，适合少量更改的情况。
+
+* `[class.youcondition] = "condition"` 直接对应一个条件
+
+```typescript
+# task-item.component.html
+  <div mat-line class="content" [class.completed]="item.completed">
+  和下面相等
+  <div mat-line class="content" [ngClass]="{'completed': item.completed}">
+```
+
+flex 容器是 按 order 属性的顺序进行排列的，只要设置了list的order属性就可以改变 order值进行排列了。
+
+```typescript
+# task-home.component.html
+                 [ngStyle]="{'order': list.order}"
+# task-home.component.ts
+  handleMove(srcData, list) {
+      ...
+      case 'task-list':
+        console.log('handling list');
+        const srcList = srcData.data;
+        const tempOrder = srcList.order;
+        srcList.order = list.order;
+        list.order = tempOrder;
+  }
+```
+
 ## 4-5 模板驱动型表单处理
 ## 4-6 响应式表单处理和自定义表单控件（上）
 ## 4-7 响应式表单处理和自定义表单控件（下）

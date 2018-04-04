@@ -12,7 +12,8 @@
   (click)="onItemClick()"
  >
   <mat-checkbox class="completion-status" [checked]="item.completed" (click)="onCheckBoxClick($event)"></mat-checkbox>
-  <div mat-line class="content" [ngClass]="{'completed': item.completed}"><span [matTooltip]="item.desc">{{item.desc}}</span></div>
+  <div mat-line class="content" [class.completed]="item.completed"><span [matTooltip]="item.desc">{{item.desc}}</span></div>
+  <!--<div mat-line class="content" [ngClass]="{'completed': item.completed}"><span [matTooltip]="item.desc">{{item.desc}}</span></div>-->
   <div mat-line class="bottom-bar" *ngIf="item.dueDate">
     <span class="due-date">{{item.dueDate | date:'yy-MM-dd'}}</span>
     <mat-icon *ngIf="item.reminder">alarm</mat-icon>

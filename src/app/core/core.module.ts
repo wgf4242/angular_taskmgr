@@ -11,12 +11,14 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import 'hammerjs';
 import {AppRoutingModule} from '../app-routing.module';
 import 'rxjs/add/operator/take';
+import {ServicesModule} from '../services/services.module';
 
 @NgModule({
   imports: [
     HttpClientModule,
     SharedModule,
     AppRoutingModule,
+    ServicesModule.forRoot(),
     BrowserAnimationsModule,
   ],
   declarations: [
