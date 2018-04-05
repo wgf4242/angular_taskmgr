@@ -1992,22 +1992,6 @@ __模板驱动型表单__
 
 * 数据验证
 
-__响应式表单__
-
-* 三个重要： FormControl, FormGroup, FormBuilder
-
-* 验证器和异步验证器
-
-* 动态指定验证器
-
-__自定义表单控件__
-
-* 表单过于复杂之后，逻辑难以理清楚。
-
-* 复杂问题拆成若干简单问题问题永远是【万能钥匙】
-
-* 自定义 FormControl 的例子
-
 `ng g c task/quick-task --spec=false`
 
     <input .. [(ngModel)]="desc" name="desc">
@@ -2064,7 +2048,285 @@ export class QuickTaskComponent implements OnInit {
   handleQuickTask(desc: string) {console.log(desc); }
 ```
 ## 4-6 响应式表单处理和自定义表单控件（上）
-## 4-7 响应式表单处理和自定义表单控件（下）
+
+__响应式表单__
+
+* 三个重要： FormControl, FormGroup, FormBuilder
+
+* 验证器和异步验证器
+
+e.g 前端验证 和 后台取消息验证。如注册。和服务器交互返回结果后完成验证。
+
+* 动态指定验证器
+
+__自定义表单控件__
+
+* 表单过于复杂之后，逻辑难以理清楚。
+
+* 复杂问题拆成若干简单问题问题永远是【万能钥匙】
+
+* 自定义 FormControl 的例子
+
+先定义formGroup根对象，
+
+`<form [formGroup]="form" (ngSubmit)="onSubmit(form, $event)">`
+
+再定义 formControl
+```typescript
+# ts
+    this.form = new FormGroup({
+      email: new FormControl('wang@163.com', Validators.compose([Validators.required, Validators.email])),
+      password: new FormControl('', Validators.required)
+    });
+
+# html
+<input matInput type="password" placeholder="您的密码" formControlName="password">
+```
+
+formControlName 会将将表单绑定到对象
+
+组合 Validators : 使用comopse , 条件1 不为空; 条件2符合 email
+
+      email: new FormControl('wang@163.com', Validators.compose([Validators.required, Validators.email])),
+
+```typescript
+
+# html
+<form [formGroup]="form" (ngSubmit)="onSubmit(form, $event)">
+<button mat-raised-button color="primary" type="submit">登录</button>
+
+
+  onSubmit({value, valid}, ev: Event) {
+    ev.preventDefault();
+    console.log(JSON.stringify((value)));
+    console.log(JSON.stringify((valid)));
+  }
+```
+
+使用 FormBuilder 简化表单初始化
+
+    this.form = this.fb.group({
+      email: ['wang@163.com', Validators.compose([Validators.required, Validators.email])],
+      password: ['', Validators.required],
+    });
+
+__自定义验证器__
+
+只有在验证错误的时候才返回非空对象， 这个 key,value对象, 通常是返回一个null
+
+```typescript
+  validate(c: FormControl): {[key: string]: any}{
+    if (!c.value) {return null; }
+    const pattern = /^wang+/;
+    if (pattern.test(c.value)) {return null; }
+    return {emailNotValid: 'The email must start with wang'};
+  }
+```
+动态验证
+```typescript
+  onSubmit({value, valid}, ev: Event) {
+    ...
+    this.form.controls['email'].setValidators(this.validate);
+  }
+```
+
+
+选择封面和选择头像很像，能否封装成一个FormControl控件, 本身注册表单不关心它有多少图片，怎么选择。现在是复杂化了表单。
+
+封装自定义表单控件, 简化逻辑
+
+`ng g c shared/image-list-select --spec=false`
+
+想要足够的自由度，还是要封装，可以实现时需要权衡。实现 ControlValueAccessor 接口。
+```typescript
+export class ImageListSelectComponent implements ControlValueAccessor {
+
+  //对应的是this.form.setValue()
+  writeValue(obj: any): void {
+  }
+
+  registerOnChange(fn: any): void {
+  }
+
+  registerOnTouched(fn: any): void {
+  }
+}
+```
+writeValue对应的是this.form.setValue() 来写值
+
+需要在provider中定义，把自己注册进去。provide 指向自己需要使用，
+
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => ImageListSelectComponent)
+      multi: true
+
+forwardRef(() --- 等待实例化后指向它。
+
+Code:
+
+```typescript
+# register.component.html
+<mat-card-content>
+      <mat-input-container class="full-width">
+        <input matInput type="text" placeholder="您的email" formControlName="email">
+      </mat-input-container>
+      <mat-input-container class="full-width">
+        <input matInput type="text" placeholder="姓名" formControlName="name">
+      </mat-input-container>
+      <mat-input-container class="full-width">
+        <input matInput type="password" placeholder="您的密码" formControlName="password">
+      </mat-input-container>
+      <mat-input-container class="full-width">
+        <input matInput type="password" placeholder="重复输入您的密码" formControlName="repeat">
+      </mat-input-container>
+      <app-image-list-select
+        [useSvgIcon]="true"
+        [cols]="6"
+        [title]="'选择头像'"
+        [items]="items"
+        formControlName="avatar">
+      </app-image-list-select>
+</mat-card-content>
+
+# register.component.ts
+
+  form: FormGroup;
+  items: string[];
+  private readonly avatarName = 'avatars';
+
+  constructor(private fb: FormBuilder) {
+  }
+
+  ngOnInit() {
+    const img = `${this.avatarName}:svg-${Math.ceil(Math.random() * 16).toFixed(0)}`;
+    console.log(img);
+    const nums = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
+    this.items = nums.map(d => `avatars:svg-${d}`);
+    this.form = this.fb.group({
+      email: [],
+      name: [],
+      password: [],
+      repeat: [],
+      avatar: [img],
+    });
+  }
+
+# image-list-select.component.css
+mat-icon.avatar {
+  overflow: hidden;
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  margin: 12px;
+}
+
+.scroll-container{overflow-y: scroll; height: 200px; }
+
+.image-container {
+  position: relative;
+  display: inline-block;
+}
+
+.image-container img{display: block; }
+
+.image-container .after{
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: none;
+  color: #fff;
+}
+
+.image-container:hover .after {display: block; background: rgba(0,0,0,0); }
+
+.image-container:hover .after {
+  color: #ddd;
+  font-size: 48px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin: -30px 0 0 -19px;
+  height: 50px;
+  width: 45px;
+  cursor: pointer;
+}
+
+.image-container .after .zoom:hover {color: #fff; }
+# image-list-select.component.html
+<div>
+  <span>{{title}}</span>
+  <mat-icon class="" [svgIcon]="selected" *ngIf="useSvgIcon; else imgSelect"></mat-icon>
+  <ng-template #imgSelect>
+    <img src="selected" alt="image selected" class="cover">
+  </ng-template>
+
+</div>
+
+<div class="scroll-container">
+  <mat-grid-list [cols]="cols" [rowHeight]="rowHeight">
+    <mat-grid-tile *ngFor="let item of items; let i = index">
+      <div class="image-container" (click)="onChange(i)">
+        <mat-icon class="avatar" [svgIcon]="item" *ngIf="useSvgIcon; else imgItem"></mat-icon>
+        <ng-template #imgItem>
+          <img src="item" alt="image item" ngStyle="{'width': itemWidth}">
+        </ng-template>
+        <div class="after">
+          <div class="zoom">
+            <mat-icon>checked</mat-icon>
+          </div>
+        </div>
+      </div>
+    </mat-grid-tile>
+  </mat-grid-list>
+</div>
+
+# image-list-select.component.ts
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => ImageListSelectComponent),
+      multi: true
+    },
+    {
+      provide: NG_VALIDATORS,
+      useExisting: forwardRef(() => ImageListSelectComponent),
+      multi: true
+    },
+  ]
+
+export class ImageListSelectComponent implements ControlValueAccessor {
+  @Input() title = '选择';
+  @Input() cols = 6;
+  @Input() rowHeight = '64px';
+  @Input() items: string[] = [];
+  @Input() useSvgIcon = false;
+  @Input() itemWidth = '80px';
+
+  selected: string;
+  constructor() {}
+  private propagateChange = (_: any) => {};
+
+  onChange(i) {
+    this.selected = this.items[i];
+    this.propagateChange(this.selected);
+  }
+
+  // 对应的是this.form.setValue()
+  writeValue(obj: any): void {this.selected = obj; }
+  registerOnChange(fn: any): void {this.propagateChange = fn; }
+  registerOnTouched(fn: any): void {}
+  validate(c: FormControl): { [key: string]: any } {
+    return this.selected ? null : {imageListInvalid: {valid: false } };
+  }
+}
+
+# shared.module.ts
+  exports: [ImageListSelectComponent],
+
+
+```
 # 第5章 Rxjs常见操作符
 # 第6章 Angular 中的响应式编程
 # 第7章 使用 Redux 管理应用状态
