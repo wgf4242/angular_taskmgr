@@ -33,7 +33,9 @@ import {ServicesModule} from '../services/services.module';
     AppRoutingModule,
   ],
   providers: [
-    {provide: 'BASE_CONFIG', useValue: 'http://localhost:3000'}
+    {provide: 'BASE_CONFIG', useValue: {
+      uri: 'http://localhost:3000',
+      }}
   ]
 })
 export class CoreModule {

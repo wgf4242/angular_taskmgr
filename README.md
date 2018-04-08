@@ -2328,6 +2328,119 @@ export class ImageListSelectComponent implements ControlValueAccessor {
 
 ```
 # 第5章 Rxjs常见操作符
+## 5-1 RxJS帮你走进响应式编程的世界
+__简介__
+
+* 名字的由来： Reactive Extension
+
+* 源自微软、火于 NetFlix
+
+* 优势：在思考的维度上加入时间考量
+
+使用  https://jsbin.com 讲解测试比较直观。
+
+height$, $ 表明 stream一个流.
+
+```typescript
+# html 中 add library rxjs 5.0.3
+<script src="https://unpkg.com/@reactivex/rxjs@5.0.3/dist/global/Rx.js"></script>
+<input type="text" id="height">
+# ES6/label 任何一个event有target.得到target的value
+const height = document.getElementById('height');
+const height$ = Rx.Observable.fromEvent(height, 'keyup');
+height$.subscribe(val => console.log(val.target.value + '  ' + new Date()));
+```
+
+Rx 有很多强大的操作符，可合并多个流。
+
+示例：求面积
+```typescript
+# html
+  <div><input type="text" id="length"></div>
+  <div><input type="text" id="width"></div>
+  <div id="area"></div>
+<script src="https://unpkg.com/@reactivex/rxjs@5.0.3/dist/global/Rx.js"></script>
+# ES6/label 任何一个event有target.得到target的value
+const length = document.getElementById('length');
+const width = document.getElementById('width');
+const area = document.getElementById('area');
+
+const length$ = Rx.Observable.fromEvent(length, 'keyup').pluck('target', 'value');
+const width$ = Rx.Observable.fromEvent(width, 'keyup').pluck('target', 'value');;
+
+const area$ = Rx.Observable.combineLatest(length$, width$, (l, w) => {return l*w;});
+
+area$.subscribe(val => area.innerHTML = val);
+------------
+length: -----1-------------3
+width:  ----------2---------
+area:   ---------(2,1)-----(2,3)
+                  \        \
+                  2*1        2*3
+                  2           6
+```
+只改变一个值不进行计算， 我们可以使用zip操作符。
+
+`const area$ = Rx.Observable.zip(length$, width$, (l, w) => {return l*w;});`
+
+* 本节使用的操作符
+
+combineLatest 有一个值改变就更新。
+
+zip 多个值都改变时才更新。需要一一对应的关系
+
+* 事件流
+
+理解 Rx 的关键是要把任何变化想像成事件流。
+
+## 5-2 常见操作符（一）
+
+__常见创建类的操作符__
+
+from: 可以把数组、Promise以及 Iterable 转化为 Observable
+fromEvent: 可以把事件转化为 Observable
+of: 接受一系列的数据，并把它们emit出去。
+
+__常见转换操作符: map, mapTo, pluck__
+
+弹珠图网站, 互动  http://rxmarbles.com/
+
+__map__ 对原始值处理映射新的流
+
+`map(x => 10 * x)`
+
+效果相同
+
+    const length$ = Rx.Observable.fromEvent(length, 'keyup').pluck('target', 'value');
+    const length$ = Rx.Observable.fromEvent(length, 'keyup').map(ev => ev.target.value)
+
+__mapTo__ 适合只关心事件，不关心值的情况下使用
+
+    ...mapTo(1) ,返回1,
+    ...map(_ => 1) 
+
+    const length$ = Rx.Observable.from([1,2,3,4]);
+    const width$ = Rx.Observable.fromEvent(width, 'keyup').pluck('target', 'value');;
+
+__from__ 操作符
+
+-1-2-3-4-------4
+----------4----4
+----------\----\
+----------2----2
+
+__of__ 操作符
+
+    const length$ = Rx.Observable.of({id:1, value:20},{id:2, value:40});
+    const area$ = Rx.Observable.combineLatest(length$, width$, (l, w) => {return l.value*w;});
+
+
+
+## 5-3 常见操作符（二）
+## 5-4 常见操作符（三）
+## 5-5 实战复杂表单控件(上)
+## 5-6 实战复杂表单控件（中）
+## 5-7 实战复杂表单控件（下）
 # 第6章 Angular 中的响应式编程
 # 第7章 使用 Redux 管理应用状态
 # 第8章 Angular 的测试
