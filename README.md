@@ -1,61 +1,61 @@
-# µÚ1ÕÂ ¿Î³Ì½éÉÜ
-## 1-2 »·¾³´î½¨
+# ç¬¬1ç«  è¯¾ç¨‹ä»‹ç»
+## 1-2 ç¯å¢ƒæ­å»º
 
-npm i --save °üÃû: Èí¼şÒÀÀµ
+npm i --save åŒ…å: è½¯ä»¶ä¾èµ–
 
-npm i --save-dev °üÃû: ¿ª·¢ÒÀÀµ £¬ ÕıÊ½»·¾³ÖĞ²»ÓÃµÄ°ü
+npm i --save-dev åŒ…å: å¼€å‘ä¾èµ– ï¼Œ æ­£å¼ç¯å¢ƒä¸­ä¸ç”¨çš„åŒ…
 
-json-server: ÓÃÓÚ¿ìËÙ´î½¨ REST API µÄÀûÆ÷
+json-server: ç”¨äºå¿«é€Ÿæ­å»º REST API çš„åˆ©å™¨
 
-    °²×°£º npm install -g json-server
-    Ê¹ÓÃ json-server ./mock/data.json
+    å®‰è£…ï¼š npm install -g json-server
+    ä½¿ç”¨ json-server ./mock/data.json
 
-¼¸ÖÖ³£¼ûµÄAPI²âÊÔ¹¤¾ß
+å‡ ç§å¸¸è§çš„APIæµ‹è¯•å·¥å…·
 
     POSTMAN
     VSCode: REST Client
-    Ê¹ÓÃ### ½«ÇëÇó¸ôÀë¿ª
+    ä½¿ç”¨### å°†è¯·æ±‚éš”ç¦»å¼€
 
-cli°²×°´íÎó
+cliå®‰è£…é”™è¯¯
 
     npm uninstall -g @angular/cli
     npm cache clean
     npm instlal -g @angular/cli
 
-# µÚ2ÕÂ ÓÃ Angular Material ×é¼ş´òÔìÒ³Ãæ
+# ç¬¬2ç«  ç”¨ Angular Material ç»„ä»¶æ‰“é€ é¡µé¢
 
-## 2-1 ÏîÄ¿¹¤³Ì½á¹¹
+## 2-1 é¡¹ç›®å·¥ç¨‹ç»“æ„
 
     ng new taskmgr -si --style=scss
     ng g m core
     ng g m shared
 
 
-        @SkipSelf() , Ìø¹ı±¾Éí¼ì²â
+        @SkipSelf() , è·³è¿‡æœ¬èº«æ£€æµ‹
 
-Í¨³£ÒªÕâÑùĞ´£¬`import {CoreModule} from './core/core.module';`
+é€šå¸¸è¦è¿™æ ·å†™ï¼Œ`import {CoreModule} from './core/core.module';`
 
-µ«ÊÇ¸Ä³É ½«core.module¸Ä³Éindex.ts¾ÍÖ»Ğ´ 
+ä½†æ˜¯æ”¹æˆ å°†core.moduleæ”¹æˆindex.tså°±åªå†™ 
 
     import {CoreModule} from './core';
 
-¾ÍĞĞÁË£¬Ê¡ÁËºÜ¶àÂ·¾¶
+å°±è¡Œäº†ï¼Œçœäº†å¾ˆå¤šè·¯å¾„
 
-## 2-2 UIÕûÌå²¼¾Ö
+## 2-2 UIæ•´ä½“å¸ƒå±€
 
     ng g c core/header --spec=false
 
-±¨´í£¬µ¼³öÇ°Ö»ÄÜÔÚcoremoduleÊ¹ÓÃ£¬
+æŠ¥é”™ï¼Œå¯¼å‡ºå‰åªèƒ½åœ¨coremoduleä½¿ç”¨ï¼Œ
 
-    app-header' is not a known element: £¬
+    app-header' is not a known element: ï¼Œ
 
-ÔÚcore.moduleÌí¼Ó
+åœ¨core.moduleæ·»åŠ 
   
     exports: [HeaderComponent, FooterComponent, SidebarComponent]
 
-±¾¿ÎÊ¹ÓÃflexµÄ·½Ê½À´ÉèÖÃcss¡£
+æœ¬è¯¾ä½¿ç”¨flexçš„æ–¹å¼æ¥è®¾ç½®cssã€‚
 
-flex ÊÇ¶ÔÈİÆ÷ÄÚµÄÅÅ²¼¡£Ö»¶ÔÖ±½Ó×ÓÔªËØÓĞÓÃ¡£
+flex æ˜¯å¯¹å®¹å™¨å†…çš„æ’å¸ƒã€‚åªå¯¹ç›´æ¥å­å…ƒç´ æœ‰ç”¨ã€‚
 
 ```css
 
@@ -66,44 +66,44 @@ flex ÊÇ¶ÔÈİÆ÷ÄÚµÄÅÅ²¼¡£Ö»¶ÔÖ±½Ó×ÓÔªËØÓĞÓÃ¡£
 
 main {
   flex: 1;
-  /*flex ²ÎÊı3¸ö ÊÇ·ñÄÜ·Å´ó·Å´ó¼¸±¶ 0²»ÄÜËõĞ¡ auto¼«ÏŞ¿í¶È*/
+  /*flex å‚æ•°3ä¸ª æ˜¯å¦èƒ½æ”¾å¤§æ”¾å¤§å‡ å€ 0ä¸èƒ½ç¼©å° autoæé™å®½åº¦*/
 
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
 
-  /*ºáÖá·½ÏòÅÅÁĞ*/
+  /*æ¨ªè½´æ–¹å‘æ’åˆ—*/
   /*justify-content: flex-start;*/
   /*justify-content: flex-end;*/
   /*justify-content: space-around;*/
   justify-content: space-between;
 
-  /*×İÖá·½ÏòÅÅÁĞ*/
+  /*çºµè½´æ–¹å‘æ’åˆ—*/
   align-content: flex-end;
   /*default*/
   /*align-content: stretch;*/
 
-  /*Ò»ĞĞÖĞÔõÑù¶ÔÆë*/
+  /*ä¸€è¡Œä¸­æ€æ ·å¯¹é½*/
   align-items: center;
 }
 
 others {
-    /*ºáÖá·½ÏòÅÅÁĞ*/
-    justify-content: flex-start ×ó¶ÔÆë,
-    justify-content: flex-end ÓÒ¶ÔÆë,
-    justify-content: center ¾ÓÖĞ,
-    justify-content: space-between ·ÖÉ¢¶ÔÆë,
-    justify-content: space-around ÏîÄ¿Î»ÓÚ¸÷ĞĞÖ®Ç°¡¢Ö®¼ä¡¢Ö®ºó¶¼ÁôÓĞ¿Õ°×µÄÈİÆ÷ÄÚ,
-    ×İÖá·½ÏòÅÅÁĞ
-    align-content: stretch ³äÂúÆÁÄ»,
-    align-content: center ¾ÓÖĞ,
-    align-content: flex-start ¶¥²¿¶ÔÆë,
-    align-content: flex-end µ×²¿¶ÔÆë,
-    align-content: baseline    ÔªËØ·ÅÖÃÔÚ¸¸ÔªËØµÄ»ùÏßÉÏ¡£,
+    /*æ¨ªè½´æ–¹å‘æ’åˆ—*/
+    justify-content: flex-start å·¦å¯¹é½,
+    justify-content: flex-end å³å¯¹é½,
+    justify-content: center å±…ä¸­,
+    justify-content: space-between åˆ†æ•£å¯¹é½,
+    justify-content: space-around é¡¹ç›®ä½äºå„è¡Œä¹‹å‰ã€ä¹‹é—´ã€ä¹‹åéƒ½ç•™æœ‰ç©ºç™½çš„å®¹å™¨å†…,
+    çºµè½´æ–¹å‘æ’åˆ—
+    align-content: stretch å……æ»¡å±å¹•,
+    align-content: center å±…ä¸­,
+    align-content: flex-start é¡¶éƒ¨å¯¹é½,
+    align-content: flex-end åº•éƒ¨å¯¹é½,
+    align-content: baseline    å…ƒç´ æ”¾ç½®åœ¨çˆ¶å…ƒç´ çš„åŸºçº¿ä¸Šã€‚,
 }
 ```
 
-## 2-3 Material½éÉÜ
+## 2-3 Materialä»‹ç»
 
 https://material.angular.io/
 
@@ -111,13 +111,13 @@ https://material.io/
 
 http://materialdesignblog.com/
 
-Ê²Ã´³¡¾°ÊÊºÏ²ÉÓÃ¹Ù·½µÄ×é¼ş¿â£¿
+ä»€ä¹ˆåœºæ™¯é€‚åˆé‡‡ç”¨å®˜æ–¹çš„ç»„ä»¶åº“ï¼Ÿ
 
-* ÍÅ¶ÓÃ»ÓĞÄÜÁ¦ÖÆ×÷Í³Ò»µÄUI·ç¸ñÊ±.¿¼ÂÇÊ¹ÓÃ.
+* å›¢é˜Ÿæ²¡æœ‰èƒ½åŠ›åˆ¶ä½œç»Ÿä¸€çš„UIé£æ ¼æ—¶.è€ƒè™‘ä½¿ç”¨.
 
-* ÓÅµã:¼æÈİĞÔºÃ£¬¿ÉÀ©Õ¹ĞÔºÃ£¬¿É²âÊÔĞÔºÃ£¬¶ÔÖ÷ÌâµÄÖ§³ÖºÃ.
+* ä¼˜ç‚¹:å…¼å®¹æ€§å¥½ï¼Œå¯æ‰©å±•æ€§å¥½ï¼Œå¯æµ‹è¯•æ€§å¥½ï¼Œå¯¹ä¸»é¢˜çš„æ”¯æŒå¥½.
 
-* È±µã£ºÄ¿Ç°×é¼şÈÔ²»Ëã·á¸»£¬Ö»ÓĞ Material ·ç¸ñ
+* ç¼ºç‚¹ï¼šç›®å‰ç»„ä»¶ä»ä¸ç®—ä¸°å¯Œï¼Œåªæœ‰ Material é£æ ¼
 
 SideNav
 
@@ -125,33 +125,33 @@ SideNav
     npm i --save @angular/material @angular/cdk
 
 Q: Could not find Angular Material core theme. Most Material components may not work as expected. For more info refer to the theming guide:
-A: ÒıÈëÖ÷ÌâcssÎÄ¼şÖĞ @import "~@angular/material/prebuilt-themes/deeppurple-amber.css";
+A: å¼•å…¥ä¸»é¢˜cssæ–‡ä»¶ä¸­ @import "~@angular/material/prebuilt-themes/deeppurple-amber.css";
 
     <mat-sidenav #sidenav mode="over" align="end">
 
-Ò»¸öcontainerÖĞ¿ÉÒÔÓĞ2¸ösidenav , align= start , ×ó±ß, end ÓÒ±ß
+ä¸€ä¸ªcontainerä¸­å¯ä»¥æœ‰2ä¸ªsidenav , align= start , å·¦è¾¹, end å³è¾¹
 
     <mat-toolbar color="primary"></mat-toolbar>
     <mat-toolbar color="accent"></mat-toolbar>
 
-Ö÷É«£¬ÅäÉ«  accent Ö¸ÅäÉ«
+ä¸»è‰²ï¼Œé…è‰²  accent æŒ‡é…è‰²
 
 ## SideNav 
 
-1. ÓÃÍ¾£º²à±ßÀ¸µ¼º½£¬Í¬Ê±¿ÉÒÔ×÷ÎªÈİÆ÷
-2. ²à»¬µÄÈıÖÖÄ£Ê½£º over, push , side
-3. Ò»°ãµÄ <md-sidenav-container> ÁªºÏÊ¹ÓÃ
+1. ç”¨é€”ï¼šä¾§è¾¹æ å¯¼èˆªï¼ŒåŒæ—¶å¯ä»¥ä½œä¸ºå®¹å™¨
+2. ä¾§æ»‘çš„ä¸‰ç§æ¨¡å¼ï¼š over, push , side
+3. ä¸€èˆ¬çš„ <md-sidenav-container> è”åˆä½¿ç”¨
 
 ## Toolbar
 
-1. ÓÃÍ¾: Ò»°ãÓÃÓÚÍ·²¿¡¢±êÌâÀ¸
-2. Í¨¹ı <md-toolbar-row> Ö§³Ö¶àĞĞ
-3. Ä¬ÈÏÄÚ²¿²¼¾ÖÊÇ»ùÓÚflexµÄ
+1. ç”¨é€”: ä¸€èˆ¬ç”¨äºå¤´éƒ¨ã€æ ‡é¢˜æ 
+2. é€šè¿‡ <md-toolbar-row> æ”¯æŒå¤šè¡Œ
+3. é»˜è®¤å†…éƒ¨å¸ƒå±€æ˜¯åŸºäºflexçš„
 
-        ÔÚcoremodule ÒıÈëMatToolbarModule
-        ÔÚappmodule import MatSidenavModule
+        åœ¨coremodule å¼•å…¥MatToolbarModule
+        åœ¨appmodule import MatSidenavModule
 
-header ²¢²»ÖªµÀ sidebarÔÚÄÄ¶ù ËùÒÔÓÃoutputÓë¸ù×é¼ş½»»¥Êı¾İ~
+header å¹¶ä¸çŸ¥é“ sidebaråœ¨å“ªå„¿ æ‰€ä»¥ç”¨outputä¸æ ¹ç»„ä»¶äº¤äº’æ•°æ®~
 
 ```typescript
 header.ts
@@ -160,25 +160,25 @@ app.component.html
 <app-header (toggle)="sidenav1.toggle()"></app-header>
 ```
 
-## 2-4 MdIcon ×é¼ş
+## 2-4 MdIcon ç»„ä»¶
 
-appModule ÖĞµ¼Èë MatIconModule , header.html
+appModule ä¸­å¯¼å…¥ MatIconModule , header.html
 
     <mat-icon svgIcon="gifts"></mat-icon>
 
-mat-icon ÎŞËğËõ·Å£¬»ùÓÚ×ÖÌåµÄ
+mat-icon æ— æŸç¼©æ”¾ï¼ŒåŸºäºå­—ä½“çš„
 
-    Ê¹ÓÃÍ¼±ê×ÖÌå£¬ÄÚ½¨ material icon Ö§³Ö
-    Ö§³Ö svg : Í¨¹ı×¢Èë mdiconRegistry ºÍ DomSanitizer
+    ä½¿ç”¨å›¾æ ‡å­—ä½“ï¼Œå†…å»º material icon æ”¯æŒ
+    æ”¯æŒ svg : é€šè¿‡æ³¨å…¥ mdiconRegistry å’Œ DomSanitizer
 
 ```typescript
 this.addSvgIcon('project', this.sanitizer.bypassSecurityTrustResourceUrl('assets/img/sidebar/project.svg'));
 ```
 
 
-±¨´íÕÒ²»µ½ HttpProvider£¬ÔÚappmoduleÖĞµ¼Èë HttpClientModule
+æŠ¥é”™æ‰¾ä¸åˆ° HttpProviderï¼Œåœ¨appmoduleä¸­å¯¼å…¥ HttpClientModule
 
-* ±ÜÃâÖØ¸´¼ÓÔØ£¬´´½¨utils/svg.utils.ts 
+* é¿å…é‡å¤åŠ è½½ï¼Œåˆ›å»ºutils/svg.utils.ts 
 
 ```typescript
 export const loadSvgResources = (ir: MatIconRegistry, ds: DomSanitizer) => {
@@ -186,7 +186,7 @@ export const loadSvgResources = (ir: MatIconRegistry, ds: DomSanitizer) => {
 }
 ```
 
-±ÜÃâÔÚheaderÊ¹ÓÃÊ±»¹ÊÇÒªµ¼Èë£¬Âé·³¡£ÎÒÃÇÔÚcoremoduleÖĞµ¼Èë¡£
+é¿å…åœ¨headerä½¿ç”¨æ—¶è¿˜æ˜¯è¦å¯¼å…¥ï¼Œéº»çƒ¦ã€‚æˆ‘ä»¬åœ¨coremoduleä¸­å¯¼å…¥ã€‚
 
 
 ```typescript
@@ -196,14 +196,14 @@ export class CoreModule {
     ir: MatIconRegistry,
     ds: DomSanitizer) {
     if (parent) {
-      throw new Error('Ä£¿éÒÑ´æÔÚ£¬²»ÄÜÔÙ´Î¼ÓÔØ!');
+      throw new Error('æ¨¡å—å·²å­˜åœ¨ï¼Œä¸èƒ½å†æ¬¡åŠ è½½!');
     }
     loadSvgResources(ir, ds);
   }
 }
 ```
 
-## 2-5 Input ×é¼ş
+## 2-5 Input ç»„ä»¶
 
 __Install Component__
 
@@ -220,7 +220,7 @@ const routes: Routes = [{path: 'login', component: LoginComponent}, ];
 
 app-rouing.module.ts
 {path: '', redirectTo: '/login', pathMatch: 'full'},
-full--Èç¹û loginºóÃæÊ²Ã´¶¼²»·Å¾Íµ¼º½µ½ login
+full--å¦‚æœ loginåé¢ä»€ä¹ˆéƒ½ä¸æ”¾å°±å¯¼èˆªåˆ° login
 
 ```
 
@@ -233,13 +233,13 @@ HTML
 #login.compoennt.html
 <mat-card>
   <mat-card-header>
-    <mat-card-title>µÇÂ¼</mat-card-title>
+    <mat-card-title>ç™»å½•</mat-card-title>
   </mat-card-header>
 
   <mat-card-content>
     <mat-input-container>
       <span matPrefix="">wang</span>
-      <input matInput type="text" placeholder="ÄúµÄemail">
+      <input matInput type="text" placeholder="æ‚¨çš„email">
       <span matSuffix>@gmail.com</span>
       <mat-hint></mat-hint>
       <mat-label></mat-label>
@@ -247,26 +247,26 @@ HTML
   </mat-card-content>
 
   <mat-card-actions>
-    <p>»¹Ã»ÓĞÕË»§?<a href="">×¢²á</a></p>
-    <p>Íü¼ÇÃÜÂë?<a href="">ÕÒ»Ø</a></p>
+    <p>è¿˜æ²¡æœ‰è´¦æˆ·?<a href="">æ³¨å†Œ</a></p>
+    <p>å¿˜è®°å¯†ç ?<a href="">æ‰¾å›</a></p>
   </mat-card-actions>
 </mat-card>
 
 color accent
 mat-input-container
-    floatPlaceholder float Ä¬ÈÏ
-    floatPlaceholder always Ò»Ö±ÔÚ¶¯»­
-    floatPlaceholder never Ò»Ö±ÔÚ¶¯»­
-hintLabel="±ØÌîÏî" ÊäÈë¿òÏÂÃæÓĞÌáÊ¾
+    floatPlaceholder float é»˜è®¤
+    floatPlaceholder always ä¸€ç›´åœ¨åŠ¨ç”»
+    floatPlaceholder never ä¸€ç›´åœ¨åŠ¨ç”»
+hintLabel="å¿…å¡«é¡¹" è¾“å…¥æ¡†ä¸‹é¢æœ‰æç¤º
 ```
 
 Input
 
-    Ö¸Áî: mdInput ÔÚ <md-input-container> ÄÚ²¿£¬ÓĞÇ°×ººó×º
-    <md-error> : Ö»ÄÜÑéÖ¤²»Í¨¹ıÊ±²Å³öÏÖ£¬¶ÔÁ½ÖÖÀàĞÍ±íµ¥¶¼ÊÇÈç´Ë
-    <md-hint> : µ±errorÏÔÊ¾Ê±, hint »áÒş²Ø
+    æŒ‡ä»¤: mdInput åœ¨ <md-input-container> å†…éƒ¨ï¼Œæœ‰å‰ç¼€åç¼€
+    <md-error> : åªèƒ½éªŒè¯ä¸é€šè¿‡æ—¶æ‰å‡ºç°ï¼Œå¯¹ä¸¤ç§ç±»å‹è¡¨å•éƒ½æ˜¯å¦‚æ­¤
+    <md-hint> : å½“erroræ˜¾ç¤ºæ—¶, hint ä¼šéšè—
 
-Ä£¿éÔö¶àºó£¬¾¡Á¿·ÅÔÚsharedModule
+æ¨¡å—å¢å¤šåï¼Œå°½é‡æ”¾åœ¨sharedModule
 
 ```typescript
 # login.module
@@ -277,14 +277,14 @@ imports: [HttpClientModule, SharedModule, BrowserAnimationsModule, ]
 imports: [BrowserModule, SharedModule, CoreModule, LoginModule, AppRoutingModule, ]
 ```
 
-## 2-6 Card ºÍ Button ×é¼ş
+## 2-6 Card å’Œ Button ç»„ä»¶
 
-__card __ ÊÊºÏÍ¼ÎÄĞÎÊ½Í»³öÄ³Ò»Ö÷Ìâ
+__card __ é€‚åˆå›¾æ–‡å½¢å¼çªå‡ºæŸä¸€ä¸»é¢˜
 
 ```typescript
   <mat-card>
     <mat-card-header>
-      <mat-card-title>Ã¿ÈÕ¼Ñ¾ä</mat-card-title>
+      <mat-card-title>æ¯æ—¥ä½³å¥</mat-card-title>
       <mat-card-subtitle>{{quote.cn}}</mat-card-subtitle>
     </mat-card-header>
     <img mat-card-xl-image src="/assets/quote_fallback.jpg" alt="">
@@ -297,21 +297,21 @@ __card __ ÊÊºÏÍ¼ÎÄĞÎÊ½Í»³öÄ³Ò»Ö÷Ìâ
 
 __Button__
 
-md-button ÊÇÒÔÖ¸ÁîĞÎÊ½Ìá¹©µÄ
-±ê×¼°´Å¥: md-button, md-raised-button, md-icon-button
-¸¡¶¯°´Å¥: md-fab, md-fab-mini
+md-button æ˜¯ä»¥æŒ‡ä»¤å½¢å¼æä¾›çš„
+æ ‡å‡†æŒ‰é’®: md-button, md-raised-button, md-icon-button
+æµ®åŠ¨æŒ‰é’®: md-fab, md-fab-mini
 
-²»Ö¸Ã÷ type Ä¬ÈÏÎªsubmit, Ö¸¶¨Îªtype=button
+ä¸æŒ‡æ˜ type é»˜è®¤ä¸ºsubmit, æŒ‡å®šä¸ºtype=button
 
-    <button mat-raised-button type="button">µÇÂ¼</button>
+    <button mat-raised-button type="button">ç™»å½•</button>
 
-mat-ÀàĞÍ|Ğ§¹û
+mat-ç±»å‹|æ•ˆæœ
 ---|---
-mat-raised-button | ¸¡ÆğµÄĞ§¹û
-mat-fab-button  | Ô²ĞÎĞ§¹û
-mat-mini-fab    | ¸üĞ¡µÄÔ²ĞÎĞ§¹û
+mat-raised-button | æµ®èµ·çš„æ•ˆæœ
+mat-fab-button  | åœ†å½¢æ•ˆæœ
+mat-mini-fab    | æ›´å°çš„åœ†å½¢æ•ˆæœ
 
-ÈİÆ÷³äÂú£¬ÓÃ»§¡¢ÃÜÂëÊúÅÅ£¬²¢½«Íü¼ÇÃÜÂë·ÅÔÚ ÓÒ²à
+å®¹å™¨å……æ»¡ï¼Œç”¨æˆ·ã€å¯†ç ç«–æ’ï¼Œå¹¶å°†å¿˜è®°å¯†ç æ”¾åœ¨ å³ä¾§
 ```css
 # login.component.css
 mat-card{
@@ -342,24 +342,24 @@ form {
 
     <img mat-card-xl-image src="/assets/quote_fallback.jpg" alt="">
 
-## 2-7 ÔÚ²à»¬²Ëµ¥ÖĞÊ¹ÓÃ MdList
+## 2-7 åœ¨ä¾§æ»‘èœå•ä¸­ä½¿ç”¨ MdList
 
 __List__
 
-* ÓÃ»§£ºÒ»°ãÓÃÓÚÁĞ±í
-* `<mat-list>`ºÍ`<mat-nav-list>`
+* ç”¨æˆ·ï¼šä¸€èˆ¬ç”¨äºåˆ—è¡¨
+* `<mat-list>`å’Œ`<mat-nav-list>`
 
-List item Ä¬ÈÏÑùÊ½ `align:center,flex:row`
+List item é»˜è®¤æ ·å¼ `align:center,flex:row`
 
-Ê¹ list item ¶¥²¿¶ÔÆë 
+ä½¿ list item é¡¶éƒ¨å¯¹é½ 
 
     mat-icon {align-self: flex-start; }
 
-Ñ¹ËõÁĞ±í.¼ä¾à±äĞ¡ `<mat-nav-list dense>`
+å‹ç¼©åˆ—è¡¨.é—´è·å˜å° `<mat-nav-list dense>`
 
-ÈÕÊÓÍ¼±ä³Éµ±ÌìµÄÈÕÆÚ
+æ—¥è§†å›¾å˜æˆå½“å¤©çš„æ—¥æœŸ
 
-Ìí¼Ó31ÌìµÄÈÕÍ¼±ê£¬Ê¹µ±ÈÕÍ¼±ê×Ô¶¯¸Ä±ä
+æ·»åŠ 31å¤©çš„æ—¥å›¾æ ‡ï¼Œä½¿å½“æ—¥å›¾æ ‡è‡ªåŠ¨æ”¹å˜
 
 ```typescript
 # svg.utils.ts
@@ -378,22 +378,22 @@ ngOnInit() {
 <mat-icon mat-list-icon [svgIcon]="today"></mat-icon>
 ```
 
-Ìí¼ÓÀà¿â
+æ·»åŠ ç±»åº“
 ```bash
 npm install --save date-fns
 npm install --save-dev @types/date-fns
 ```
 
-## 2-8 Angular Material Ö÷Ìâ
+## 2-8 Angular Material ä¸»é¢˜
 
-Ö÷Ìâ£º µ÷É«°å+Ã÷°µ+µş¼Ó
+ä¸»é¢˜ï¼š è°ƒè‰²æ¿+æ˜æš—+å åŠ 
 $my-app-accent: mat-palette($mat-pink,A200, A100, A400);
-Ä¬ÈÏÉîÇ³£¬ÁÁµÄÖ÷Ìâ£¬°µµÄÖ÷ÌâÁÁ¶È£¬
+é»˜è®¤æ·±æµ…ï¼Œäº®çš„ä¸»é¢˜ï¼Œæš—çš„ä¸»é¢˜äº®åº¦ï¼Œ
 ```typescript
 
 # header.component.html
 <span class="fill-remaining-space"></span>
-<mat-slide-toggle (change)="onChange($event.checked)">Ä¬ÈÏÄ£Ê½</mat-slide-toggle>
+<mat-slide-toggle (change)="onChange($event.checked)">é»˜è®¤æ¨¡å¼</mat-slide-toggle>
 
 # shared.module.ts
 MatSlideToggleModule
@@ -448,23 +448,23 @@ $my-dark-theme: mat-dark-theme($my-dark-primary, $my-dark-accent,$my-dark-warn);
   @include angular-material-theme($my-dark-theme)
 }
 ```
-## 2-9 GridList ´òÔì×¢²áÒ³ÃæÍ·ÏñÁĞ±í
+## 2-9 GridList æ‰“é€ æ³¨å†Œé¡µé¢å¤´åƒåˆ—è¡¨
 
 * GridList
 
-ÓÃÍ¾£ºÓÃÓÚÏàËÆµÄÊı¾İÕ¹Ê¾£¬ÓÈÆäÊÇÍ¼Æ¬£¬ÀàËÆÏà²á¡£
+ç”¨é€”ï¼šç”¨äºç›¸ä¼¼çš„æ•°æ®å±•ç¤ºï¼Œå°¤å…¶æ˜¯å›¾ç‰‡ï¼Œç±»ä¼¼ç›¸å†Œã€‚
 
-ĞĞÎªºÜÏñ±í¸ñ£¬ÓĞcolspan,rolspanµÈÊôĞÔ¡£
+è¡Œä¸ºå¾ˆåƒè¡¨æ ¼ï¼Œæœ‰colspan,rolspanç­‰å±æ€§ã€‚
 
     ng g c login/register --spec=false
 
-* mat-grid-list ÊôĞÔ
+* mat-grid-list å±æ€§
 
- rowHeight="34px"»ò1,colspan,rowspan
+ rowHeight="34px"æˆ–1,colspan,rowspan
 
-* map() ¶ÔÃ¿¸öÔªËØ´¦Àí·µ»ØĞÂµÄÔªËØ
+* map() å¯¹æ¯ä¸ªå…ƒç´ å¤„ç†è¿”å›æ–°çš„å…ƒç´ 
 
-* svgÍ¼±ê¼¯ºÏÊ¹ÓÃ·½·¨£º name:svg-${id}
+* svgå›¾æ ‡é›†åˆä½¿ç”¨æ–¹æ³•ï¼š name:svg-${id}
 
 ```typescript
 # SharedModule
@@ -486,11 +486,11 @@ ir.addSvgIconSetInNamespace('avatars', ds.bypassSecurityTrustResourceUrl(`${avat
 </mat-grid-list>
 ```
 
-## 2-10 ¶Ô»°¿òµÄÊ¹ÓÃ
+## 2-10 å¯¹è¯æ¡†çš„ä½¿ç”¨
 
-* ¶Ô»°¿òºÜÌØÊâ£¬ĞèÒªÔÚÄ£¿éÖĞµÄ entrryComponentsÖĞÉùÃ÷
-* ´«µİÊı¾İ£º const dialogRef = dialog.open(YourDialog, {data:'your data'})
-* ½ÓÊÕÊı¾İ£º constructor(@Inject(MD_DIALOG_DATA) public data:any) {}
+* å¯¹è¯æ¡†å¾ˆç‰¹æ®Šï¼Œéœ€è¦åœ¨æ¨¡å—ä¸­çš„ entrryComponentsä¸­å£°æ˜
+* ä¼ é€’æ•°æ®ï¼š const dialogRef = dialog.open(YourDialog, {data:'your data'})
+* æ¥æ”¶æ•°æ®ï¼š constructor(@Inject(MD_DIALOG_DATA) public data:any) {}
 
 ```typescript
 ng g m project
@@ -550,22 +550,22 @@ export class ProjectListComponent implements OnInit {
       {{item.name}}
     </mat-card-title>
   </mat-card-header>
-  <img mat-card-image [src]="item.coverImg" alt="ÏîÄ¿·âÃæ">
+  <img mat-card-image [src]="item.coverImg" alt="é¡¹ç›®å°é¢">
   <mat-card-content>
     {{item.desc}}
   </mat-card-content>
   <mat-card-actions>
     <button mat-button type="button">
       <mat-icon>note</mat-icon>
-      <span>±à¼­</span>
+      <span>ç¼–è¾‘</span>
     </button>
     <button mat-button type="button">
       <mat-icon>group_add</mat-icon>
-      <span>ÑûÇë</span>
+      <span>é‚€è¯·</span>
     </button>
     <button mat-button type="button">
       <mat-icon>delete</mat-icon>
-      <span>É¾³ı</span>
+      <span>åˆ é™¤</span>
     </button>
   </mat-card-actions>
 </mat-card>
@@ -581,17 +581,17 @@ export class ProjectItemComponent implements OnInit {
 # new-project.component.html
 
 <form >
-  <h2 mat-dialog-title>ĞÂ½¨ÏîÄ¿</h2>
+  <h2 mat-dialog-title>æ–°å»ºé¡¹ç›®</h2>
   <div mat-dialog-content>
     <mat-input-container class="full-width">
-      <input matInput type="text" placeholder="ÏîÄ¿Ãû³Æ">
+      <input matInput type="text" placeholder="é¡¹ç›®åç§°">
     </mat-input-container>
     <mat-input-container class="full-width">
-      <input matInput type="text" placeholder="ÏîÄ¿ÃèÊö">
+      <input matInput type="text" placeholder="é¡¹ç›®æè¿°">
     </mat-input-container>
     <div mat-dialog-actions>
-      <button type="button" mat-raised-button color="primary" (click)="onClick()">±£´æ</button>
-      <button type="button" mat-button mat-dialog-close>¹Ø±Õ</button>
+      <button type="button" mat-raised-button color="primary" (click)="onClick()">ä¿å­˜</button>
+      <button type="button" mat-button mat-dialog-close>å…³é—­</button>
     </div>
   </div>
 </form>
@@ -640,9 +640,9 @@ export class ProjectItemComponent implements OnInit {
 ```
 
 
-## 2-11 Autocomplete µÄÊ¹ÓÃ
+## 2-11 Autocomplete çš„ä½¿ç”¨
 
-ÒªºÍ input ÁªºÏÊ¹ÓÃ¡£
+è¦å’Œ input è”åˆä½¿ç”¨ã€‚
 
 ```typescript
 <mat-form-field>
@@ -657,7 +657,7 @@ export class ProjectItemComponent implements OnInit {
 
 ```
 
-ÊµÀı´úÂë
+å®ä¾‹ä»£ç 
 
 ```typescript
 # shared.module.ts
@@ -681,14 +681,14 @@ export class ProjectItemComponent implements OnInit {
 
 # invite.component.html
 <form >
-  <h2 mat-dialog-title>ÑûÇë×éÔ±</h2>
+  <h2 mat-dialog-title>é‚€è¯·ç»„å‘˜</h2>
   <div mat-dialog-content>
     <mat-input-container class="full-width">
-      <input matInput type="text" placeholder="×éÔ±ĞÕÃû" [matAutocomplete]="autoMembers">
+      <input matInput type="text" placeholder="ç»„å‘˜å§“å" [matAutocomplete]="autoMembers">
     </mat-input-container>
     <div mat-dialog-actions>
-      <button type="button" mat-raised-button color="primary" (click)="onClick()">±£´æ</button>
-      <button type="button" mat-button mat-dialog-close>¹Ø±Õ</button>
+      <button type="button" mat-raised-button color="primary" (click)="onClick()">ä¿å­˜</button>
+      <button type="button" mat-button mat-dialog-close>å…³é—­</button>
     </div>
   </div>
 </form>
@@ -713,11 +713,11 @@ export class InviteComponent implements OnInit {
 }
 ```
 
-[displayWith]="displayUser"> ¶ø²»ÊÇ  displayUser()
+[displayWith]="displayUser"> è€Œä¸æ˜¯  displayUser()
 
-* ±íÊ¾´«ÈëµÄÊÇº¯Êı²»ÊÇº¯ÊıµÄ·µ»Ø½á¹û
+* è¡¨ç¤ºä¼ å…¥çš„æ˜¯å‡½æ•°ä¸æ˜¯å‡½æ•°çš„è¿”å›ç»“æœ
 
-## 2-12 ÈÎÎñÁĞ±íÖ®²Ëµ¥
+## 2-12 ä»»åŠ¡åˆ—è¡¨ä¹‹èœå•
 
 ```typescript
 ng g m task
@@ -728,7 +728,7 @@ ng g c task/task-header --spec=false
 ```
 
 
-* ½« OverlayContainer ×¢Èëµ½ AppComponent±È½Ï·½±ã
+* å°† OverlayContainer æ³¨å…¥åˆ° AppComponentæ¯”è¾ƒæ–¹ä¾¿
 
 ```typescript
 # app.component.ts
@@ -772,7 +772,7 @@ ng g c task/task-header --spec=false
   <div class="fill">
     <button mat-button>
       <mat-icon>add_circle_outline</mat-icon>
-      <span>ĞÂÈÎÎñ</span>
+      <span>æ–°ä»»åŠ¡</span>
     </button>
   </div>
   <div>
@@ -785,15 +785,15 @@ ng g c task/task-header --spec=false
 <mat-menu #menu="matMenu">
   <button mat-menu-item>
     <mat-icon>mode_edit</mat-icon>
-    <span>ĞŞ¸ÄÁĞ±íÃû³Æ</span>
+    <span>ä¿®æ”¹åˆ—è¡¨åç§°</span>
   </button>
   <button mat-menu-item>
     <mat-icon [svgIcon]="'move'"></mat-icon>
-    <span>ÒÆ¶¯±¾ÁĞ±íËùÓĞÄÚÈİ</span>
+    <span>ç§»åŠ¨æœ¬åˆ—è¡¨æ‰€æœ‰å†…å®¹</span>
   </button>
   <button mat-menu-item>
     <mat-icon>delete_forever</mat-icon>
-    <span>É¾³ıÁĞ±í</span>
+    <span>åˆ é™¤åˆ—è¡¨</span>
   </button>
 </mat-menu>
 
@@ -838,12 +838,12 @@ ng g c task/task-header --spec=false
 # task-home.component.ts
   lists = [
     {
-      id: 1, name: '´ı°ì',
-      tasks: [{id: 1, desc: 'ÈÎÎñ1£ºÂò¿§·È', owner: {id: 1, name: 'ÕÅÈı', avatar: 'avatars:svg-11'}, dueDate: new Date()}]
+      id: 1, name: 'å¾…åŠ',
+      tasks: [{id: 1, desc: 'ä»»åŠ¡1ï¼šä¹°å’–å•¡', owner: {id: 1, name: 'å¼ ä¸‰', avatar: 'avatars:svg-11'}, dueDate: new Date()}]
     },
    {
-      id: 2, name: '½øĞĞÖĞ',
-      tasks: [{id: 1, desc: 'ÈÎÎñ2£ºÍê³ÉPPT', owner: {id: 1, name: 'ÀîËÄ', avatar: 'avatars:svg-12'}, dueDate: new Date()}]
+      id: 2, name: 'è¿›è¡Œä¸­',
+      tasks: [{id: 1, desc: 'ä»»åŠ¡2ï¼šå®ŒæˆPPT', owner: {id: 1, name: 'æå››', avatar: 'avatars:svg-12'}, dueDate: new Date()}]
     },
   ];
 
@@ -853,19 +853,19 @@ ng g c task/task-header --spec=false
 </mat-list>
 ```
 
-## 2-13 ÈÎÎñÁĞ±íÖ®ÈÎÎñ×é¼ş
+## 2-13 ä»»åŠ¡åˆ—è¡¨ä¹‹ä»»åŠ¡ç»„ä»¶
 
-¼¸ÖÖºÍHTML¶ÔÓ¦×é¼ş·Ç³£ÏñµÄ Material ×é¼ş£º
+å‡ ç§å’ŒHTMLå¯¹åº”ç»„ä»¶éå¸¸åƒçš„ Material ç»„ä»¶ï¼š
 
-* ¸´Ñ¡¿ò `<mat-checkbox>`
+* å¤é€‰æ¡† `<mat-checkbox>`
 
-* µ¥Ñ¡×é¼ş `<mat-radio>`
+* å•é€‰ç»„ä»¶ `<mat-radio>`
 
-* ÏÂÀ­¿ò `<mat-select>`
+* ä¸‹æ‹‰æ¡† `<mat-select>`
 
-ÉÏ½ÚµÄÏÂÀ­°´Å¥¶ÔÓ¦µÄÓĞµãÎÊÌâ¡£Ìí¼ÓÉÏ line-height: 1.
+ä¸ŠèŠ‚çš„ä¸‹æ‹‰æŒ‰é’®å¯¹åº”çš„æœ‰ç‚¹é—®é¢˜ã€‚æ·»åŠ ä¸Š line-height: 1.
 
-`[ngClass] = {'class': expression}` , ±í´ïÊ½ÎªtrueÊ±£¬Ê¹ÓÃ¸ÃÀà
+`[ngClass] = {'class': expression}` , è¡¨è¾¾å¼ä¸ºtrueæ—¶ï¼Œä½¿ç”¨è¯¥ç±»
 
 ```typescript
 # task-header.component.css
@@ -881,17 +881,17 @@ ng g c task/task-header --spec=false
 # task-home.component.ts
   lists = [
     {
-      id: 1, name: '´ı°ì',
+      id: 1, name: 'å¾…åŠ',
       tasks: [
-        {id: 1, desc: 'ÈÎÎñ1£ºÂò¿§·È', completed: true, priority: 3, owner: {id: 1, name: 'ÕÅÈı', avatar: 'avatars:svg-11'}, dueDate: new Date()},
-        {id: 2, desc: 'ÈÎÎñ4£ºÎÒÊÇÒ»¸ö·Ç³£·Ç³£³¤µÄÈÎÎñ', priority: 3, owner: {id: 1, name: 'ÕÅÈı', avatar: 'avatars:svg-11'}, dueDate: new Date()}
+        {id: 1, desc: 'ä»»åŠ¡1ï¼šä¹°å’–å•¡', completed: true, priority: 3, owner: {id: 1, name: 'å¼ ä¸‰', avatar: 'avatars:svg-11'}, dueDate: new Date()},
+        {id: 2, desc: 'ä»»åŠ¡4ï¼šæˆ‘æ˜¯ä¸€ä¸ªéå¸¸éå¸¸é•¿çš„ä»»åŠ¡', priority: 3, owner: {id: 1, name: 'å¼ ä¸‰', avatar: 'avatars:svg-11'}, dueDate: new Date()}
         ]
     },
    {
-      id: 2, name: '½øĞĞÖĞ',
+      id: 2, name: 'è¿›è¡Œä¸­',
       tasks: [
-        {id: 1, desc: 'ÈÎÎñ2£ºÍê³ÉPPT', completed: false, priority: 2, owner: {id: 1, name: 'ÀîËÄ', avatar: 'avatars:svg-12'}, dueDate: new Date(), reminder: new Date()},
-        {id: 2, desc: 'ÈÎÎñ3£ºtask-3', completed: false, priority: 1, owner: {id: 1, name: 'ÍõÎå', avatar: 'avatars:svg-13'}, dueDate: new Date()}
+        {id: 1, desc: 'ä»»åŠ¡2ï¼šå®ŒæˆPPT', completed: false, priority: 2, owner: {id: 1, name: 'æå››', avatar: 'avatars:svg-12'}, dueDate: new Date(), reminder: new Date()},
+        {id: 2, desc: 'ä»»åŠ¡3ï¼štask-3', completed: false, priority: 1, owner: {id: 1, name: 'ç‹äº”', avatar: 'avatars:svg-13'}, dueDate: new Date()}
         ]
     },
   ];
@@ -969,23 +969,23 @@ mat-icon.avatar {
   ngOnInit() {this.avatar = this.item.owner ? this.item.owner.avatar : 'unassigned'; }
 ```
 
-## 2-14 ÈÎÎñÁĞ±íÖ®ĞÂÈÎÎñ¶Ô»°¿ò
+## 2-14 ä»»åŠ¡åˆ—è¡¨ä¹‹æ–°ä»»åŠ¡å¯¹è¯æ¡†
 ng g c task/new-task --spec=false
 
-matSuffix µ±³Éºó×ºÊ¹ÓÃ¡£
+matSuffix å½“æˆåç¼€ä½¿ç”¨ã€‚
 
-SharedModuleÖĞĞèÒªÒıÈë     MatRadioModule, MatNativeDateModule, MatDatepickerModule,
+SharedModuleä¸­éœ€è¦å¼•å…¥     MatRadioModule, MatNativeDateModule, MatDatepickerModule,
 
-    MatDatepickerModule ĞèÒªÒıÈëMatNativeDateModule ½øĞĞÒ»Ğ©ĞòÁĞ»¯
+    MatDatepickerModule éœ€è¦å¼•å…¥MatNativeDateModule è¿›è¡Œä¸€äº›åºåˆ—åŒ–
 
 ```typescript
 
 # new-task.component.html
 <form >
-  <h2 mat-dialog-title>ĞÂ½¨ÈÎÎñ</h2>
+  <h2 mat-dialog-title>æ–°å»ºä»»åŠ¡</h2>
   <div mat-dialog-content>
     <mat-input-container class="full-width">
-      <input matInput type="text" placeholder="ÈÎÎñÄÚÈİ">
+      <input matInput type="text" placeholder="ä»»åŠ¡å†…å®¹">
     </mat-input-container>
     <mat-radio-group>
       <mat-radio-button *ngFor="let priority of priorities" [value]="priority.value">
@@ -993,21 +993,21 @@ SharedModuleÖĞĞèÒªÒıÈë     MatRadioModule, MatNativeDateModule, MatDatepickerMod
       </mat-radio-button>
     </mat-radio-group>
     <mat-input-container class="full-width">
-      <input matInput [matDatepicker]="dueDatepicker" type="text" placeholder="ÈÎÎñ½ØÖ¹ÈÕÆÚ">
+      <input matInput [matDatepicker]="dueDatepicker" type="text" placeholder="ä»»åŠ¡æˆªæ­¢æ—¥æœŸ">
       <!--<button type="button" matSuffix [matDatepickerToggle]="dueDatepicker"></button>-->
       <mat-datepicker-toggle matSuffix [for]="dueDatepicker"></mat-datepicker-toggle>
     </mat-input-container>
     <mat-datepicker #dueDatepicker></mat-datepicker>
 
     <mat-input-container class="full-width">
-      <input matInput [matDatepicker]="reminderDatepicker" type="text" placeholder="ÌáĞÑÈÕÆÚ">
+      <input matInput [matDatepicker]="reminderDatepicker" type="text" placeholder="æé†’æ—¥æœŸ">
       <mat-datepicker-toggle matSuffix [for]="reminderDatepicker"></mat-datepicker-toggle>
     </mat-input-container>
     <mat-datepicker #reminderDatepicker></mat-datepicker>
 
     <div mat-dialog-actions>
-      <button type="button" mat-raised-button color="primary" (click)="onClick()">±£´æ</button>
-      <button type="button" mat-button mat-dialog-close>¹Ø±Õ</button>
+      <button type="button" mat-raised-button color="primary" (click)="onClick()">ä¿å­˜</button>
+      <button type="button" mat-button mat-dialog-close>å…³é—­</button>
     </div>
   </div>
 </form>
@@ -1015,9 +1015,9 @@ SharedModuleÖĞĞèÒªÒıÈë     MatRadioModule, MatNativeDateModule, MatDatepickerMod
 # new-task.component.ts
 export class NewTaskComponent implements OnInit {
   priorities = [
-    {label: '½ô¼±', value: '1', },
-    {label: 'ÖØÒª', value: '2', },
-    {label: 'ÆÕÍ¨', value: '3', },
+    {label: 'ç´§æ€¥', value: '1', },
+    {label: 'é‡è¦', value: '2', },
+    {label: 'æ™®é€š', value: '3', },
  ];
 }
 
@@ -1033,22 +1033,22 @@ export class NewTaskComponent implements OnInit {
 # task-home.component.ts
 
 ```
-## 2-15 ÈÎÎñÁĞ±íÖ®ÒÆ¶¯ÄÚÈİ¶Ô»°¿ò
+## 2-15 ä»»åŠ¡åˆ—è¡¨ä¹‹ç§»åŠ¨å†…å®¹å¯¹è¯æ¡†
 
 ng g c task/copy-task --spec=false
 
 ```typescript
 # copy-task.component.html
 <form>
-  <h3 mat-dialog-title>ÒÆ¶¯±¾ÁĞ±íËùÓĞÄÚÈİ</h3>
+  <h3 mat-dialog-title>ç§»åŠ¨æœ¬åˆ—è¡¨æ‰€æœ‰å†…å®¹</h3>
   <div mat-dialog-content>
-    <mat-select placeholder="ÇëËùÓĞÄ¿±êÁĞ±í">
+    <mat-select placeholder="è¯·æ‰€æœ‰ç›®æ ‡åˆ—è¡¨">
       <mat-option *ngFor="let list of lists">{{list.name}}</mat-option>
     </mat-select>
   </div>
   <mat-dialog-actions>
-    <button type="button" mat-raised-button color="primary" (click)="onClick()">±£´æ</button>
-    <button type="button" mat-button [mat-dialog-close]>¹Ø±Õ</button>
+    <button type="button" mat-raised-button color="primary" (click)="onClick()">ä¿å­˜</button>
+    <button type="button" mat-button [mat-dialog-close]>å…³é—­</button>
   </mat-dialog-actions>
 </form>
 
@@ -1080,30 +1080,30 @@ export class CopyTaskComponent implements OnInit {
 
 ```
 
-## 2-16 Íê³ÉÖ÷¿ò¼Ü
-Íê³ÉÏÂÀ­ÁĞ±íµÄ¼¸¸ö°´Å¥, ĞŞ¸ÄÈÎÎñµÄ Dialog¡£
+## 2-16 å®Œæˆä¸»æ¡†æ¶
+å®Œæˆä¸‹æ‹‰åˆ—è¡¨çš„å‡ ä¸ªæŒ‰é’®, ä¿®æ”¹ä»»åŠ¡çš„ Dialogã€‚
 
-task-item.component.html ÖĞµã»÷ Checkbox Ò²»áµ¯³öĞŞ¸ÄÈÎÎñµÄ¶Ô»°¿ò¡£ÔõÑù´¦Àí£¿
+task-item.component.html ä¸­ç‚¹å‡» Checkbox ä¹Ÿä¼šå¼¹å‡ºä¿®æ”¹ä»»åŠ¡çš„å¯¹è¯æ¡†ã€‚æ€æ ·å¤„ç†ï¼Ÿ
 
 ```typescript
   onCheckBoxClick(ev: Event) {ev.stopPropagation(); }
 ```
 
-Í¬Ñù projects Ìí¼Ó/±à¼­ÊÇÒ»ÑùµÄÒ»¸ö×é¼ş¡£
+åŒæ · projects æ·»åŠ /ç¼–è¾‘æ˜¯ä¸€æ ·çš„ä¸€ä¸ªç»„ä»¶ã€‚
 
-É¾³ıÁĞ±í°´Å¥ -- Ò»¸öÈ·ÈÏµÄ¶Ô»°¿ò¡£±È½ÏÍ¨ÓÃ½¨Á¢ÔÚSharedModuleÖĞ¡£
+åˆ é™¤åˆ—è¡¨æŒ‰é’® -- ä¸€ä¸ªç¡®è®¤çš„å¯¹è¯æ¡†ã€‚æ¯”è¾ƒé€šç”¨å»ºç«‹åœ¨SharedModuleä¸­ã€‚
 
-Íê³ÉĞŞ¸ÄÁĞ±íÃû³Æ£¬Ìí¼ÓĞÂÁĞ±í¡£
+å®Œæˆä¿®æ”¹åˆ—è¡¨åç§°ï¼Œæ·»åŠ æ–°åˆ—è¡¨ã€‚
 
-* __Cli ²ÎÊı__
+* __Cli å‚æ•°__
 
 it=--inline-template
 
 is=--inline-style
 
-* ¿ØÖÆÌ¨£º Could not find HammerJS
+* æ§åˆ¶å°ï¼š Could not find HammerJS
 
-Material ×é¼ş ÒÆ¶¯¶Ë»áÓÃ HammerJS¡£
+Material ç»„ä»¶ ç§»åŠ¨ç«¯ä¼šç”¨ HammerJSã€‚
 
 ```typescript
 npm install --save hammerjs
@@ -1139,10 +1139,10 @@ $ ng g c task/new-task-list --spec=false
   (onDel)="launcheConfirmDialog()"
 
 # project-list.component.ts
-  launcherUpdateDialog() {const dialogRef = this.dialog.open(NewProjectComponent, {data: {title: '±à¼­ÏîÄ¿:'}}); }
+  launcherUpdateDialog() {const dialogRef = this.dialog.open(NewProjectComponent, {data: {title: 'ç¼–è¾‘é¡¹ç›®:'}}); }
 
   launcheConfirmDialog() {
-    const dialogRef = this.dialog.open(ConfirmDialogComponent, {data: {title: 'É¾³ıÏîÄ¿:', content: 'ÄúÈ·ÈÏÉ¾³ı¸ÃÏîÄ¿Ã´'}});
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {data: {title: 'åˆ é™¤é¡¹ç›®:', content: 'æ‚¨ç¡®è®¤åˆ é™¤è¯¥é¡¹ç›®ä¹ˆ'}});
     dialogRef.afterClosed().subscribe(result => console.log(result));
   }
 
@@ -1155,8 +1155,8 @@ $ ng g c task/new-task-list --spec=false
       {{content}}
     </mat-dialog-content>
     <mat-dialog-actions>
-      <button type="button" mat-raised-button color="primary" (click)="onClick(true)">È·¶¨</button>
-      <button type="button" mat-button [mat-dialog-close] (click)="onClick(false)">È¡Ïû</button>
+      <button type="button" mat-raised-button color="primary" (click)="onClick(true)">ç¡®å®š</button>
+      <button type="button" mat-button [mat-dialog-close] (click)="onClick(false)">å–æ¶ˆ</button>
     </mat-dialog-actions>
   `,
   styles: []
@@ -1176,12 +1176,12 @@ export class ConfirmDialogComponent implements OnInit {
   <h3 mat-dialog-title>{{title}}</h3>
   <mat-dialog-content>
     <mat-input-container class="full-width">
-      <input type="text" matInput placeholder="ÁĞ±íÃû³Æ">
+      <input type="text" matInput placeholder="åˆ—è¡¨åç§°">
     </mat-input-container>
   </mat-dialog-content>
   <mat-dialog-actions>
-    <button type="button" mat-raised-button color="primary" (click)="onClick()">±£´æ</button>
-    <button type="button" mat-button [mat-dialog-close]>¹Ø±Õ</button>
+    <button type="button" mat-raised-button color="primary" (click)="onClick()">ä¿å­˜</button>
+    <button type="button" mat-button [mat-dialog-close]>å…³é—­</button>
   </mat-dialog-actions>
 </form>
 
@@ -1209,59 +1209,59 @@ export class ConfirmDialogComponent implements OnInit {
 
 # task-home.component.ts
   launchUpdateTaskDialog(task) {
-    const dialogRef = this.dialog.open(NewTaskComponent, {width: '250px', data: {title: 'ĞŞ¸ÄÈÎÎñ:', task: task}});
+    const dialogRef = this.dialog.open(NewTaskComponent, {width: '250px', data: {title: 'ä¿®æ”¹ä»»åŠ¡:', task: task}});
   }
 
   launchConfirmDialog() {
-    const dialogRef = this.dialog.open(ConfirmDialogComponent, {data: {title: 'É¾³ıÈÎÎñÁĞ±í:', content: 'ÄúÈ·ÈÏÉ¾³ı¸ÃÁĞ±íÃ´'}});
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {data: {title: 'åˆ é™¤ä»»åŠ¡åˆ—è¡¨:', content: 'æ‚¨ç¡®è®¤åˆ é™¤è¯¥åˆ—è¡¨ä¹ˆ'}});
     dialogRef.afterClosed().subscribe(result => console.log(result));
   }
 
   launchEditListDialog() {
-    const dialogRef = this.dialog.open(NewTaskListComponent, {data: {title: '¸ü¸ÄÁĞ±íÃû³Æ:'}});
+    const dialogRef = this.dialog.open(NewTaskListComponent, {data: {title: 'æ›´æ”¹åˆ—è¡¨åç§°:'}});
     dialogRef.afterClosed().subscribe(result => console.log(result));
   }
 
   launchNewListDialog() {
-    const dialogRef = this.dialog.open(NewTaskListComponent, {data: {title: 'ĞÂ½¨ÁĞ±í:'}});
+    const dialogRef = this.dialog.open(NewTaskListComponent, {data: {title: 'æ–°å»ºåˆ—è¡¨:'}});
     dialogRef.afterClosed().subscribe(result => console.log(result));
   }
 
-ĞÂÔö£¬ĞŞ¸ÄÉ¾³ı Ìí¼Ó¶ÔÓ¦µÄ¿ØÖÆ¡£
+æ–°å¢ï¼Œä¿®æ”¹åˆ é™¤ æ·»åŠ å¯¹åº”çš„æ§åˆ¶ã€‚
 
 ```
 
-# µÚ3ÕÂ Angular ¶¯»­
-## 3-1 ³õÊ¶ Angular Animation
+# ç¬¬3ç«  Angular åŠ¨ç”»
+## 3-1 åˆè¯† Angular Animation
 
-ÎªÁË¼õÉÙCoreÌå»ı, animation ²»ÔÙ·Åµ½ºËĞÄ¿â£¬µ«Ò²ºÜÖØÒª¡£
+ä¸ºäº†å‡å°‘Coreä½“ç§¯, animation ä¸å†æ”¾åˆ°æ ¸å¿ƒåº“ï¼Œä½†ä¹Ÿå¾ˆé‡è¦ã€‚
 
 https://www.w3.org/TR/web-animations-1/
 
-State ºÍ Transition
+State å’Œ Transition
 
-* ¶¯»­ÆäÊµ¾ÍÊÇ´ÓÒ»¸ö×´Ì¬¹ı¶Éµ½ÁíÒ»¸ö×´Ì¬
+* åŠ¨ç”»å…¶å®å°±æ˜¯ä»ä¸€ä¸ªçŠ¶æ€è¿‡æ¸¡åˆ°å¦ä¸€ä¸ªçŠ¶æ€
 
-* ×´Ì¬±¾Éí°üº¬ĞÎ×´¡¢ÑÕÉ«¡¢´óĞ¡µÈµÈ
+* çŠ¶æ€æœ¬èº«åŒ…å«å½¢çŠ¶ã€é¢œè‰²ã€å¤§å°ç­‰ç­‰
 
-* State ¾ÍÊÇ¶¨Òå×´Ì¬¶ø Transitoin ÊÇ¶¨ÒåÈçºÎ¹ı¶É 
-
-
-Animate º¯Êı
-
-* Animate ¹æ¶¨ÁË¾ßÌåÔõÑù¹ı¶É£¬±ÈÈçÊ±¼ä¡¢¹ı¶ÉµÄËÙ¶ÈµÈ
-
-* animate ÓĞ¶à¸öÖØÔØĞÎÊ½
+* State å°±æ˜¯å®šä¹‰çŠ¶æ€è€Œ Transitoin æ˜¯å®šä¹‰å¦‚ä½•è¿‡æ¸¡ 
 
 
-0.2ÃëµÄ¶¯»­£¬ÑÓÊ±Ò»ÃëÖ´ĞĞ¡£
+Animate å‡½æ•°
+
+* Animate è§„å®šäº†å…·ä½“æ€æ ·è¿‡æ¸¡ï¼Œæ¯”å¦‚æ—¶é—´ã€è¿‡æ¸¡çš„é€Ÿåº¦ç­‰
+
+* animate æœ‰å¤šä¸ªé‡è½½å½¢å¼
+
+
+0.2ç§’çš„åŠ¨ç”»ï¼Œå»¶æ—¶ä¸€ç§’æ‰§è¡Œã€‚
         transition('green => red', animate('.2s 1s')), 
-        transition('green => red', animate('<³ÖĞøÊ±¼ä> <ÑÓÊ±Ê±¼ä>')), 
+        transition('green => red', animate('<æŒç»­æ—¶é—´> <å»¶æ—¶æ—¶é—´>')), 
 
-¼ÓÔØBrowserAnimationsModule¾¡Á¿·ÅÔÚ×îºó¡£
+åŠ è½½BrowserAnimationsModuleå°½é‡æ”¾åœ¨æœ€åã€‚
 
-    trigger('square', Ãû³ÆÔÚÏìÓ¦µÄhtmlÖĞ [@´¥·¢Æ÷Ãû×Ö]
-=×é¼şµ±ÖĞµÄ³ÉÔ±±äÁ¿»ò²Åº¯Êı
+    trigger('square', åç§°åœ¨å“åº”çš„htmlä¸­ [@è§¦å‘å™¨åå­—]
+=ç»„ä»¶å½“ä¸­çš„æˆå‘˜å˜é‡æˆ–æ‰å‡½æ•°
 
 ```typescript
 npm i --save @angular/animations
@@ -1269,7 +1269,7 @@ npm i --save @angular/animations
 # html
       <div class="square" [@square]="squareState" (click)="onClick()"></div>
 # ts
-@Component ÖĞ Ìí¼Ó
+@Component ä¸­ æ·»åŠ 
   animations: [
     trigger('square', [
         state('green', style({backgroundColor: 'green', height: '100px', transform: 'translateX(0)' })),
@@ -1279,34 +1279,34 @@ npm i --save @angular/animations
       ]
     )
   ]
-class ÖĞÌí¼Ó
+class ä¸­æ·»åŠ 
   onClick() {this.squareState = this.squareState === 'red' ? 'green' : 'red'; }
 
 # app.module.ts 
-×îºóÒıÈëBrowserAnimationsModule
+æœ€åå¼•å…¥BrowserAnimationsModule
 ```
 
-## 3-2 »º¶¯º¯ÊıºÍ¹Ø¼üÖ¡ 
+## 3-2 ç¼“åŠ¨å‡½æ•°å’Œå…³é”®å¸§ 
 
-__»º¶¯º¯Êı__
+__ç¼“åŠ¨å‡½æ•°__
 
-* »º¶¯º¯ÊıÖ¸¶¨¶¯»­Ğ§¹ûÔÚÖ´ĞĞÊ±µÄËÙ¶È£¬Ê¹Æä¿´ÆğÀ´¸ü¼ÓÕæÊµ¡£
+* ç¼“åŠ¨å‡½æ•°æŒ‡å®šåŠ¨ç”»æ•ˆæœåœ¨æ‰§è¡Œæ—¶çš„é€Ÿåº¦ï¼Œä½¿å…¶çœ‹èµ·æ¥æ›´åŠ çœŸå®ã€‚
 
-* µ±Æ¤ÇòÏÂÂäÊ±£¬ÏÈÊÇÔ½µôÔ½¿ì£¬×²µ½µØÉÏºó»Øµ¯×îÖÕ²ÅÓÖÅö´¥µ½µØ°å¡£
+* å½“çš®çƒä¸‹è½æ—¶ï¼Œå…ˆæ˜¯è¶Šæ‰è¶Šå¿«ï¼Œæ’åˆ°åœ°ä¸Šåå›å¼¹æœ€ç»ˆæ‰åˆç¢°è§¦åˆ°åœ°æ¿ã€‚
 
-ease-in ¿ªÊ¼Âı£¬ºó±ß¿ì£¬ ease-out Ïà·´
+ease-in å¼€å§‹æ…¢ï¼Œåè¾¹å¿«ï¼Œ ease-out ç›¸å
 
-easeÊµ¼ÊÊÇÊ¹ÓÃÁË cubic-bezier(0.86, 0, 0.07, 1); µ÷ÕûËüµÄ4¸ö²ÎÊı¿ÉµÃµ½ÏàÓ¦Ğ§¹û£¬ÓÃÍøÕ¾½øĞĞ²é¿´¡£
+easeå®é™…æ˜¯ä½¿ç”¨äº† cubic-bezier(0.86, 0, 0.07, 1); è°ƒæ•´å®ƒçš„4ä¸ªå‚æ•°å¯å¾—åˆ°ç›¸åº”æ•ˆæœï¼Œç”¨ç½‘ç«™è¿›è¡ŒæŸ¥çœ‹ã€‚
 
 easings.net cubic-bezier.com
 
-__¹Ø¼üÖ¡__
+__å…³é”®å¸§__
 
-* W3CµÄ Web Animation ±ê×¼ÔİÊ±ÎŞ·¨Ö§³ÖËùÓĞµÄ cubic-bezier º¯Êı
+* W3Cçš„ Web Animation æ ‡å‡†æš‚æ—¶æ— æ³•æ”¯æŒæ‰€æœ‰çš„ cubic-bezier å‡½æ•°
 
-* Ö¡ - ¾ÍÊÇ¶¯»­ÖĞµÄ×îĞ¡µ¥Î»Ó°Ïñ»­Ãæ
+* å¸§ - å°±æ˜¯åŠ¨ç”»ä¸­çš„æœ€å°å•ä½å½±åƒç”»é¢
 
-* ¹Ø¼üÖ¡ - ÎïÌåÔË¶¯»ò±ä»¯ÖĞµÄ¹Ø¼ü¶¯×÷Ëù´¦µÄÄÇÒ»Ö¡
+* å…³é”®å¸§ - ç‰©ä½“è¿åŠ¨æˆ–å˜åŒ–ä¸­çš„å…³é”®åŠ¨ä½œæ‰€å¤„çš„é‚£ä¸€å¸§
 
 
 ```typescript
@@ -1344,26 +1344,26 @@ __¹Ø¼üÖ¡__
 ```
 
 
-## 3-3 ÏîÄ¿¿¨Æ¬ºÍÈÎÎñ¶¯»­
+## 3-3 é¡¹ç›®å¡ç‰‡å’Œä»»åŠ¡åŠ¨ç”»
 
-¸ø¶¯»­ĞÂ½¨Ò»¸öÎÄ¼ş¼Ğ anims, projects Êó±êÒÆÈëÊ±·Å´ó£¬ÒÆ³ö»Ö¸´¡£
+ç»™åŠ¨ç”»æ–°å»ºä¸€ä¸ªæ–‡ä»¶å¤¹ anims, projects é¼ æ ‡ç§»å…¥æ—¶æ”¾å¤§ï¼Œç§»å‡ºæ¢å¤ã€‚
 
-borderShadow »ò 'border-shadow'£¬ÓĞºáÏßµ±²»ÁËkey
+borderShadow æˆ– 'border-shadow'ï¼Œæœ‰æ¨ªçº¿å½“ä¸äº†key
 
-@HostBinding('@card') cardState = 'out';  Ïàµ±ÓÚĞ´ÉÏ¡¡[@card]="cardState"
+@HostBinding('@card') cardState = 'out';  ç›¸å½“äºå†™ä¸Šã€€[@card]="cardState"
 
-Êó±ê½øÈëÊ±£¬Àë¿ªÊ±¹ı³¡¶¯»­
+é¼ æ ‡è¿›å…¥æ—¶ï¼Œç¦»å¼€æ—¶è¿‡åœºåŠ¨ç”»
 
 ```typescript
-@HostListener() ¼àÌıËŞÖ÷ÊÂ¼şµÄ¡£
+@HostListener() ç›‘å¬å®¿ä¸»äº‹ä»¶çš„ã€‚
 @HostListener('mouseenter')
 @HostListener('mouseenter', ['$event.target'])
 @HostListener('mouseleave')
 ```
 
-task-item ÖĞ list ²»ÊÇ°ó¶¨Õû¸ö×é¼şµÄ¶¯»­£¬ËùÒÔÖ±½ÓĞ´²»ÓÃ HostBinding¡£
+task-item ä¸­ list ä¸æ˜¯ç»‘å®šæ•´ä¸ªç»„ä»¶çš„åŠ¨ç”»ï¼Œæ‰€ä»¥ç›´æ¥å†™ä¸ç”¨ HostBindingã€‚
 
-½« tasklists ½«±íÊ¾ÓÅÏÈ¼¶µÄ±ßÀ©´ó¶¯»­
+å°† tasklists å°†è¡¨ç¤ºä¼˜å…ˆçº§çš„è¾¹æ‰©å¤§åŠ¨ç”»
 
 Code
 
@@ -1423,39 +1423,39 @@ export const itemAnim = trigger('item', [
   transition('in => out', animate('100ms ease-out'))
 ])
 ```
-## 3-4 Â·ÓÉ¶¯»­¼°¸ß½×¶¯»­º¯Êı
+## 3-4 è·¯ç”±åŠ¨ç”»åŠé«˜é˜¶åŠ¨ç”»å‡½æ•°
 
-__Êµ¼ù__
+__å®è·µ__
 
-* Â·ÓÉ¶¯»­ĞèÒªÔÚhostÔªÊı¾İÖĞÖ¸¶¨´¥·¢Æ÷
+* è·¯ç”±åŠ¨ç”»éœ€è¦åœ¨hostå…ƒæ•°æ®ä¸­æŒ‡å®šè§¦å‘å™¨
 
-* ¶¯»­×¢Òâ²»Òª¹ı¶à£¬·ñÔòÊÊµÃÆä·´¡£
+* åŠ¨ç”»æ³¨æ„ä¸è¦è¿‡å¤šï¼Œå¦åˆ™é€‚å¾—å…¶åã€‚
 
 __Group__
 
-* ÓÃÓÚÍ¬Ê±½øĞĞÒ»×éµÄ¶¯»­±ä»»
+* ç”¨äºåŒæ—¶è¿›è¡Œä¸€ç»„çš„åŠ¨ç”»å˜æ¢
 
 * `[animate(...), animate(...)...]`
 
 __Query & Stagger__
 
-* Query ÓÃÓÚ¸¸½ÚµãÑ°ÕÒ×Ó½Úµã
+* Query ç”¨äºçˆ¶èŠ‚ç‚¹å¯»æ‰¾å­èŠ‚ç‚¹
 
-* Stagger Ö¸¶¨ÓĞ¶à¸öÂú×ã Query µÄÔªËØ£¬Ã¿¸ö¶¯»­Ö®¼äÓĞ¼ä¸ô
+* Stagger æŒ‡å®šæœ‰å¤šä¸ªæ»¡è¶³ Query çš„å…ƒç´ ï¼Œæ¯ä¸ªåŠ¨ç”»ä¹‹é—´æœ‰é—´éš”
 
-Â·ÓÉ¶¯»­ºÍÆÕÍ¨¶¯»­Ò»Ñù£¬ÒòÎªÊÇÕû¸öÇĞ»»£¬ÒªÓÃ HostBinding, `@HostBinding('@routeAnim') state`
+è·¯ç”±åŠ¨ç”»å’Œæ™®é€šåŠ¨ç”»ä¸€æ ·ï¼Œå› ä¸ºæ˜¯æ•´ä¸ªåˆ‡æ¢ï¼Œè¦ç”¨ HostBinding, `@HostBinding('@routeAnim') state`
 
-position: 'fixed' Èç¹ûÃ»ÓĞ»áÉÏÏÂ´®Î»ÖÃ£¬ flexÈİÆ÷ÈÃËü¾ÓÖĞ»áµ÷ÕûÎ»ÖÃ£¬ËùÒÔÒª¹Ì¶¨Ëü¡£
+position: 'fixed' å¦‚æœæ²¡æœ‰ä¼šä¸Šä¸‹ä¸²ä½ç½®ï¼Œ flexå®¹å™¨è®©å®ƒå±…ä¸­ä¼šè°ƒæ•´ä½ç½®ï¼Œæ‰€ä»¥è¦å›ºå®šå®ƒã€‚
 
     transition('void => *', === ':enter'
     transition('* => void', === ':leave'
-    ±ğÃû :enter,:leave ÊÇÒ»ÑùµÄ
+    åˆ«å :enter,:leave æ˜¯ä¸€æ ·çš„
 
-es6Ğ´·¨
+es6å†™æ³•
       
     this.projects = [...this.projects, {key: value}];
 
-stagger ·Ö±ğ¶¯»­³öÀ´µÄ¡£Èç¹ûÃ»ÓĞstagger, ÊÇÒ»Æğ¶¯»­³öÀ´µÄ¡£ËÑË÷È«²¿µÄ×Ó½Úµã£¬¹æ¶¨ËüÃÇµÄ½ø³¡¶¯»­¡£Ò²¿ÉÒÔÊÇ²édiv¡£ÎªÁËÈÃËûÃÇÓĞĞ©¼ä¸ô£¬ËùÒÔ°Ñ¼ä¸ôÊ±¼ä×ö³öÀ´£¬ºóÃæ¸ú¶¯»­¡£
+stagger åˆ†åˆ«åŠ¨ç”»å‡ºæ¥çš„ã€‚å¦‚æœæ²¡æœ‰stagger, æ˜¯ä¸€èµ·åŠ¨ç”»å‡ºæ¥çš„ã€‚æœç´¢å…¨éƒ¨çš„å­èŠ‚ç‚¹ï¼Œè§„å®šå®ƒä»¬çš„è¿›åœºåŠ¨ç”»ã€‚ä¹Ÿå¯ä»¥æ˜¯æŸ¥divã€‚ä¸ºäº†è®©ä»–ä»¬æœ‰äº›é—´éš”ï¼Œæ‰€ä»¥æŠŠé—´éš”æ—¶é—´åšå‡ºæ¥ï¼Œåé¢è·ŸåŠ¨ç”»ã€‚
 ```typescript
 # list.anim.ts
 export const listAnimation = trigger('listAnim', [
@@ -1491,16 +1491,16 @@ export const slideToRight = trigger('routeAnim', [
   ]),
 ]);
 
-# sidebar.component.html Ìí¼ÓÂ·ÓÉ
+# sidebar.component.html æ·»åŠ è·¯ç”±
   <mat-list-item [routerLink]="['/projects']" (click)="onNavClick()">
   <mat-list-item [routerLink]="['/tasklists']" (click)="onNavClick()">
 
-# sidebar.component.ts Ìí¼Óµ¯³öÊÂ¼ş
+# sidebar.component.ts æ·»åŠ å¼¹å‡ºäº‹ä»¶
   @Output() navClick = new EventEmitter();
   onNavClick() {this.navClick.emit(); }
 
 # project-list.component.css
-:host ¸ÄÎª .container
+:host æ”¹ä¸º .container
 
 # project-list.component.html
 <div class="container" [@listAnim]="projects.length">
@@ -1515,8 +1515,8 @@ export const slideToRight = trigger('routeAnim', [
   openNewProjectDialog() {...
     dialogRef.afterClosed().subscribe(result => {
       this.projects = [...this.projects,
-        {id: 3, name: 'Ò»¸öĞÂÏîÄ¿', desc: 'ÕâÊÇÒ»¸öĞÂÏîÄ¿', coverImg: 'assets/img/covers/1.jpg'},
-        {id: 4, name: 'ÓÖÒ»¸öĞÂÏîÄ¿', desc: 'ÕâÊÇÓÖÒ»¸öĞÂÏîÄ¿', coverImg: 'assets/img/covers/0.jpg'},
+        {id: 3, name: 'ä¸€ä¸ªæ–°é¡¹ç›®', desc: 'è¿™æ˜¯ä¸€ä¸ªæ–°é¡¹ç›®', coverImg: 'assets/img/covers/1.jpg'},
+        {id: 4, name: 'åˆä¸€ä¸ªæ–°é¡¹ç›®', desc: 'è¿™æ˜¯åˆä¸€ä¸ªæ–°é¡¹ç›®', coverImg: 'assets/img/covers/0.jpg'},
         ];
     });
   }
@@ -1534,22 +1534,22 @@ export const slideToRight = trigger('routeAnim', [
   @HostBinding('@routeAnim') state;
 ```
 
-# µÚ4ÕÂ Angular ºËĞÄ¸ÅÄî»Ø¹ËºÍÌá¸ß
-## 4-1 ÒÀÀµĞÔ×¢Èë
+# ç¬¬4ç«  Angular æ ¸å¿ƒæ¦‚å¿µå›é¡¾å’Œæé«˜
+## 4-1 ä¾èµ–æ€§æ³¨å…¥
 
-* Ê²Ã´ÊÇÒÀÀµĞÔ×¢Èë£¿
+* ä»€ä¹ˆæ˜¯ä¾èµ–æ€§æ³¨å…¥ï¼Ÿ
 
-* ÒÀÀµĞÔ×¢Èë¿ò¼Ü
+* ä¾èµ–æ€§æ³¨å…¥æ¡†æ¶
 
-* ÒÀÀµĞÔ×¢Èë½ø½×
+* ä¾èµ–æ€§æ³¨å…¥è¿›é˜¶
 
 ```typescript
-ÁîÅÆ-¹¹½¨-ÒÀÀµ
+ä»¤ç‰Œ-æ„å»º-ä¾èµ–
 Injector->Provider->Object
 
 class Id {
   static getInstance(type: string): Id {
-    //ÉèÖÃ
+    //è®¾ç½®
     return new Id();
   }
 }
@@ -1572,14 +1572,14 @@ class Person {
 
   constructor() {
     this.id = Id.getInstance('idcard');
-    this.address = new Address('±±¾©', '±±¾©', '³¯ÑôÇø', 'XX ½ÖµÀ')
+    this.address = new Address('åŒ—äº¬', 'åŒ—äº¬', 'æœé˜³åŒº', 'XX è¡—é“')
   }
 }
 ```
 
-ÕâÑùÏÔĞÔ¹¹ÔìĞèÒªÖªµÀÏ¸½Ú£¬Èç¹ûÖØ¹¹ÔõÃ´°ì£¿¹¤³§·½·¨µÈ£¬ ÆäËûÀà¶¼ĞèÒª¸Ä£¬±È½ÏÂé·³¡£
+è¿™æ ·æ˜¾æ€§æ„é€ éœ€è¦çŸ¥é“ç»†èŠ‚ï¼Œå¦‚æœé‡æ„æ€ä¹ˆåŠï¼Ÿå·¥å‚æ–¹æ³•ç­‰ï¼Œ å…¶ä»–ç±»éƒ½éœ€è¦æ”¹ï¼Œæ¯”è¾ƒéº»çƒ¦ã€‚
 
-ÔõÑù´¦Àí£¿
+æ€æ ·å¤„ç†ï¼Ÿ
 
 ```typescript
 class Person {
@@ -1594,21 +1594,21 @@ class Person {
 
 main() {
   const id = Id.getInstance('idcard');
-  const address = new Address('±±¾©', '±±¾©', '³¯ÑôÇø', 'XX ½ÖµÀ')
+  const address = new Address('åŒ—äº¬', 'åŒ—äº¬', 'æœé˜³åŒº', 'XX è¡—é“')
   const person = new Person(id, address);
 }
 ```
 
 
-¼òµ¥µÄÒÀÀµ×¢Èë£¬»¹ÊÇĞèÒªÖªµÀÏ¸½Ú£¬Ö»ÊÇ°ÑÔğÈÎÍÆµ½ÉÏ¼¶ÁË¡£×îºóµ½Èë¿Ú½â¾ö£¬Èë¿Ú¾ÍÒª´¦ÀíºÜ¶àÎÊÌâ¡£»¹ÊÇºÜÂé·³¡£
+ç®€å•çš„ä¾èµ–æ³¨å…¥ï¼Œè¿˜æ˜¯éœ€è¦çŸ¥é“ç»†èŠ‚ï¼Œåªæ˜¯æŠŠè´£ä»»æ¨åˆ°ä¸Šçº§äº†ã€‚æœ€ååˆ°å…¥å£è§£å†³ï¼Œå…¥å£å°±è¦å¤„ç†å¾ˆå¤šé—®é¢˜ã€‚è¿˜æ˜¯å¾ˆéº»çƒ¦ã€‚
 
-ËùÒÔÎÒÃÇ»¹ĞèÒªÒ»°ãµÄÒÀÀµĞÔ×¢ÈëµÄ¿ò¼Ü¡£
+æ‰€ä»¥æˆ‘ä»¬è¿˜éœ€è¦ä¸€èˆ¬çš„ä¾èµ–æ€§æ³¨å…¥çš„æ¡†æ¶ã€‚
 
-`Provider` ¸æËß `Injecter` ÔõÑùÈ¥¹¹Ôì¶ÔÏó¡£
+`Provider` å‘Šè¯‰ `Injecter` æ€æ ·å»æ„é€ å¯¹è±¡ã€‚
 
-¸ù¾İ `Provider` Êı×é ¹¹½¨Ò»¸öÌá¹©¸øÄãÒÀÀµĞÔµÄ³Ø×Ó£¬ Provider Êı×é°üº¬¶à¸ö Provider ¶ÔÏó£¬
+æ ¹æ® `Provider` æ•°ç»„ æ„å»ºä¸€ä¸ªæä¾›ç»™ä½ ä¾èµ–æ€§çš„æ± å­ï¼Œ Provider æ•°ç»„åŒ…å«å¤šä¸ª Provider å¯¹è±¡ï¼Œ
 
-Provider ¶ÔÏó£¬: Á½¸öÊôĞÔ£¬ 1. Provide <ÁîÅÆ>,  2. userClass/useFactory/useValue 
+Provider å¯¹è±¡ï¼Œ: ä¸¤ä¸ªå±æ€§ï¼Œ 1. Provide <ä»¤ç‰Œ>,  2. userClass/useFactory/useValue 
 
 ```typescript
   constructor(private oc: OverlayContainer) {
@@ -1616,9 +1616,9 @@ Provider ¶ÔÏó£¬: Á½¸öÊôĞÔ£¬ 1. Provide <ÁîÅÆ>,  2. userClass/useFactory/useValue
       { provide: Person, useClass: Person},
       { provide: Address, useFactory: () => {
         if (environment.production) {
-          return new Address('±±¾©', '±±¾©', '³¯ÑôÇø', 'XX ½ÖµÀ');
+          return new Address('åŒ—äº¬', 'åŒ—äº¬', 'æœé˜³åŒº', 'XX è¡—é“');
         } else {
-          return new Address('Î÷²Ø', 'À­Èø', 'xxÇø', 'XX ½ÖµÀ');
+          return new Address('è¥¿è—', 'æ‹‰è¨', 'xxåŒº', 'XX è¡—é“');
         }
         }},
       { provide: Id, useFactory: () => {
@@ -1631,7 +1631,7 @@ Provider ¶ÔÏó£¬: Á½¸öÊôĞÔ£¬ 1. Provide <ÁîÅÆ>,  2. userClass/useFactory/useValue
   }
 
 ```
-Í¨¹ı InjectÀ´Ê¹ÓÃ
+é€šè¿‡ Injectæ¥ä½¿ç”¨
 
 ```typescript
 class Person {
@@ -1644,11 +1644,11 @@ class Person {
 
     static resolveAndCreate(providers: Provider[], parent?: Injector): ReflectiveInjector;
 
-Provider ÖĞÓĞ ClassProvider, ËùÒÔ
+Provider ä¸­æœ‰ ClassProvider, æ‰€ä»¥
 
-      { provide: Person, useClass: Person}, ¼òĞ´³É Person,
+      { provide: Person, useClass: Person}, ç®€å†™æˆ Person,
 
-´úÂëÊµÀı£º
+ä»£ç å®ä¾‹ï¼š
 ```typescript
 # core.module.ts
   providers: [{provide: 'BASE_CONFIG', useValue: 'http://localhost:3000'} ]
@@ -1659,22 +1659,22 @@ Provider ÖĞÓĞ ClassProvider, ËùÒÔ
   }
 ```
 
-³Ø×ÓÀïµÄ¶¼ÊÇÍ¬Ò»¸öÊµÀı£¬Èç¹ûÎÒÃÇÏëÒªÒ»¸öĞÂµÄÊµÀıÔõÃ´°ì£¿
+æ± å­é‡Œçš„éƒ½æ˜¯åŒä¸€ä¸ªå®ä¾‹ï¼Œå¦‚æœæˆ‘ä»¬æƒ³è¦ä¸€ä¸ªæ–°çš„å®ä¾‹æ€ä¹ˆåŠï¼Ÿ
 
-__·½·¨1:__ ÔÚ·µ»ØÒ»¸ö¹¤³§·½·¨£¬¶ø²»ÊÇ¶ÔÏó
+__æ–¹æ³•1:__ åœ¨è¿”å›ä¸€ä¸ªå·¥å‚æ–¹æ³•ï¼Œè€Œä¸æ˜¯å¯¹è±¡
 
 ```typescript
 { provide: Address, useFactory: () => {
   return () => {
     if (environment.production) {
-      return new Address('±±¾©', '±±¾©', '³¯ÑôÇø', 'XX ½ÖµÀ');
+      return new Address('åŒ—äº¬', 'åŒ—äº¬', 'æœé˜³åŒº', 'XX è¡—é“');
     } else {
-      return new Address('Î÷²Ø', 'À­Èø', 'xxÇø', 'XX ½ÖµÀ');
+      return new Address('è¥¿è—', 'æ‹‰è¨', 'xxåŒº', 'XX è¡—é“');
     }
   } } },
 ```
 
-__·½·¨2: ¸¸×Ó·½Ê½__
+__æ–¹æ³•2: çˆ¶å­æ–¹å¼__
 
 ```typescript
 const childInjector = injector.resolveAndCreateChild([Person]);
@@ -1683,58 +1683,58 @@ const personFromChild =  childInjector.get(Person);
 console.log(person === personFromChild);
 ```
 
-×Ó×¢ÈëÕßÃ»ÓĞÌá¹© Person £¬ÎªÊ²Ã´ÄÜÕÒµ½ÒÀÀµĞÔÄØ£º Èç¹û×Ó³Ø×ÓÕÒ²»µ½£¬»áÉÏ¸¸¼¶ÕÒ¡£
+å­æ³¨å…¥è€…æ²¡æœ‰æä¾› Person ï¼Œä¸ºä»€ä¹ˆèƒ½æ‰¾åˆ°ä¾èµ–æ€§å‘¢ï¼š å¦‚æœå­æ± å­æ‰¾ä¸åˆ°ï¼Œä¼šä¸Šçˆ¶çº§æ‰¾ã€‚
 
-Í¬Àí£¬ËùÒÔÔÚ moduleÖĞprovideµÄ¶«Î÷¿ÉÒÔÔÚ Component ÖĞÊ¹ÓÃ¡£ÔÚ¸¸ Component ÖĞÉùÃ÷µÄ¶«Î÷×Ó Component Ò²¿ÉÒÔÊ¹ÓÃ¡£
+åŒç†ï¼Œæ‰€ä»¥åœ¨ moduleä¸­provideçš„ä¸œè¥¿å¯ä»¥åœ¨ Component ä¸­ä½¿ç”¨ã€‚åœ¨çˆ¶ Component ä¸­å£°æ˜çš„ä¸œè¥¿å­ Component ä¹Ÿå¯ä»¥ä½¿ç”¨ã€‚
 
-Í¨³£ÎÒÃÇ²»ÓÃÊÖ¶¯Ğ´£¬ ÔÚmodule»òÊÇÀàµÄ ProviderÖĞÌá¹©³öÀ´ ,È»ºóÔÚ constructor ÖĞÖ¸Ã÷ËüµÄÀàĞÍ¡£
+é€šå¸¸æˆ‘ä»¬ä¸ç”¨æ‰‹åŠ¨å†™ï¼Œ åœ¨moduleæˆ–æ˜¯ç±»çš„ Providerä¸­æä¾›å‡ºæ¥ ,ç„¶ååœ¨ constructor ä¸­æŒ‡æ˜å®ƒçš„ç±»å‹ã€‚
 
 ## 4-2 ChangeDetection
 __ChangeDetection__
 
-* ¼ì²â³ÌĞòÄÚ²¿×´Ì¬£¬È»ºó·´Ó³µ½UIÉÏ
+* æ£€æµ‹ç¨‹åºå†…éƒ¨çŠ¶æ€ï¼Œç„¶ååæ˜ åˆ°UIä¸Š
 
-* ÒıÆğ×´Ì¬±ä»¯£º Events£¬XHR£¬Timers
+* å¼•èµ·çŠ¶æ€å˜åŒ–ï¼š Eventsï¼ŒXHRï¼ŒTimers
 
-* ApplicationRef ¼àÌı NgZone µÄ onTurnDone, È»ºóÖ´ĞĞ¼ì²â¡£
+* ApplicationRef ç›‘å¬ NgZone çš„ onTurnDone, ç„¶åæ‰§è¡Œæ£€æµ‹ã€‚
 
-Ä¬ÈÏ²ßÂÔÊÇÈ«¾Ö¼ì²é£¬Ò»°ã²»»áÒıÆğĞÔÄÜÎÊÌâ£¬´óĞÍÓ¦ÓÃ»áÓ°ÏìĞÔÄÜ¡£
+é»˜è®¤ç­–ç•¥æ˜¯å…¨å±€æ£€æŸ¥ï¼Œä¸€èˆ¬ä¸ä¼šå¼•èµ·æ€§èƒ½é—®é¢˜ï¼Œå¤§å‹åº”ç”¨ä¼šå½±å“æ€§èƒ½ã€‚
 
-OnPush ²ßÂÔ£¬Ö»ÓĞÍâ²¿·¢Éú¸Ä±ä--ÉèÖÃµÄÊôĞÔ·¢Éú±ä»¯²Å½øĞĞ¼ì²â¡£±ÜÃâÁËÕû¸öÊ÷ÅÜÒ»±é¡£´óĞÍÓ¦ÓÃ»áÌá¸ßĞÔÄÜ¡£
+OnPush ç­–ç•¥ï¼Œåªæœ‰å¤–éƒ¨å‘ç”Ÿæ”¹å˜--è®¾ç½®çš„å±æ€§å‘ç”Ÿå˜åŒ–æ‰è¿›è¡Œæ£€æµ‹ã€‚é¿å…äº†æ•´ä¸ªæ ‘è·‘ä¸€éã€‚å¤§å‹åº”ç”¨ä¼šæé«˜æ€§èƒ½ã€‚
 
-* ÊÖ¶¯¼ì²â
+* æ‰‹åŠ¨æ£€æµ‹
 ```typescript
 # project-list.component.ts
   changeDetection: ChangeDetectionStrategy.OnPush
 ```
-Êó±ê»®¹ıÊ±£¬×Ô¶¯Ìí¼Ó×Ó×é¼ş---½â¾ö·½·¨£º
+é¼ æ ‡åˆ’è¿‡æ—¶ï¼Œè‡ªåŠ¨æ·»åŠ å­ç»„ä»¶---è§£å†³æ–¹æ³•ï¼š
 
-constructor(private cd: ChangeDetectorRef) , È»ºóÔÚÒª¼ì²éµÄµØ·½Ìí¼Ó `this.cd.markForCheck();` Àı:
+constructor(private cd: ChangeDetectorRef) , ç„¶ååœ¨è¦æ£€æŸ¥çš„åœ°æ–¹æ·»åŠ  `this.cd.markForCheck();` ä¾‹:
 
     dialogRef.afterClosed().subscribe(result => {
       this.projects = this.projects.filter(p => p.id !== project.id);
       this.cd.markForCheck();
     });
 
-´ÏÃ÷×é¼şÊÖ¶¯¼ì²â£¬±¿×é¼şÈİÒ×¶àÁË¡£ÊäÈëÖµ±äÁËËü²Å»á±ä¡£
+èªæ˜ç»„ä»¶æ‰‹åŠ¨æ£€æµ‹ï¼Œç¬¨ç»„ä»¶å®¹æ˜“å¤šäº†ã€‚è¾“å…¥å€¼å˜äº†å®ƒæ‰ä¼šå˜ã€‚
 
-## 4-3 ´òÔìÖ§³ÖÍÏ×§µÄÊôĞÔĞÍÖ¸Áî
+## 4-3 æ‰“é€ æ”¯æŒæ‹–æ‹½çš„å±æ€§å‹æŒ‡ä»¤
 
-__Ö¸Áî Directive__
+__æŒ‡ä»¤ Directive__
 
-* ×é¼şÊÇÒ»ÖÖ´øÄ£°åµÄÖ¸Áî
+* ç»„ä»¶æ˜¯ä¸€ç§å¸¦æ¨¡æ¿çš„æŒ‡ä»¤
 
-* ½á¹¹ĞÍ(Structural)Ö¸ÁîºÍÊôĞÔĞÍ(Attribute)Ö¸Áî
+* ç»“æ„å‹(Structural)æŒ‡ä»¤å’Œå±æ€§å‹(Attribute)æŒ‡ä»¤
 
-* ÈçºÎ×Ô¼ºĞ´Ò»¸öÖ¸Áî
+* å¦‚ä½•è‡ªå·±å†™ä¸€ä¸ªæŒ‡ä»¤
 
 __Renderer2 ElementRef__
 
-* Angular ²»Ìá³«Ö±½Ó²Ù×÷ DOM
+* Angular ä¸æå€¡ç›´æ¥æ“ä½œ DOM
 
-* ¶ÔÓÚ DOM µÄ²Ù×÷Ó¦¸ÃÍ¨¹ı Renderer2 À´½øĞĞ
+* å¯¹äº DOM çš„æ“ä½œåº”è¯¥é€šè¿‡ Renderer2 æ¥è¿›è¡Œ
 
-* ElementRef ¿ÉÒÔÀí½â³ÉÖ¸Ïò DOM ÔªËØµÄÒıÓÃ
+* ElementRef å¯ä»¥ç†è§£æˆæŒ‡å‘ DOM å…ƒç´ çš„å¼•ç”¨
 
 ng g m directive
 ng g d directive/drag --spec=false
@@ -1745,7 +1745,7 @@ ng g d directive/drop --spec=false
     this._isDraggble = value;
   }
 
-  this._isDraggble = xxx; ÓĞset ·½·¨ºóÊ¹ÓÃÊ±»áÖ±½Óµ÷ÓÃ set ·½·¨¡£
+  this._isDraggble = xxx; æœ‰set æ–¹æ³•åä½¿ç”¨æ—¶ä¼šç›´æ¥è°ƒç”¨ set æ–¹æ³•ã€‚
   appDraggable=true, 
 
 ```typescript
@@ -1848,13 +1848,13 @@ export class DropDirective {
 
 # drag-drop.service.ts
 export interface DragData {
-  tag: string; //±êÊ¶ÍÏ×§ID
+  tag: string; //æ ‡è¯†æ‹–æ‹½ID
   data: any;
 }
 
 @Injectable()
 export class DragDropService {
-  //BehaviorSubject ×ÜÄÜ¼Ç×¡ÉÏÒ»´ÎµÄÖµ
+  //BehaviorSubject æ€»èƒ½è®°ä½ä¸Šä¸€æ¬¡çš„å€¼
   private _dragData = new BehaviorSubject<DragData>(null);
 
   setDragData(data: DragData) {this._dragData.next(data); }
@@ -1900,21 +1900,21 @@ export class DragDropService {
 
 ```
   
-## 4-4 ½á¹¹ĞÍÖ¸Áî¡¢Ä£¿éºÍÑùÊ½
+## 4-4 ç»“æ„å‹æŒ‡ä»¤ã€æ¨¡å—å’Œæ ·å¼
 
-`*`ÊÇÒ»¸öÓï·¨ÌÇ
+`*`æ˜¯ä¸€ä¸ªè¯­æ³•ç³–
 
 ```typescript
-<a *ngif="user.login">ÍË³ö</a>
-ºÍÏÂÃæÏàµÈ
+<a *ngif="user.login">é€€å‡º</a>
+å’Œä¸‹é¢ç›¸ç­‰
 <ng-template ngif="user.login">
-    <a>ÍË³ö</a>
+    <a>é€€å‡º</a>
 </ng-template>
 ```
 
-ElementRef ÊÇÖ¸ button½Úµã£¬¿ÉÒÔ¸Ä±äËüµÄÊôĞÔ£¬Èç¹ûÒª²Ù×÷ ÄÚ²¿×ÓÊÓÍ¼¾ÍÊÇÓÃViewContainerRef
+ElementRef æ˜¯æŒ‡ buttonèŠ‚ç‚¹ï¼Œå¯ä»¥æ”¹å˜å®ƒçš„å±æ€§ï¼Œå¦‚æœè¦æ“ä½œ å†…éƒ¨å­è§†å›¾å°±æ˜¯ç”¨ViewContainerRef
 
-Button ²Ù×÷ÀïÃæµÄ mat-icon £¬ÄÇÃ´button¾ÍÊÇÈİÆ÷¡£
+Button æ“ä½œé‡Œé¢çš„ mat-icon ï¼Œé‚£ä¹ˆbuttonå°±æ˜¯å®¹å™¨ã€‚
 ```typescript
 <button class="fab-button" mat-fab type="button" (click)="launchNewListDialog()">
   <mat-icon>add</mat-icon>
@@ -1922,21 +1922,21 @@ Button ²Ù×÷ÀïÃæµÄ mat-icon £¬ÄÇÃ´button¾ÍÊÇÈİÆ÷¡£
 
 ```
 
-__Ä£¿é__
+__æ¨¡å—__
 
-* Ê²Ã´ÊÇÄ£¿é
+* ä»€ä¹ˆæ˜¯æ¨¡å—
 
-Èç¹ûÊÇ¹²ÓÃµÄÒªexport³öÀ´£¬Ä¬ÈÏÖ»ÄÜ×Ô¼ºÓÃ¡£
+å¦‚æœæ˜¯å…±ç”¨çš„è¦exportå‡ºæ¥ï¼Œé»˜è®¤åªèƒ½è‡ªå·±ç”¨ã€‚
 
-* Ä£¿éµÄÔªÊı¾İ
+* æ¨¡å—çš„å…ƒæ•°æ®
 
-* ¾­³£¿´µ½µÄforRoot()
+* ç»å¸¸çœ‹åˆ°çš„forRoot()
 
-Ô´Âë ÊÇstatic ·½·¨£¬Á½¸ö¹¤³¡·½·¨
+æºç  æ˜¯static æ–¹æ³•ï¼Œä¸¤ä¸ªå·¥åœºæ–¹æ³•
 
 `ng g m services`
 
-¶¯Ì¬¶¨ÒåÔªÊı¾İ£¬·µ»ØModule¡£
+åŠ¨æ€å®šä¹‰å…ƒæ•°æ®ï¼Œè¿”å›Moduleã€‚
 ```typescript
 services.module.ts
 @NgModule()
@@ -1952,20 +1952,20 @@ export class ServicesModule {
 
 __ngClass, ngStyle, [class.yourstyle]__
 
-* ngClass ÓÃÓÚÌõ¼ş¶¯Ì¬Ö¸¶¨ÑùÊ½Àà£¬ÊÊºÏ¶ÔÑùÊ½×ö´óÁ¿¸ü¸ÄµÄÇé¿ö¡£
+* ngClass ç”¨äºæ¡ä»¶åŠ¨æ€æŒ‡å®šæ ·å¼ç±»ï¼Œé€‚åˆå¯¹æ ·å¼åšå¤§é‡æ›´æ”¹çš„æƒ…å†µã€‚
 
-* ngStyle ÓÃÓÚÌõ¼ş¶¯Ì¬Ö¸¶¨ÑùÊ½£¬ÊÊºÏÉÙÁ¿¸ü¸ÄµÄÇé¿ö¡£
+* ngStyle ç”¨äºæ¡ä»¶åŠ¨æ€æŒ‡å®šæ ·å¼ï¼Œé€‚åˆå°‘é‡æ›´æ”¹çš„æƒ…å†µã€‚
 
-* `[class.youcondition] = "condition"` Ö±½Ó¶ÔÓ¦Ò»¸öÌõ¼ş
+* `[class.youcondition] = "condition"` ç›´æ¥å¯¹åº”ä¸€ä¸ªæ¡ä»¶
 
 ```typescript
 # task-item.component.html
   <div mat-line class="content" [class.completed]="item.completed">
-  ºÍÏÂÃæÏàµÈ
+  å’Œä¸‹é¢ç›¸ç­‰
   <div mat-line class="content" [ngClass]="{'completed': item.completed}">
 ```
 
-flex ÈİÆ÷ÊÇ °´ order ÊôĞÔµÄË³Ğò½øĞĞÅÅÁĞµÄ£¬Ö»ÒªÉèÖÃÁËlistµÄorderÊôĞÔ¾Í¿ÉÒÔ¸Ä±ä orderÖµ½øĞĞÅÅÁĞÁË¡£
+flex å®¹å™¨æ˜¯ æŒ‰ order å±æ€§çš„é¡ºåºè¿›è¡Œæ’åˆ—çš„ï¼Œåªè¦è®¾ç½®äº†listçš„orderå±æ€§å°±å¯ä»¥æ”¹å˜ orderå€¼è¿›è¡Œæ’åˆ—äº†ã€‚
 
 ```typescript
 # task-home.component.html
@@ -1982,26 +1982,26 @@ flex ÈİÆ÷ÊÇ °´ order ÊôĞÔµÄË³Ğò½øĞĞÅÅÁĞµÄ£¬Ö»ÒªÉèÖÃÁËlistµÄorderÊôĞÔ¾Í¿ÉÒÔ¸Ä±ä o
   }
 ```
 
-## 4-5 Ä£°åÇı¶¯ĞÍ±íµ¥´¦Àí
+## 4-5 æ¨¡æ¿é©±åŠ¨å‹è¡¨å•å¤„ç†
 
-__Ä£°åÇı¶¯ĞÍ±íµ¥__
+__æ¨¡æ¿é©±åŠ¨å‹è¡¨å•__
 
-* ±íµ¥µÄÊı¾İ°ó¶¨
+* è¡¨å•çš„æ•°æ®ç»‘å®š
 
-* ÁîÈËÀ§»óµÄ ngModel
+* ä»¤äººå›°æƒ‘çš„ ngModel
 
-* Êı¾İÑéÖ¤
+* æ•°æ®éªŒè¯
 
 `ng g c task/quick-task --spec=false`
 
     <input .. [(ngModel)]="desc" name="desc">
 
-±ØĞëÒªÒ»¸önameÊôĞÔ£¬°ó¶¨ngModelºó×Ô¶¯´´½¨ControlForm, ÎªÁËÕÒµ½Ëü£¬Ê¹ÓÃÁËnameÊôĞÔ¡£
+å¿…é¡»è¦ä¸€ä¸ªnameå±æ€§ï¼Œç»‘å®šngModelåè‡ªåŠ¨åˆ›å»ºControlForm, ä¸ºäº†æ‰¾åˆ°å®ƒï¼Œä½¿ç”¨äº†nameå±æ€§ã€‚
 
-form ±êÇ©»á×Ô¶¯±ä³ÉngForm¡£±ä³ÉÁËangularµÄform£¬ÀïÃæµÄ¿Ø¼ş¾Í±ØĞëÒªÓĞÃû×ÖÁË¡£
+form æ ‡ç­¾ä¼šè‡ªåŠ¨å˜æˆngFormã€‚å˜æˆäº†angularçš„formï¼Œé‡Œé¢çš„æ§ä»¶å°±å¿…é¡»è¦æœ‰åå­—äº†ã€‚
 
 ```typescript
-[(ngModel)]="desc" Óï·¨ÌÇµÈÓÚ
+[(ngModel)]="desc" è¯­æ³•ç³–ç­‰äº
 [ngModel]="desc" (ngModelChange)="desc=$event"
 ```
 
@@ -2018,11 +2018,11 @@ Code:
 
 # quick-task.component.html
 <mat-input-container class="full-width">
-  <input matInput type="text" placeholder="ÔÚÕâÀï¿ìËÙ½¨Á¢Ò»¸öÈÎÎñ" [(ngModel)]="desc" name="desc" required>
+  <input matInput type="text" placeholder="åœ¨è¿™é‡Œå¿«é€Ÿå»ºç«‹ä¸€ä¸ªä»»åŠ¡" [(ngModel)]="desc" name="desc" required>
   <button matSuffix mat-icon-button type="button" (click)="sendQuickTask()">
     <mat-icon>send</mat-icon>
   </button>
-  <mat-error>²»ÄÜÎª¿Õ</mat-error>
+  <mat-error>ä¸èƒ½ä¸ºç©º</mat-error>
 </mat-input-container>
 
 # quick-task.component.ts
@@ -2047,31 +2047,31 @@ export class QuickTaskComponent implements OnInit {
 # task-home.component.ts
   handleQuickTask(desc: string) {console.log(desc); }
 ```
-## 4-6 ÏìÓ¦Ê½±íµ¥´¦ÀíºÍ×Ô¶¨Òå±íµ¥¿Ø¼ş£¨ÉÏ£©
+## 4-6 å“åº”å¼è¡¨å•å¤„ç†å’Œè‡ªå®šä¹‰è¡¨å•æ§ä»¶ï¼ˆä¸Šï¼‰
 
-__ÏìÓ¦Ê½±íµ¥__
+__å“åº”å¼è¡¨å•__
 
-* Èı¸öÖØÒª£º FormControl, FormGroup, FormBuilder
+* ä¸‰ä¸ªé‡è¦ï¼š FormControl, FormGroup, FormBuilder
 
-* ÑéÖ¤Æ÷ºÍÒì²½ÑéÖ¤Æ÷
+* éªŒè¯å™¨å’Œå¼‚æ­¥éªŒè¯å™¨
 
-e.g Ç°¶ËÑéÖ¤ ºÍ ºóÌ¨È¡ÏûÏ¢ÑéÖ¤¡£Èç×¢²á¡£ºÍ·şÎñÆ÷½»»¥·µ»Ø½á¹ûºóÍê³ÉÑéÖ¤¡£
+e.g å‰ç«¯éªŒè¯ å’Œ åå°å–æ¶ˆæ¯éªŒè¯ã€‚å¦‚æ³¨å†Œã€‚å’ŒæœåŠ¡å™¨äº¤äº’è¿”å›ç»“æœåå®ŒæˆéªŒè¯ã€‚
 
-* ¶¯Ì¬Ö¸¶¨ÑéÖ¤Æ÷
+* åŠ¨æ€æŒ‡å®šéªŒè¯å™¨
 
-__×Ô¶¨Òå±íµ¥¿Ø¼ş__
+__è‡ªå®šä¹‰è¡¨å•æ§ä»¶__
 
-* ±íµ¥¹ıÓÚ¸´ÔÓÖ®ºó£¬Âß¼­ÄÑÒÔÀíÇå³ş¡£
+* è¡¨å•è¿‡äºå¤æ‚ä¹‹åï¼Œé€»è¾‘éš¾ä»¥ç†æ¸…æ¥šã€‚
 
-* ¸´ÔÓÎÊÌâ²ğ³ÉÈô¸É¼òµ¥ÎÊÌâÎÊÌâÓÀÔ¶ÊÇ¡¾ÍòÄÜÔ¿³×¡¿
+* å¤æ‚é—®é¢˜æ‹†æˆè‹¥å¹²ç®€å•é—®é¢˜é—®é¢˜æ°¸è¿œæ˜¯ã€ä¸‡èƒ½é’¥åŒ™ã€‘
 
-* ×Ô¶¨Òå FormControl µÄÀı×Ó
+* è‡ªå®šä¹‰ FormControl çš„ä¾‹å­
 
-ÏÈ¶¨ÒåformGroup¸ù¶ÔÏó£¬
+å…ˆå®šä¹‰formGroupæ ¹å¯¹è±¡ï¼Œ
 
 `<form [formGroup]="form" (ngSubmit)="onSubmit(form, $event)">`
 
-ÔÙ¶¨Òå formControl
+å†å®šä¹‰ formControl
 ```typescript
 # ts
     this.form = new FormGroup({
@@ -2080,12 +2080,12 @@ __×Ô¶¨Òå±íµ¥¿Ø¼ş__
     });
 
 # html
-<input matInput type="password" placeholder="ÄúµÄÃÜÂë" formControlName="password">
+<input matInput type="password" placeholder="æ‚¨çš„å¯†ç " formControlName="password">
 ```
 
-formControlName »á½«½«±íµ¥°ó¶¨µ½¶ÔÏó
+formControlName ä¼šå°†å°†è¡¨å•ç»‘å®šåˆ°å¯¹è±¡
 
-×éºÏ Validators : Ê¹ÓÃcomopse , Ìõ¼ş1 ²»Îª¿Õ; Ìõ¼ş2·ûºÏ email
+ç»„åˆ Validators : ä½¿ç”¨comopse , æ¡ä»¶1 ä¸ä¸ºç©º; æ¡ä»¶2ç¬¦åˆ email
 
       email: new FormControl('wang@163.com', Validators.compose([Validators.required, Validators.email])),
 
@@ -2093,7 +2093,7 @@ formControlName »á½«½«±íµ¥°ó¶¨µ½¶ÔÏó
 
 # html
 <form [formGroup]="form" (ngSubmit)="onSubmit(form, $event)">
-<button mat-raised-button color="primary" type="submit">µÇÂ¼</button>
+<button mat-raised-button color="primary" type="submit">ç™»å½•</button>
 
 
   onSubmit({value, valid}, ev: Event) {
@@ -2103,16 +2103,16 @@ formControlName »á½«½«±íµ¥°ó¶¨µ½¶ÔÏó
   }
 ```
 
-Ê¹ÓÃ FormBuilder ¼ò»¯±íµ¥³õÊ¼»¯
+ä½¿ç”¨ FormBuilder ç®€åŒ–è¡¨å•åˆå§‹åŒ–
 
     this.form = this.fb.group({
       email: ['wang@163.com', Validators.compose([Validators.required, Validators.email])],
       password: ['', Validators.required],
     });
 
-__×Ô¶¨ÒåÑéÖ¤Æ÷__
+__è‡ªå®šä¹‰éªŒè¯å™¨__
 
-Ö»ÓĞÔÚÑéÖ¤´íÎóµÄÊ±ºò²Å·µ»Ø·Ç¿Õ¶ÔÏó£¬ Õâ¸ö key,value¶ÔÏó, Í¨³£ÊÇ·µ»ØÒ»¸önull
+åªæœ‰åœ¨éªŒè¯é”™è¯¯çš„æ—¶å€™æ‰è¿”å›éç©ºå¯¹è±¡ï¼Œ è¿™ä¸ª key,valueå¯¹è±¡, é€šå¸¸æ˜¯è¿”å›ä¸€ä¸ªnull
 
 ```typescript
   validate(c: FormControl): {[key: string]: any}{
@@ -2122,7 +2122,7 @@ __×Ô¶¨ÒåÑéÖ¤Æ÷__
     return {emailNotValid: 'The email must start with wang'};
   }
 ```
-¶¯Ì¬ÑéÖ¤
+åŠ¨æ€éªŒè¯
 ```typescript
   onSubmit({value, valid}, ev: Event) {
     ...
@@ -2131,17 +2131,17 @@ __×Ô¶¨ÒåÑéÖ¤Æ÷__
 ```
 
 
-Ñ¡Ôñ·âÃæºÍÑ¡ÔñÍ·ÏñºÜÏñ£¬ÄÜ·ñ·â×°³ÉÒ»¸öFormControl¿Ø¼ş, ±¾Éí×¢²á±íµ¥²»¹ØĞÄËüÓĞ¶àÉÙÍ¼Æ¬£¬ÔõÃ´Ñ¡Ôñ¡£ÏÖÔÚÊÇ¸´ÔÓ»¯ÁË±íµ¥¡£
+é€‰æ‹©å°é¢å’Œé€‰æ‹©å¤´åƒå¾ˆåƒï¼Œèƒ½å¦å°è£…æˆä¸€ä¸ªFormControlæ§ä»¶, æœ¬èº«æ³¨å†Œè¡¨å•ä¸å…³å¿ƒå®ƒæœ‰å¤šå°‘å›¾ç‰‡ï¼Œæ€ä¹ˆé€‰æ‹©ã€‚ç°åœ¨æ˜¯å¤æ‚åŒ–äº†è¡¨å•ã€‚
 
-·â×°×Ô¶¨Òå±íµ¥¿Ø¼ş, ¼ò»¯Âß¼­
+å°è£…è‡ªå®šä¹‰è¡¨å•æ§ä»¶, ç®€åŒ–é€»è¾‘
 
 `ng g c shared/image-list-select --spec=false`
 
-ÏëÒª×ã¹»µÄ×ÔÓÉ¶È£¬»¹ÊÇÒª·â×°£¬¿ÉÒÔÊµÏÖÊ±ĞèÒªÈ¨ºâ¡£ÊµÏÖ ControlValueAccessor ½Ó¿Ú¡£
+æƒ³è¦è¶³å¤Ÿçš„è‡ªç”±åº¦ï¼Œè¿˜æ˜¯è¦å°è£…ï¼Œå¯ä»¥å®ç°æ—¶éœ€è¦æƒè¡¡ã€‚å®ç° ControlValueAccessor æ¥å£ã€‚
 ```typescript
 export class ImageListSelectComponent implements ControlValueAccessor {
 
-  //¶ÔÓ¦µÄÊÇthis.form.setValue()
+  //å¯¹åº”çš„æ˜¯this.form.setValue()
   writeValue(obj: any): void {
   }
 
@@ -2152,15 +2152,15 @@ export class ImageListSelectComponent implements ControlValueAccessor {
   }
 }
 ```
-writeValue¶ÔÓ¦µÄÊÇthis.form.setValue() À´Ğ´Öµ
+writeValueå¯¹åº”çš„æ˜¯this.form.setValue() æ¥å†™å€¼
 
-ĞèÒªÔÚproviderÖĞ¶¨Òå£¬°Ñ×Ô¼º×¢²á½øÈ¥¡£provide Ö¸Ïò×Ô¼ºĞèÒªÊ¹ÓÃ£¬
+éœ€è¦åœ¨providerä¸­å®šä¹‰ï¼ŒæŠŠè‡ªå·±æ³¨å†Œè¿›å»ã€‚provide æŒ‡å‘è‡ªå·±éœ€è¦ä½¿ç”¨ï¼Œ
 
       provide: NG_VALUE_ACCESSOR,
       useExisting: forwardRef(() => ImageListSelectComponent)
       multi: true
 
-forwardRef(() --- µÈ´ıÊµÀı»¯ºóÖ¸ÏòËü¡£
+forwardRef(() --- ç­‰å¾…å®ä¾‹åŒ–åæŒ‡å‘å®ƒã€‚
 
 Code:
 
@@ -2168,21 +2168,21 @@ Code:
 # register.component.html
 <mat-card-content>
       <mat-input-container class="full-width">
-        <input matInput type="text" placeholder="ÄúµÄemail" formControlName="email">
+        <input matInput type="text" placeholder="æ‚¨çš„email" formControlName="email">
       </mat-input-container>
       <mat-input-container class="full-width">
-        <input matInput type="text" placeholder="ĞÕÃû" formControlName="name">
+        <input matInput type="text" placeholder="å§“å" formControlName="name">
       </mat-input-container>
       <mat-input-container class="full-width">
-        <input matInput type="password" placeholder="ÄúµÄÃÜÂë" formControlName="password">
+        <input matInput type="password" placeholder="æ‚¨çš„å¯†ç " formControlName="password">
       </mat-input-container>
       <mat-input-container class="full-width">
-        <input matInput type="password" placeholder="ÖØ¸´ÊäÈëÄúµÄÃÜÂë" formControlName="repeat">
+        <input matInput type="password" placeholder="é‡å¤è¾“å…¥æ‚¨çš„å¯†ç " formControlName="repeat">
       </mat-input-container>
       <app-image-list-select
         [useSvgIcon]="true"
         [cols]="6"
-        [title]="'Ñ¡ÔñÍ·Ïñ'"
+        [title]="'é€‰æ‹©å¤´åƒ'"
         [items]="items"
         formControlName="avatar">
       </app-image-list-select>
@@ -2297,7 +2297,7 @@ mat-icon.avatar {
   ]
 
 export class ImageListSelectComponent implements ControlValueAccessor {
-  @Input() title = 'Ñ¡Ôñ';
+  @Input() title = 'é€‰æ‹©';
   @Input() cols = 6;
   @Input() rowHeight = '64px';
   @Input() items: string[] = [];
@@ -2313,7 +2313,7 @@ export class ImageListSelectComponent implements ControlValueAccessor {
     this.propagateChange(this.selected);
   }
 
-  // ¶ÔÓ¦µÄÊÇthis.form.setValue()
+  // å¯¹åº”çš„æ˜¯this.form.setValue()
   writeValue(obj: any): void {this.selected = obj; }
   registerOnChange(fn: any): void {this.propagateChange = fn; }
   registerOnTouched(fn: any): void {}
@@ -2327,40 +2327,40 @@ export class ImageListSelectComponent implements ControlValueAccessor {
 
 
 ```
-# µÚ5ÕÂ Rxjs³£¼û²Ù×÷·û
-## 5-1 RxJS°ïÄã×ß½øÏìÓ¦Ê½±à³ÌµÄÊÀ½ç
-__¼ò½é__
+# ç¬¬5ç«  Rxjså¸¸è§æ“ä½œç¬¦
+## 5-1 RxJSå¸®ä½ èµ°è¿›å“åº”å¼ç¼–ç¨‹çš„ä¸–ç•Œ
+__ç®€ä»‹__
 
-* Ãû×ÖµÄÓÉÀ´£º Reactive Extension
+* åå­—çš„ç”±æ¥ï¼š Reactive Extension
 
-* Ô´×ÔÎ¢Èí¡¢»ğÓÚ NetFlix
+* æºè‡ªå¾®è½¯ã€ç«äº NetFlix
 
-* ÓÅÊÆ£ºÔÚË¼¿¼µÄÎ¬¶ÈÉÏ¼ÓÈëÊ±¼ä¿¼Á¿
+* ä¼˜åŠ¿ï¼šåœ¨æ€è€ƒçš„ç»´åº¦ä¸ŠåŠ å…¥æ—¶é—´è€ƒé‡
 
-Ê¹ÓÃ  https://jsbin.com ½²½â²âÊÔ±È½ÏÖ±¹Û¡£
+ä½¿ç”¨  https://jsbin.com è®²è§£æµ‹è¯•æ¯”è¾ƒç›´è§‚ã€‚
 
-height$, $ ±íÃ÷ streamÒ»¸öÁ÷.
+height$, $ è¡¨æ˜ streamä¸€ä¸ªæµ.
 
 ```typescript
-# html ÖĞ add library rxjs 5.0.3
+# html ä¸­ add library rxjs 5.0.3
 <script src="https://unpkg.com/@reactivex/rxjs@5.0.3/dist/global/Rx.js"></script>
 <input type="text" id="height">
-# ES6/label ÈÎºÎÒ»¸öeventÓĞtarget.µÃµ½targetµÄvalue
+# ES6/label ä»»ä½•ä¸€ä¸ªeventæœ‰target.å¾—åˆ°targetçš„value
 const height = document.getElementById('height');
 const height$ = Rx.Observable.fromEvent(height, 'keyup');
 height$.subscribe(val => console.log(val.target.value + '  ' + new Date()));
 ```
 
-Rx ÓĞºÜ¶àÇ¿´óµÄ²Ù×÷·û£¬¿ÉºÏ²¢¶à¸öÁ÷¡£
+Rx æœ‰å¾ˆå¤šå¼ºå¤§çš„æ“ä½œç¬¦ï¼Œå¯åˆå¹¶å¤šä¸ªæµã€‚
 
-Ê¾Àı£ºÇóÃæ»ı
+ç¤ºä¾‹ï¼šæ±‚é¢ç§¯
 ```typescript
 # html
   <div><input type="text" id="length"></div>
   <div><input type="text" id="width"></div>
   <div id="area"></div>
 <script src="https://unpkg.com/@reactivex/rxjs@5.0.3/dist/global/Rx.js"></script>
-# ES6/label ÈÎºÎÒ»¸öeventÓĞtarget.µÃµ½targetµÄvalue
+# ES6/label ä»»ä½•ä¸€ä¸ªeventæœ‰target.å¾—åˆ°targetçš„value
 const length = document.getElementById('length');
 const width = document.getElementById('width');
 const area = document.getElementById('area');
@@ -2379,57 +2379,57 @@ area:   ---------(2,1)-----(2,3)
                   2*1        2*3
                   2           6
 ```
-Ö»¸Ä±äÒ»¸öÖµ²»½øĞĞ¼ÆËã£¬ ÎÒÃÇ¿ÉÒÔÊ¹ÓÃzip²Ù×÷·û¡£
+åªæ”¹å˜ä¸€ä¸ªå€¼ä¸è¿›è¡Œè®¡ç®—ï¼Œ æˆ‘ä»¬å¯ä»¥ä½¿ç”¨zipæ“ä½œç¬¦ã€‚
 
 `const area$ = Rx.Observable.zip(length$, width$, (l, w) => {return l*w;});`
 
-* ±¾½ÚÊ¹ÓÃµÄ²Ù×÷·û
+* æœ¬èŠ‚ä½¿ç”¨çš„æ“ä½œç¬¦
 
-combineLatest ÓĞÒ»¸öÖµ¸Ä±ä¾Í¸üĞÂ¡£
+combineLatest æœ‰ä¸€ä¸ªå€¼æ”¹å˜å°±æ›´æ–°ã€‚
 
-zip ¶à¸öÖµ¶¼¸Ä±äÊ±²Å¸üĞÂ¡£ĞèÒªÒ»Ò»¶ÔÓ¦µÄ¹ØÏµ
+zip å¤šä¸ªå€¼éƒ½æ”¹å˜æ—¶æ‰æ›´æ–°ã€‚éœ€è¦ä¸€ä¸€å¯¹åº”çš„å…³ç³»
 
-* ÊÂ¼şÁ÷
+* äº‹ä»¶æµ
 
-Àí½â Rx µÄ¹Ø¼üÊÇÒª°ÑÈÎºÎ±ä»¯ÏëÏñ³ÉÊÂ¼şÁ÷¡£
+ç†è§£ Rx çš„å…³é”®æ˜¯è¦æŠŠä»»ä½•å˜åŒ–æƒ³åƒæˆäº‹ä»¶æµã€‚
 
-## 5-2 ³£¼û²Ù×÷·û£¨Ò»£©
+## 5-2 å¸¸è§æ“ä½œç¬¦ï¼ˆä¸€ï¼‰
 
-__³£¼û´´½¨ÀàµÄ²Ù×÷·û__
+__å¸¸è§åˆ›å»ºç±»çš„æ“ä½œç¬¦__
 
-from: ¿ÉÒÔ°ÑÊı×é¡¢PromiseÒÔ¼° Iterable ×ª»¯Îª Observable
-fromEvent: ¿ÉÒÔ°ÑÊÂ¼ş×ª»¯Îª Observable
-of: ½ÓÊÜÒ»ÏµÁĞµÄÊı¾İ£¬²¢°ÑËüÃÇemit³öÈ¥¡£
+from: å¯ä»¥æŠŠæ•°ç»„ã€Promiseä»¥åŠ Iterable è½¬åŒ–ä¸º Observable
+fromEvent: å¯ä»¥æŠŠäº‹ä»¶è½¬åŒ–ä¸º Observable
+of: æ¥å—ä¸€ç³»åˆ—çš„æ•°æ®ï¼Œå¹¶æŠŠå®ƒä»¬emitå‡ºå»ã€‚
 
-__³£¼û×ª»»²Ù×÷·û: map, mapTo, pluck__
+__å¸¸è§è½¬æ¢æ“ä½œç¬¦: map, mapTo, pluck__
 
-µ¯ÖéÍ¼ÍøÕ¾, »¥¶¯  http://rxmarbles.com/
+å¼¹ç å›¾ç½‘ç«™, äº’åŠ¨  http://rxmarbles.com/
 
-__map__ ¶ÔÔ­Ê¼Öµ´¦ÀíÓ³ÉäĞÂµÄÁ÷
+__map__ å¯¹åŸå§‹å€¼å¤„ç†æ˜ å°„æ–°çš„æµ
 
 `map(x => 10 * x)`
 
-Ğ§¹ûÏàÍ¬
+æ•ˆæœç›¸åŒ
 
     const length$ = Rx.Observable.fromEvent(length, 'keyup').pluck('target', 'value');
     const length$ = Rx.Observable.fromEvent(length, 'keyup').map(ev => ev.target.value)
 
-__mapTo__ ÊÊºÏÖ»¹ØĞÄÊÂ¼ş£¬²»¹ØĞÄÖµµÄÇé¿öÏÂÊ¹ÓÃ
+__mapTo__ é€‚åˆåªå…³å¿ƒäº‹ä»¶ï¼Œä¸å…³å¿ƒå€¼çš„æƒ…å†µä¸‹ä½¿ç”¨
 
-    ...mapTo(1) ,·µ»Ø1,
+    ...mapTo(1) ,è¿”å›1,
     ...map(_ => 1) 
 
     const length$ = Rx.Observable.from([1,2,3,4]);
     const width$ = Rx.Observable.fromEvent(width, 'keyup').pluck('target', 'value');;
 
-__from__ ²Ù×÷·û
+__from__ æ“ä½œç¬¦
 
 -1-2-3-4-------4
 ----------4----4
 ----------\----\
 ----------2----2
 
-__of__ ²Ù×÷·û
+__of__ æ“ä½œç¬¦
 
     const length$ = Rx.Observable.of({id:1, value:20},{id:2, value:40});
     const area$ = Rx.Observable.combineLatest(length$, width$, (l, w) => {return l.value*w;});
@@ -2448,9 +2448,9 @@ __of__ ²Ù×÷·û
       {{quote.en}}
 
 # login.component.ts
-  // ÎªÁË·ÀÖ¹Îª¿Õ¸ø³õÊ¼Öµ
+  // ä¸ºäº†é˜²æ­¢ä¸ºç©ºç»™åˆå§‹å€¼
   quote: Quote =  {
-    cn: '»Ûåû',
+    cn: 'æ…§å¦',
     en: 'Aliquam erat volutpat.',
     pic: '/assets/img/quotes/1.jpg'
   };
@@ -2464,6 +2464,7 @@ export class QuoteService {
 
   getQuote(): Observable<Quote> {
     const uri = `${this.config.uri}/quotes/${Math.floor(Math.random() * 6)}`
+    // return this.http.get<Quote>(uri).debug('quote: ');
     return this.http.get<Quote>(uri);
   }
 }
@@ -2471,23 +2472,23 @@ export class QuoteService {
       providers: [QuoteService]
       
 ```
-## 5-3 ³£¼û²Ù×÷·û£¨¶ş£©
+## 5-3 å¸¸è§æ“ä½œç¬¦ï¼ˆäºŒï¼‰
 
-__ObservableµÄĞÔÖÊ__
+__Observableçš„æ€§è´¨__
 
-* ÈıÖÖ×´Ì¬£º next, error, complete 
+* ä¸‰ç§çŠ¶æ€ï¼š next, error, complete 
 
-* ÌØÊâµÄ£º ÓÀ²»½áÊø£¬Never, Empty(½áÊøµ«²»·¢Éä), Throw
+* ç‰¹æ®Šçš„ï¼š æ°¸ä¸ç»“æŸï¼ŒNever, Empty(ç»“æŸä½†ä¸å‘å°„), Throw
 
-³£¼û¹¤¾ßÀà²Ù×÷·û: do
+å¸¸è§å·¥å…·ç±»æ“ä½œç¬¦: do
 
-³£¼û±ä»»Àà²Ù×÷·û: scan
+å¸¸è§å˜æ¢ç±»æ“ä½œç¬¦: scan
 
-³£¼ûÊıÑ§Àà²Ù×÷·û: redude
+å¸¸è§æ•°å­¦ç±»æ“ä½œç¬¦: redude
 
-¹ıÂËÀà²Ù×÷·û£º filter,take,first/last,skip
+è¿‡æ»¤ç±»æ“ä½œç¬¦ï¼š filter,take,first/last,skip
 
-³£¼û´´½¨Àà²Ù×÷·û: Interval, Timer
+å¸¸è§åˆ›å»ºç±»æ“ä½œç¬¦: Interval, Timer
 
 ```typescript
 const interval$ = Rx.Observable.interval(100).take(3);
@@ -2498,35 +2499,35 @@ interval$.subscribe(
 )
 ```
 
-timer Ö»Êä³öÒ»¸öÖµ
+timer åªè¾“å‡ºä¸€ä¸ªå€¼
 ```typescript
 const timer$ = Rx.Observable.timer(100);
 timer$.subscribe(v => console.log(v))
 ```
 
-`const timer$ = Rx.Observable.timer(100, 100);` ²ÎÊı1ÑÓÊ±Ê±¼ä£¬²ÎÊı2Ñ­»·Ê±¼ä
+`const timer$ = Rx.Observable.timer(100, 100);` å‚æ•°1å»¶æ—¶æ—¶é—´ï¼Œå‚æ•°2å¾ªç¯æ—¶é—´
 
-do Ïàµ±ÓÚÖĞ¼äÇÅÁº´¦ÀíÔÚ subscribe Ö®Ç°¡£
+do ç›¸å½“äºä¸­é—´æ¡¥æ¢å¤„ç†åœ¨ subscribe ä¹‹å‰ã€‚
 
 ```typescript
-let logLabel = 'µ±Ç°ÖµÊÇ'
+let logLabel = 'å½“å‰å€¼æ˜¯'
 
 const interval$ = Rx.Observable.interval(100)
   .map(val => val *2)
   .do(v => {
     console.log(logLabel + v);
-    logLabel = 'µ±Ç°'
+    logLabel = 'å½“å‰'
     })
   .take(3);
 ```
 
-Ö»ÓĞÔÚ3¸öÅ¼ÊıÖ®ºóÁ÷²Å»á½áÊø
+åªæœ‰åœ¨3ä¸ªå¶æ•°ä¹‹åæµæ‰ä¼šç»“æŸ
 
 `const interval$ = Rx.Observable.interval(100) .filter(val => val % 2 === 0) .take(3);`
 
-`.first()` ºÍ `take(1)` ÊÇÒ»ÑùµÄ
+`.first()` å’Œ `take(1)` æ˜¯ä¸€æ ·çš„
 
-.filter(val => val % 2 === 0) .skip(2) ¹ıÂËµôÇ°Á½¸ö0, 2 
+.filter(val => val % 2 === 0) .skip(2) è¿‡æ»¤æ‰å‰ä¸¤ä¸ª0, 2 
 
 __scan__
 
@@ -2536,38 +2537,38 @@ const interval$ = Rx.Observable.interval(100)
   .scan((x, y) => {return x+y})
   .take(4);
 ```
-²ÎÊı1:accumulater, ÀÛ¼ÓÆ÷Ä¬ÈÏÊÇ0, ·µ»Ø½á¹û×÷ÎªÏÂ´ÎÀÛ¼ÓÖµ´«Èë£¬
+å‚æ•°1:accumulater, ç´¯åŠ å™¨é»˜è®¤æ˜¯0, è¿”å›ç»“æœä½œä¸ºä¸‹æ¬¡ç´¯åŠ å€¼ä¼ å…¥ï¼Œ
 
     0-----1----2----3----4----5-----6----
     0----------2---------4----------6----
     0----------2---------6----------12---
 
-reduce Ö»·¢Éä×îºóÖµ£¬ËùÒÔÕâÀïtakeÊÇÃ»ÓÃµÄ¡£
+reduce åªå‘å°„æœ€åå€¼ï¼Œæ‰€ä»¥è¿™é‡Œtakeæ˜¯æ²¡ç”¨çš„ã€‚
 
     .filter(val => val % 2 === 0) .reduce((x, y) => {return x+y}) .take(4);
 
-ĞèÒª¸Ä±äÒ»ÏÂË³Ğò
+éœ€è¦æ”¹å˜ä¸€ä¸‹é¡ºåº
 
     .filter(val => val % 2 === 0) .take(4) .reduce((x, y) => {return x+y})
 
-reduce ²»ÊÇÖ»Õë¶ÔÊı×é£¬¿É¶Ô¼¯ºÏ´¦Àí£¬×Öµä´¦Àí¡£
+reduce ä¸æ˜¯åªé’ˆå¯¹æ•°ç»„ï¼Œå¯å¯¹é›†åˆå¤„ç†ï¼Œå­—å…¸å¤„ç†ã€‚
 
     .filter(val => val % 2 === 0) .take(4) .reduce((x, y) => {return [...x, y]}, []) ---[0,2,4,6], 
     
 
-ÊÖ¶¯ throw error
+æ‰‹åŠ¨ throw error
 
-    .map( val => {throw '³ö´íÁË'}) .take(4) .reduce((x, y) => {return [...x, y]}, [])
+    .map( val => {throw 'å‡ºé”™äº†'}) .take(4) .reduce((x, y) => {return [...x, y]}, [])
 
-×Ô´ønever `const interval$ = Rx.Observable.never()` Ö±½ÓÎŞ¾¡ĞòÁĞ
+è‡ªå¸¦never `const interval$ = Rx.Observable.never()` ç›´æ¥æ— å°½åºåˆ—
 
-`const interval$ = Rx.Observable.throw('³ö´íÁË')`
+`const interval$ = Rx.Observable.throw('å‡ºé”™äº†')`
 
-`const interval$ = Rx.Observable.empty()` Ö±½Ó½øÈë complete
+`const interval$ = Rx.Observable.empty()` ç›´æ¥è¿›å…¥ complete
 
-### ÊµÏÖÒ»¸öDebugUtil
+### å®ç°ä¸€ä¸ªDebugUtil
 
-coreÖĞÒıÈë `import '../utils/debug.util';`
+coreä¸­å¼•å…¥ `import '../utils/debug.util';`
 
 ```typescript
 # src/app/utils/debug.util.ts
@@ -2585,11 +2586,81 @@ Observable.prototype.debug = function (message: string) {
 ```
 
 
-## 5-4 ³£¼û²Ù×÷·û£¨Èı£©
-## 5-5 ÊµÕ½¸´ÔÓ±íµ¥¿Ø¼ş(ÉÏ)
-## 5-6 ÊµÕ½¸´ÔÓ±íµ¥¿Ø¼ş£¨ÖĞ£©
-## 5-7 ÊµÕ½¸´ÔÓ±íµ¥¿Ø¼ş£¨ÏÂ£©
-# µÚ6ÕÂ Angular ÖĞµÄÏìÓ¦Ê½±à³Ì
-# µÚ7ÕÂ Ê¹ÓÃ Redux ¹ÜÀíÓ¦ÓÃ×´Ì¬
-# µÚ8ÕÂ Angular µÄ²âÊÔ
-# µÚ9ÕÂ ¿Î³Ì×Ü½á
+## 5-4 å¸¸è§æ“ä½œç¬¦ï¼ˆä¸‰ï¼‰
+
+è¿‡æ»¤ç±»æ“ä½œç¬¦ï¼š
+debounce, debounceTime, distinct, distinctUntilChanged,
+
+distinctUntilChanged åªè·Ÿå‰ä¸€ä¸ªå…ƒç´ æ¯”ï¼Œä¸€æ ·å°±æŠ›å¼ƒæ‰ã€‚
+
+åˆå¹¶ç±»æ“ä½œç¬¦ï¼š merge, concat, startWith, combineLatest, withLatestFrom, zip
+
+concat, é¡ºåºè¿æ¥
+
+startWith å¼€å§‹å°±å‘å°„ä¸€ä¸ªå€¼ã€‚
+
+combineLatest æœ‰æ–°å…ƒç´ å°±æˆä¸ºæ–°çš„æµ
+
+zip ä¸¥æ ¼è¦æ±‚æˆå¯¹åŒ¹é…ï¼Œæ‰äº§ç”Ÿæ–°æµã€‚
+
+withLatestFrom ä»¥æºäº‹ä»¶æµä¸ºåŸºå‡†ï¼Œä¸»æµäº§ç”Ÿæ•°æ®æ—¶å»å–å¦ä¸€ä¸ªæµæœ€æ–°å€¼ã€‚
+
+* debounce æ»¤æ³¢, httpè¯·æ±‚è‡ªåŠ¨æç¤ºæ—¶å¸¸ç”¨ã€‚
+```typescript
+const length = document.getElementById('length');
+
+const length$ = Rx.Observable.fromEvent(length, 'keyup').pluck('target', 'value').debounce(() => Rx.Observable.interval(300));
+const length$ = Rx.Observable.fromEvent(length, 'keyup').pluck('target', 'value').debounceTime(300);
+length$.subscribe(val => console.log(val));
+```
+
+* distinct æ‰”æ‰ç›¸åŒçš„æµ
+```typescript
+# const length$ = Rx.Observable.fromEvent(length, 'keyup').pluck('target', 'value') .distinctUntilChanged();
+```
+
+* merge ç®€å•åˆå¹¶
+```typescript
+const length = document.getElementById('length');
+const length$ = Rx.Observable.fromEvent(length, 'keyup').pluck('target', 'value');
+const width = document.getElementById('width');
+const width$ = Rx.Observable.fromEvent(width, 'keyup').pluck('target', 'value');
+const merged$ = Rx.Observable.merge(length$, width$);
+merged$.subscribe(val => console.log(val));
+```
+
+* concat
+```typescript
+# const merged$ = Rx.Observable.concat(length$, width$);
+concat æ—¶ç¬¬äºŒä¸ªæ°¸è¿œä¸ä¼šè¾“å‡ºï¼Œå› ä¸ºæ­¤ä¾‹ä¸­lengthæ˜¯æ— ç©·åºåˆ—ã€‚
+
+const first$ =  Rx.Observable.from([1,2,3,4])
+const merged$ = Rx.Observable.concat(first$, width$);
+```
+
+* startWith ç›¸å½“äºèµ‹åˆå§‹å€¼0
+```typescript
+const first$ =  Rx.Observable.from([1,2,3,4]).startWith(0)
+```
+
+* combineLatest ä»»ä¸€å€¼æ”¹å˜æ—¶æœ‰è¾“å‡º
+```typescript
+const merged$ = Rx.Observable.combineLatest(length$, width$, (l,w) => l*w);
+```
+
+* _zip å¯¹é½ï¼Œä¸¤ä¸ªæµéƒ½å˜åŒ–æ—¶è¾“å‡ºï¼Œæœ€æ–°å€¼
+```typescript
+const merged$ = Rx.Observable.zip(length$, width$, (l,w) => l*w);
+```
+_
+* withLatestFrom ä»¥æºæµä¸ºä¸»ï¼Œæºæµå˜åŒ–æ—¶æ‰ä¼šæœ‰è¾“å‡º
+```typescript
+const merged$ = length$.withLatestFrom(width$);
+```
+## 5-5 å®æˆ˜å¤æ‚è¡¨å•æ§ä»¶(ä¸Š)
+## 5-6 å®æˆ˜å¤æ‚è¡¨å•æ§ä»¶ï¼ˆä¸­ï¼‰
+## 5-7 å®æˆ˜å¤æ‚è¡¨å•æ§ä»¶ï¼ˆä¸‹ï¼‰
+# ç¬¬6ç«  Angular ä¸­çš„å“åº”å¼ç¼–ç¨‹
+# ç¬¬7ç«  ä½¿ç”¨ Redux ç®¡ç†åº”ç”¨çŠ¶æ€
+# ç¬¬8ç«  Angular çš„æµ‹è¯•
+# ç¬¬9ç«  è¯¾ç¨‹æ€»ç»“
