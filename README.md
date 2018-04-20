@@ -2658,6 +2658,50 @@ _
 const merged$ = length$.withLatestFrom(width$);
 ```
 ## 5-5 实战复杂表单控件(上)
+
+* ng-container
+
+```typescript
+<div>1</div>
+<ng-container formControlName="age">
+  <div>2</div>
+</ng-container>
+```
+    
+通常多一层div，但是用 ng-container 是没有这一层的。 1,2,是同级的
+
+自定义表单控件要继承 ControlValueAccessor ，包含三个实现的方法。
+
+`writeValue registerOnChange registerOnTouched`
+
+* writeValue -- 向控件中写值，通常用来改变模板当中的值
+
+* registerOnChange(fn: any) 向外广播我值发生变化的机制。
+
+```typescript
+  registerOnChange(fn: any): void {this.propagateChange = fn; }
+  
+  ngOnInit() {this.propagateChange('ss'); }
+  //外界就知道我的值改变了, 并且知道变化的值是什么
+
+  写上 (change)="onChange($event)" , 这个onchange就会到 propagateChange 当中去，处理函数会接收到event。
+```
+
+* registerOnTouched 也是提供机制向外传播我的控件被touch。
+
+```text
+                  toAge
+                  / 
+birthday: -------d,from-------d-------d--------------------
+ageNum: ----an--------an-----an------an------------------
+ageUnit: ---------au-------au------au--------------------
+age                a   a    a
+                    \toDate,from
+         ----d----d-----d---d--d-d-----d-d--------------------
+```
+
+合并起来，符合 combineLatest 合并流。得到合并流后转换为日期。再将日期流合并。--添加区分来源，防止相互反应。
+
 ## 5-6 实战复杂表单控件（中）
 ## 5-7 实战复杂表单控件（下）
 # 第6章 Angular 中的响应式编程
