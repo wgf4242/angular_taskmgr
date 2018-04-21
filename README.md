@@ -2948,6 +2948,182 @@ export class AgeInputComponent implements ControlValueAccessor, OnInit, OnDestro
 ```
 
 # 第6章 Angular 中的响应式编程
+## 6-1 高阶操作符
+高阶操作符： 拍扁的作用--从多层变一层
+
+flatMap 和 mergeMap 是相等的。在rxjs中flatMap是mergeMap的别名。
+
+mergeMap 会保留所有订阅的子流。
+
+switchMap 有新流进来时会抛弃之前的流。
+
+例删除文章的流，外层删除文章 ，内层要删除文章的所有的评论。删除第一个文章时，来了删除第二个文章的请求，要不要评论这个动作要不要继续进行。要继续=mergeMap。
+```typescript
+const length$ = Rx.Observable.fromEvent(length, 'keyup').pluck('target', 'value')
+  .switchMap(_ => Rx.Observable.interval(1000));
+```
+
+在 index.ts 中导入当前所有需要导入的， 在引用时 只引用到目录即可 '/domain'
+
+update 用 patch 方法，只更新需要修改的属性。
+
+json-server 只支持2级级联删除。我们这里使用 删除列表和项目的task。
+
+我们只需要最后全部删除的结果，不需要中间返回的http status 200。 使用 count, 对流里的数量进行一个统计。
+
+删除所有 task后
+
+mergeMap - taskList 对应的子流全部都要保持住。希望在删除时删的干干净净。
+
+switchMap 不关心外层。
+```typescript
+  del(project: Project) {
+    const delTasks$ = Observable.from(project.taskLists)
+      .mergeMap(listId => this.http.delete(`${this.config.uri}/taskLists/${listId}`))
+      .count();
+    const uri = `${this.config.uri}/${this.domain}/${project.id}`;
+    return delTasks$
+      .switchMap(_ => this.http.delete(`${this.config.uri}/${this.domain}/${project.id}`))
+      .mapTo(project);
+  }
+```
+
+`json-server ./mock/data.json --watch`
+
+`mock/rest.http` 中添加 `GET http://localhost:3000/projects/?members_like=2` 来测试。 
+
+```typescript
+# data.json
+  "projects": [
+    {
+      "id": 1,
+      "name": "itemMame-1",
+      "desc": "this is a ent project",
+      "coverImg": "assets/img/covers/0.jpg",
+      "members": ["1", "2"]
+    },
+    {
+      "id": 2,
+      "name": "Auto test",
+      "desc": "this is a ent project",
+      "coverImg": "assets/img/covers/1.jpg",
+      "members": ["1"]
+    }
+  ],
+
+# domain/index.ts
+export * from './project.model';
+export * from './quote.model';
+export * from './task-list.model';
+export * from './task.model';
+export * from './user.model';
+
+# domain/project.model.ts
+export interface Project {
+  id?: string;
+  name: string;
+  desc?: string;
+  coverImg: string;
+  taskLists?: string[]; // 列表id
+  members?: string[]; // 成员id
+
+}
+
+# domain/task.model.ts
+export interface Task {
+  id?: string;
+  desc: string;
+  completed: boolean;
+  priority: number;
+  dueDate?: Date;
+  reminder?: Date;
+  remark?: string;
+  createDate: Date;
+  ownerId?: string;
+  participantIds: string[];
+  taskListId: string;
+}
+
+# domain/task-list.model.ts
+export interface TaskList {
+  id?: string;
+  name: string;
+  order: number;
+  taskIds: string[];
+  projectId: string;
+}
+
+# domain/user.model.ts
+export interface User {
+  ...
+  projectIds: string[];
+}
+
+# src/app/services/project.service.ts
+export  class ProjectService {
+
+  private readonly domain = 'project';
+  private headers = new HttpHeaders({
+    'Content-Type': 'application/json'
+  });
+  constructor(private http: HttpClient, @Inject('BASE_CONFIG') private config) {}
+
+  // POST
+  add(project: Project): Observable<Project> {
+    project.id = null;
+    const uri = `${this.config.uri}/${this.domain}`;
+    return this.http
+      .post<Project>(uri, JSON.stringify(project), {headers: this.headers});
+  }
+
+  // PUT
+  update(project: Project): Observable<Project> {
+    const uri = `${this.config.uri}/${this.domain}/${project.id}`;
+    const toUpdate = {
+      name: project.name,
+      desc: project.desc,
+      coverImg: project.coverImg,
+    }
+    return this.http
+      .patch<Project>(uri, JSON.stringify(toUpdate), {headers: this.headers});
+  }
+
+  // DELETE
+  del(project: Project): Observable<Project> {
+    const delTasks$ = Observable.from(project.taskLists)
+      .mergeMap(listId => this.http.delete(`${this.config.uri}/taskLists/${listId}`))
+      .count();
+    const uri = `${this.config.uri}/${this.domain}/${project.id}`;
+    return delTasks$
+      .switchMap(_ => this.http.delete(`${this.config.uri}/${this.domain}/${project.id}`))
+      .mapTo(project);
+  }
+
+  // GET
+  get(userId: string): Observable<Project[]> {
+    const uri = `${this.config.uri}/${this.domain}`;
+    return this.http
+      .get<Project[]>(uri, {params: {'members_like': userId}});
+  }
+}
+
+# services.module.ts
+      providers: [QuoteService, ProjectService]
+
+# project-list.component.ts
+  projects;
+  constructor(...private service$: ProjectService) {}
+  ngOnInit() {this.service$.get('1').subscribe(projects => this.projects = projects); }
+
+```
+## 6-2 实战服务逻辑（上）
+## 6-3 实战服务逻辑（中）
+## 6-4 实战服务逻辑（下）
+## 6-5 实战自动建议表单控件
+## 6-6 Observable 的冷和热以及 Subject
+## 6-7 实战身份验证控件和地址选择控件（上）
+## 6-8 实战身份验证控件和地址选择控件（中）
+## 6-9 实战身份验证控件和地址选择控件（下）
 # 第7章 使用 Redux 管理应用状态
 # 第8章 Angular 的测试
 # 第9章 课程总结

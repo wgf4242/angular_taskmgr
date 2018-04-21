@@ -13,13 +13,6 @@ import {DirectiveModule} from '../directive/directive.module';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { ImageListSelectComponent } from './image-list-select/image-list-select.component';
 import { AgeInputComponent } from './age-input/age-input.component';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/observable/merge';
-import 'rxjs/add/observable/combineLatest';
-import 'rxjs/add/operator/filter';
-import 'rxjs/add/operator/startWith';
-import 'rxjs/add/operator/debounceTime';
-import 'rxjs/add/operator/distinctUntilChanged';
 
 @NgModule({
   imports: [
