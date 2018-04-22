@@ -3166,6 +3166,196 @@ export  class TaskListService {
 
 
 ## 6-3 实战服务逻辑（中）
+
+```typescript
+npm i --save lodash
+npm i -D @types/lodash
+
+
+dialogRef.afterClosed().subscribe(project => {})
+dialogRef.afterClosed().filter(n => n).subscribe(project => {})
+```
+
+直接关闭时没有project的，filter一下
+
+      this.service$.add(project); 也返回的是个流，不2次订阅，合并一下流。
+
+
+    dialogRef.afterClosed().filter(n => n).switchMap(v => this.service$.add(v))
+      .subscribe(project => console.log(project));
+
+返回的是 xx_tn 缩略图，我们要处理一让返回大图。并在界面上进行更改。
+
+* 节省订阅
+
+做一人个 take ， 不需要 desctroy 中取消订阅，也不用一直监视。节省订阅。
+
+__filter__  (n => n) 它或 boolean 为真，非空
+
+__map__  `.map(val => ({...val, coverImg: this.buildImgSrc(val.coverImage)})) `
+
+展开前面对象，后面的属性，没有就添加有就更新。
+
+```typescript
+
+# new-project.component.ts
+ngOnInit() {
+    this.coverImages = this.data.thumbnails;
+    if (this.data.project) {
+      this.form = this.fb.group({
+        name: [this.data.project.name, Validators.required],
+        desc: [this.data.project.desc],
+        coverImg: [this.data.project.coverImg],
+      });
+      this.title = '修改项目';
+    } else {
+      this.form = this.fb.group({
+        name: [, Validators.required],
+        desc: [],
+        coverImg: [this.data.img],
+      });
+      this.title = '创建项目';
+    }
+  }
+
+  onSubmit({value, valid}, ev: Event) {
+    ev.preventDefault();
+    if (!valid) {return; }
+    this.dialogRef.close(value);
+  }
+
+#project-list.component.css
+.card {　... display: flex; }
+
+#project-list.component.html
+                    (onEdit)="launcherUpdateDialog(project)"
+
+#project-list.component.ts
+  sub: Subscription;
+
+  constructor(private dialog: MatDialog, private cd: ChangeDetectorRef, private service$: ProjectService) {
+  }
+
+  ngOnInit() {
+    this.sub = this.service$.get('1').subscribe(projects => {
+      this.projects = projects;
+      this.cd.markForCheck();
+    });
+  }
+
+  ngOnDestroy() {if (this.sub) {this.sub.unsubscribe(); } }
+
+  openNewProjectDialog() {
+    const selectedImg = `/assets/img/covers/${Math.floor(Math.random() * 40)}_tn.jpg`;
+    console.log(selectedImg);
+    const dialogRef = this.dialog.open(NewProjectComponent, {data: {thumbnails: this.getThumbnails(), img: selectedImg}});
+    dialogRef.afterClosed()
+      .take(1)
+      .filter(n => n)
+      .map(val => ({...val, coverImg: this.buildImgSrc(val.coverImg)}))
+      .switchMap(v => this.service$.add(v))
+      .subscribe(project => {
+          this.projects = [...this.projects, project];
+          this.cd.markForCheck();
+      });
+  }
+
+  launcherUpdateDialog(project: Project) {
+    const dialogRef = this.dialog.open(NewProjectComponent, {data: {thumbnails: this.getThumbnails(), project: project}});
+    dialogRef.afterClosed() .take(1) .filter(n => n)
+      .map(val => ({...val, id: project.id, coverImg: this.buildImgSrc(val.coverImg)}))
+      .switchMap(v => this.service$.update(v))
+      .subscribe(project => {
+        const index = this.projects.map(p => p.id).indexOf(project.id);
+        this.projects = [...this.projects.slice(0, index), project, ...this.projects.slice(index + 1)]
+        this.cd.markForCheck();
+      });
+  }
+
+  launcheConfirmDialog(project) {
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {data: {thumbnails: this.getThumbnails(), project: project}});
+    dialogRef.afterClosed() .take(1) .filter(n => n)
+      .switchMap(v => this.service$.del(project))
+      .subscribe(prj => {
+        this.projects = this.projects.filter(p => p.id !== project.id)
+        this.cd.markForCheck();
+      });
+  }
+
+  private getThumbnails() {return _.range(0, 40) .map(i => `/assets/img/covers/${i}_tn.jpg`); }
+
+  private buildImgSrc(img: string): string {console.log(img); return img.indexOf('_') > -1 ? img.split('_')[0] + '.jpg' : img; }
+}
+
+# task.service.ts
+export  class TaskService {
+
+  private readonly domain = 'tasks';
+  private headers = new HttpHeaders({
+    'Content-Type': 'application/json'
+  });
+  constructor(private http: HttpClient, @Inject('BASE_CONFIG') private config) {}
+
+  // POST
+  add(task: Task): Observable<Task> {
+    task.id = null;
+    const uri = `${this.config.uri}/${this.domain}`;
+    return this.http .post<Task>(uri, JSON.stringify(task), {headers: this.headers}); 
+  }
+
+  // PUT
+  update(task: Task): Observable<Task> {
+    const uri = `${this.config.uri}/${this.domain}/${task.id}`;
+    const toUpdate = {
+      name: task.desc,
+      desc: task.priority,
+      coverImg: task.dueDate,
+      reminder: task.reminder,
+      ownerId: task.ownerId,
+      participantIds: task.participantIds,
+      remark: task.remark
+    }
+    return this.http .patch<Task>(uri, JSON.stringify(toUpdate), {headers: this.headers});
+  }
+
+  // DELETE
+  del(task: Task): Observable<Task> {
+    const uri = `${this.config.uri}/${this.domain}/${task.id}`;
+    return this.http.delete(uri) .mapTo(task);
+  }
+
+  // GET
+  get(taskListId: string): Observable<Task[]> {
+    const uri = `${this.config.uri}/${this.domain}`;
+    return this.http .get<Task[]>(uri, {params: {'taskListId': taskListId}});
+  }
+
+  getByLists(lists: TaskList[]): Observable<Task[]> {
+    return Observable.from(lists) .mergeMap(list => this.get(list.id) ) 
+    .reduce((tasks: Task[], t: Task[] ) => [...tasks, ...t], []);
+  }
+
+  complete(task: Task): Observable<Task> {
+    const uri = `${this.config.uri}/${this.domain}/${task.id}`;
+    return this.http .patch<Task>(uri, JSON.stringify({completed: !task.completed}), {headers: this.headers});
+  }
+
+  move(taskId: string, taskListId: string): Observable<Task> {
+    const uri = `${this.config.uri}/${this.domain}/${taskId}`;
+    return this.http .patch<Task>(uri, JSON.stringify({taskListId: taskListId}), {headers: this.headers});
+  }
+
+  moveAll(srcListId: string, targetListId: string): Observable<Task[]> {
+    return this.get(srcListId)
+      .mergeMap(tasks => Observable.from(tasks))
+      .mergeMap(task => this.move(task.id, targetListId))
+      .reduce((arr, x) => [...arr, x], []);
+  }
+
+}
+
+```
+
 ## 6-4 实战服务逻辑（下）
 ## 6-5 实战自动建议表单控件
 ## 6-6 Observable 的冷和热以及 Subject

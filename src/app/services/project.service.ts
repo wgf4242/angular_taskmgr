@@ -6,7 +6,7 @@ import {Observable} from 'rxjs/Observable';
 @Injectable()
 export  class ProjectService {
 
-  private readonly domain = 'project';
+  private readonly domain = 'projects';
   private headers = new HttpHeaders({
     'Content-Type': 'application/json'
   });
@@ -35,7 +35,7 @@ export  class ProjectService {
 
   // DELETE
   del(project: Project): Observable<Project> {
-    const delTasks$ = Observable.from(project.taskLists)
+    const delTasks$ = Observable.from(project.taskLists ? project.taskLists : [])
       .mergeMap(listId => this.http.delete(`${this.config.uri}/taskLists/${listId}`))
       .count();
     const uri = `${this.config.uri}/${this.domain}/${project.id}`;

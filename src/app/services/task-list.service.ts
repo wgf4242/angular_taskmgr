@@ -6,7 +6,7 @@ import {Observable} from 'rxjs/Observable';
 @Injectable()
 export  class TaskListService {
 
-  private readonly domain = 'tasks';
+  private readonly domain = 'taskLists';
   private headers = new HttpHeaders({
     'Content-Type': 'application/json'
   });
