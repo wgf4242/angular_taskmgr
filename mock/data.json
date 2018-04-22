@@ -5,16 +5,22 @@
       "name": "itemMame-1",
       "desc": "this is a ent project",
       "coverImg": "assets/img/covers/0.jpg",
-      "members": ["1", "2"]
+      "members": [
+        "1",
+        "2"
+      ]
     },
     {
       "id": 2,
       "name": "Auto test",
       "desc": "this is a ent project",
       "coverImg": "assets/img/covers/1.jpg",
-      "members": ["1"]
+      "members": [
+        "1"
+      ]
     }
   ],
+  "taskLists": [],
   "quotes": [
     {
       "id": 1,

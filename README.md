@@ -3117,6 +3117,54 @@ export  class ProjectService {
 
 ```
 ## 6-2 实战服务逻辑（上）
+项目列表(name, order, projectid)-任务列表
+
+任务列表-增删改查 和project 类似，但多了一个移动。但只改变了内存，没有改变服务器的数据。
+
+__tasks__ 和 taskList 有类似的增删改查，多一个 completed, 单一责任制， 单独写完成功能，移动功能。
+
+src, target 的  order 的更新。两个事件流，一个drag的事件，一个是drop的order。 先将这两个流处理完后，将更新后的 tasklist 返回。最后要返回一个tasklist数组，做一个合并再做reduce。
+
+用merge和concat都行。没有顺序之分。这里为了演示使用 concat 顺序执行。再用reduce返回数组。
+```typescript
+# task-list.service.ts
+export  class TaskListService {
+   ...
+  add(taskList: TaskList): Observable<TaskList> {
+    taskList.id = null;
+    const uri = `${this.config.uri}/${this.domain}`;
+    return this.http .post<TaskList>(uri, JSON.stringify(taskList), {headers: this.headers}); }
+
+  update(taskList: TaskList): Observable<TaskList> {
+    const uri = `${this.config.uri}/${this.domain}/${taskList.id}`;
+    const toUpdate = {name: taskList.name }
+    return this.http .patch<TaskList>(uri, JSON.stringify(toUpdate), {headers: this.headers}); }
+
+  del(taskList: TaskList): Observable<TaskList> {
+    const uri = `${this.config.uri}/${this.domain}/${taskList.id}`;
+    return this.http.delete(uri) .mapTo(taskList); 
+  }
+
+  // GET
+  get(projectId: string): Observable<TaskList[]> {
+    const uri = `${this.config.uri}/${this.domain}`;
+    return this.http .get<TaskList[]>(uri, {params: {'projectId': projectId}}); 
+  }
+
+  swapOrder(src: TaskList, target: TaskList): Observable<TaskList[]> {
+    const dragUri = `${this.config.uri}/${this.domain}/${src.id}`;
+    const dropUri = `${this.config.uri}/${this.domain}/${target.id}`;
+    const drag$ = this.http.patch<TaskList[]>(dragUri, JSON.stringify({order: target.order}), {headers: this.headers});
+    const drop$ = this.http.patch<TaskList[]>(dropUri, JSON.stringify({order: target.order}), {headers: this.headers});
+    return (Observable.concat(drag$, drop$).reduce((arrs, list) => [...arrs, list], [])) as Observable<TaskList[]>;
+  }
+
+
+}
+
+```
+
+
 ## 6-3 实战服务逻辑（中）
 ## 6-4 实战服务逻辑（下）
 ## 6-5 实战自动建议表单控件
