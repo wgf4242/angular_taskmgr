@@ -18,6 +18,7 @@ import 'rxjs/add/observable/merge';
 import 'rxjs/add/observable/from';
 import 'rxjs/add/observable/combineLatest';
 import 'rxjs/add/observable/concat';
+import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/filter';
 import 'rxjs/add/operator/startWith';
 import 'rxjs/add/operator/mergeMap';

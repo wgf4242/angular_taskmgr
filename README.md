@@ -3357,6 +3357,150 @@ export  class TaskService {
 ```
 
 ## 6-4 实战服务逻辑（下）
+
+* 查询用户，搜索建议
+
+* 添加组员，添加任务执行者
+
+* 处理 user 和 project 的关系。
+
+### UserService
+
+user 这边有 projectsid， project 有 members id。
+
+增加关联，删除关联，以及批量的处理。
+
+```typescript
+
+export  class UserService {
+
+  private readonly domain = 'users';
+  private headers = new HttpHeaders({
+    'Content-Type': 'application/json'
+  });
+  constructor(private http: HttpClient, @Inject('BASE_CONFIG') private config) {}
+
+  searchUsers(filter: string): Observable<User[]> {
+    const uri = `${this.config.uri}/${this.domain}`;
+    return this.http.get<User[]>(uri, {params: {'email_like': filter}});
+  }
+  gethUsersByProject(projectId: string): Observable<User[]> {
+    const uri = `${this.config.uri}/${this.domain}`;
+    return this.http.get<User[]>(uri, {params: {'projectId_like': projectId}});
+  }
+
+  addProjectRef(user: User, projectId: string): Observable<User> {
+    const uri = `${this.config.uri}/${this.domain}/${user.id}`;
+    const projectIds = user.projectIds ? user.projectIds : [];
+    if (projectIds.indexOf(projectId) > -1) {
+        return Observable.of(user);
+    }
+    return this.http.patch<User>(uri, JSON.stringify({projectIds: [...projectIds, projectId]}), {headers: this.headers});
+  }
+
+  removeProjectRef(user: User, projectId: string): Observable<User> {
+    const uri = `${this.config.uri}/${this.domain}/${user.id}`;
+    const projectIds = user.projectIds ? user.projectIds : [];
+    const index = projectIds.indexOf(projectId);
+    if (index === -1) {
+        return Observable.of(user);
+    }
+    const toUpdate = [...projectIds.slice(0, index), ...projectIds.slice(index + 1)];
+    return this.http.patch<User>(uri, JSON.stringify({projectIds: toUpdate}), {headers: this.headers});
+  }
+
+  batchUpdateProjectRef(project: Project): Observable<User[]> {
+    const projectId = project.id;
+    const membersIds = project.members ? project.members : [];
+    return Observable.from(membersIds)
+      .switchMap(id => {
+        const uri = `${this.config.uri}/${this.domain}/${id}`;
+        return this.http.get<User>(uri);
+      })
+      .filter(user => user.projectIds.indexOf(projectId) === -1)
+      .switchMap(u => this.addProjectRef(u, projectId))
+      .reduce((arr, curr) => [...arr, curr], []);
+  }
+}
+```
+### AuthService
+
+新建 auth.model ， 基于 token based 认证。session 维护目前比较麻烦。
+
+认证service 会有验证和登录。这里没有后台。没有删除用户
+
+```typescript
+export  class AuthService {
+  private readonly domain = 'users';
+  private headers = new HttpHeaders({'Content-Type': 'application/json'});
+  private token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9' +
+    '.eyJ1c2VyX2lkIjoxNSwidXNlcm5hbWUiOiJ3YW5nZ2YiLCJleHAiOjE1MjQ2MDYzMzgsImVtYWlsIjoiIn0' +
+    '.fd2TpIyyc5ErnnFzAffCDE83wpfXM44hZWPvSVbn0Ec';
+
+  constructor(private http: HttpClient, @Inject('BASE_CONFIG') private config) {}
+
+  // POST
+  register(user: User): Observable<Auth> {
+    user.id = null;
+    const uri = `${this.config.uri}/${this.domain}`;
+    return this.http
+      .get<User[]>(uri, {params: {'email': user.email}})
+      .switchMap(res => {
+        if (res.length > 0) {throw 'user existed'; }
+        return this.http
+          .post<User>(uri, JSON.stringify(user), {headers: this.headers})
+          .map(r => ({token: this.token, user: r}));
+      });
+  }
+
+  login(username: string, password: string): Observable<Auth> {
+    const uri = `${this.config.uri}/${this.domain}`;
+    return this.http
+      .get<User[]>(uri, {params: {'email': username, 'password': password}})
+      .map(users => {if (users.length === 0) {throw 'username or password not match'; }
+        return {token: this.token, user: users[0] };
+      });
+  }
+}
+
+```
+
+### AuthGuard 
+
+路由守卫可以用 纯 boolean 或 Observable 或Promise形式返回，这里以 Observable形式的返回
+
+```typescript
+# auth-guard.service.ts
+export class AuthGuardService implements CanActivate {
+  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> {
+    return Observable.of(true);
+  }
+}
+```
+
+### Models
+
+```typescript
+# auth.model.ts
+export interface Auth {
+  user?: User;
+  userId?: string;
+  token?: string;
+  err?: Err;
+}
+
+# err.model.ts
+export interface Err {
+  timestamp?: Date;
+  status?: string;
+  error?: string;
+  exception?: string;
+  message?: string;
+  path?: string;
+}
+
+```
+
 ## 6-5 实战自动建议表单控件
 ## 6-6 Observable 的冷和热以及 Subject
 ## 6-7 实战身份验证控件和地址选择控件（上）
