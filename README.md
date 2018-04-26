@@ -3671,6 +3671,156 @@ export class InviteComponent implements OnInit {
 ```
 
 ## 6-6 Observable 的冷和热以及 Subject
+
+Observable 的冷和热
+
+热---所有的观察者得到的都是最新的值。订阅者进来的时候和是什么就发送什么，和其他订阅者时间一样。
+
+冷---新的订阅者进来都是从头开始的序列。
+
+### Subject
+
+Subject 即是 Observer 又是 Observable
+
+ReplaySubject 只留最新的N个值
+
+BehaviorSubject 保留最新的一个值。
+
+### Angular 中的 Rx 支持
+
+大师内置 Observable 支持：如 Http, ReactiveForms, Route 等待实例化后指向它。
+
+Async Pipe 是什么？ 有什么用？ (可直接使用 Observable，而且不用取消订阅)
+
+### 冷和热
+
+冷-点播
+
+```typescript
+const count$ = Rx.Observable.interval(1000);
+
+const sub1 = count$.subscribe(val => console.log(val));
+
+setTimeout(function(){
+  const sub2 = count$.subscribe(val => console.log(val))
+}, 2000)
+```
+
+热-直播
+`const count$ = Rx.Observable.interval(1000).share();`
+
+改为 subscribe
+```typescript
+const counter$ = Rx.Observable.interval(1000).take(5);
+
+const subject = new Rx.Subject();
+
+const observer1 = {
+  next: (val) => console.log('1: ' + val),
+  error: (err) => console.error('ERROR>> 1:' + err),
+  complete: () => console.log('1 is complete')
+}
+
+const observer2 = {
+  next: (val) => console.log('2: ' + val),
+  error: (err) => console.error('ERROR>> 2:' + err),
+  complete: () => console.log('2 is complete')
+}
+
+// counter$.subscribe(val => console.log(val))
+// 上下是相等的
+counter$.subscribe(observer1);
+
+setTimeout(function() {
+  counter$.subscribe(observer2);
+}, 2000);
+```
+
+需要在2处执行，但有很多情况，是我们定义好在应该的时间触发，所有的序列都这么执行。这种情况要用 subject
+```typescript
+subject.subscribe(observer1);
+
+setTimeout(function() {
+  subject.subscribe(observer2);
+}, 2000);
+
+counter$.subscribe(subject);
+```
+这样就用一句执行了2个observerable
+
+```typescript
+subject.next(10);
+subject.next(11);
+
+subject.subscribe(observer1);
+counter$.subscribe(subject);
+
+```
+10 11并没有反应。因为还没开始订阅
+
+```typescript
+subject.subscribe(observer1);
+subject.next(10);
+subject.next(11);
+
+setTimeout(function() {
+  subject.subscribe(observer2);
+}, 2000);
+
+counter$.subscribe(subject);
+```
+第二个流没有反应，10 11已经过去了，所以它是热的流。
+
+#### ReplaySubject 进行重复播放
+
+```typescript
+const counter$ = Rx.Observable.interval(1000).take(5);
+
+const subject = new Rx.ReplaySubject(2);
+subject.next(10);
+subject.next(11);
+...
+counter$.subscribe(subject);
+```
+第一个流 播出了 10 11， 第二个流播出了 0 11
+```typescript
+"1: 0"
+"1: 10"
+"1: 11"
+"1: 0" 我们重播2个值，已经有0了，再播一个值 只播了11
+"2: 11"
+```
+
+#### BehaviorSubject 只播放最新的值
+
+```typescript
+const subject = new Rx.BehaviorSubject();
+subject.next(10);
+subject.next(11);
+...
+counter$.subscribe(subject);
+
+"1: 11" 最新值是11，所以播出来11
+"1: 0"
+"2: 0"
+"1: 1"
+"2: 1"
+```
+
+__之前 drag and drop service__， 用到 BehaviorSubject
+
+开始拖的时候 `setDragData(data: DragData) {this._dragData.next(data); }`
+
+在流新增一个元素，放的时候，`getDragData(): Observable<DragData> {return this._dragData.asObservable(); }` 会得到这个 Observable 取到最新的值。
+  
+clear时怎么办？把null放进来。其他的地方误接收时会收到 null 没有数据。
+
+### Async Pipe
+
+正常要 subscribe, 并在 {} 传递 objects， 然后在 ondestroy中取消订阅。
+
+现在直接定义流， name$ ，在 html中 item | async 使用。
+
 ## 6-7 实战身份验证控件和地址选择控件（上）
 ## 6-8 实战身份验证控件和地址选择控件（中）
 ## 6-9 实战身份验证控件和地址选择控件（下）
