@@ -1,6 +1,6 @@
 <div>
   <mat-select placeholder="证件类型" (change)="onIdTypeChange($event.vallue)" [(ngModel)]="identity.identityType">
-    <mat-option *ngFor="let type of identity" [value]="type.value">{{type.label}}</mat-option>
+    <mat-option *ngFor="let type of identityTypes" [value]="type.value">{{type.label}}</mat-option>
   </mat-select>
 </div>
 <div class="id-input">

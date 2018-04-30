@@ -49,10 +49,13 @@ import 'rxjs/add/operator/distinctUntilChanged';
     AppRoutingModule,
   ],
   providers: [
-    {provide: 'BASE_CONFIG', useValue: {
-      uri: 'http://localhost:3000',
-      }}
-  ]
+    {
+      provide: 'BASE_CONFIG',
+      useValue: {
+        uri: 'http://localhost:3000'
+      }
+    }
+  ],
 })
 export class CoreModule {
 

@@ -3835,6 +3835,334 @@ ng g c shared/area-list -spec false
 ```
 
 ## 6-8 实战身份验证控件和地址选择控件（中）
+```typescript
+#area-list.component.css
+.street {flex: 1 1 100%; }
+
+.address-group {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+#area-list.component.html
+<div class="address-group">
+  <div>
+    <mat-select
+      placeholder="请输入省份"
+      [(ngModel)]="_address.province"
+      (change)="onProvinceChange()">
+      <mat-option *ngFor="let p of provinces$ | async" [value]="p">{{p}}</mat-option>
+    </mat-select>
+  </div>
+  <div>
+    <mat-select
+      placeholder="请输入城市"
+      [(ngModel)]="_address.city"
+      (change)="onCityChange()">
+      <mat-option *ngFor="let c of cities$ | async" [value]="c">
+        {{c}}
+      </mat-option>
+    </mat-select>
+  </div>
+  <div>
+    <mat-select
+      placeholder="请输入区县"
+      [(ngModel)]="_address.district"
+      (change)="onDistrictChange()">
+      <mat-option *ngFor="let d of districts$ | async" [value]="d">
+        {{d}}
+    </mat-option>
+    </mat-select>
+  </div>
+  <div class="street">
+    <mat-input-container class="full-width">
+      <input type="text" matInput placeholder="请输入街道地址" [(ngModel)]="_address.street" (change)="onStreetChange()">
+    </mat-input-container>
+  </div>
+</div>
+
+#area-list.component.ts
+@Component({
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => AreaListComponent),
+      multi: true
+    },
+    {
+      provide: NG_VALIDATORS,
+      useExisting: forwardRef(() => AreaListComponent),
+      multi: true
+    },
+  ],
+  changeDetection: ChangeDetectionStrategy.OnPush
+})
+export class AreaListComponent implements ControlValueAccessor, OnInit, OnDestroy {
+  _address: Address = {
+    province: '',
+    city: '',
+    district: '',
+    street: '',
+  };
+  _province = new Subject();
+  _city = new Subject();
+  _district = new Subject();
+  _street = new Subject();
+  provinces$: Observable<string[]>;
+  cities$: Observable<string[]>;
+  districts$: Observable<string[]>;
+
+  sub: Subscription;
+
+  private propagateChange = (_: any) => {};
+
+  writeValue(obj: Address): void {
+    if (obj) {
+        this._address = obj;
+        if (this._address.province) {this._province.next(this._address.province); }
+        if (this._address.city) {this._city.next(this._address.city); }
+        if (this._address.district) {this._district.next(this._address.district); }
+        if (this._address.street) {this._street.next(this._address.street); }
+    }
+  }
+
+  registerOnChange(fn: any): void {this.propagateChange = fn; }
+  registerOnTouched(fn: any): void {}
+
+  ngOnInit(): void {
+    const province$ = this._province.asObservable().startWith('');
+    const city$ = this._city.asObservable().startWith('');
+    const district$ = this._district.asObservable().startWith('');
+    const street$ = this._street.asObservable().startWith('');
+    const val$ = Observable.combineLatest([province$, city$, district$, street$], (_p, _c, _d, _s) => {
+      return  {
+        province: _p,
+        city: _c,
+        district: _d,
+        street: _s
+      };
+    });
+  this.sub = val$.subscribe(v => {
+    this.propagateChange(v);
+  });
+  this.provinces$ = Observable.of(getProvinces());
+  this.cities$ = province$.map((p: string) => getCitiesByProvince(p));
+  this.districts$ = Observable.combineLatest(province$, city$, (p: string, c: string) => getAreaByCity(p, c));
+  }
+
+  ngOnDestroy(): void {
+    if (this.sub) {
+        this.sub.unsubscribe();
+    }
+  }
+
+  validate(c: FormControl): { [key: string]: any } {
+    const val = c.value;
+    if (!val) {
+      return null;
+    }
+    if (val.province && val.city && val.district && val.street) {
+        return null;
+    }
+    return  {
+      addressInvalid: true
+    };
+  }
+
+  onProvinceChange() {
+    this._province.next(this._address.province);
+  }
+
+  onCityChange() {
+    this._city.next(this._address.city);
+  }
+
+  onDistrictChange() {
+    this._district.next(this._address.district);
+  }
+
+  onStreetChange() {
+    this._street.next(this._address.street);
+  }
+
+
+}
+
+#identity-input.component.html
+<div>
+  <mat-select placeholder="证件类型" (change)="onIdTypeChange($event.vallue)" [(ngModel)]="identity.identityType">
+    <mat-option *ngFor="let type of identityTypes" [value]="type.value">{{type.label}}</mat-option>
+  </mat-select>
+</div>
+<div class="id-input">
+  <mat-input-container class="full-width">
+    <input matInput type="text" placeholder="证件号码" (change)="onIdNoChange($event.target.value)" [(ngModel)]="identity.identityNo">
+    <mat-error>证件号码输入有误</mat-error>
+  </mat-input-container>
+</div>
+
+#identity-input.component.ts
+@Component({
+  selector: 'app-identity-input',
+  templateUrl: './identity-input.component.html',
+  styleUrls: ['./identity-input.component.css'],
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => IdentityInputComponent),
+      multi: true
+    },
+    {
+      provide: NG_VALIDATORS,
+      useExisting: forwardRef(() => IdentityInputComponent),
+      multi: true
+    },
+  ],
+  changeDetection: ChangeDetectionStrategy.OnPush
+})
+export class IdentityInputComponent implements ControlValueAccessor, OnInit, OnDestroy {
+
+  identityTypes = [
+    {value: IdentityType.IdCard, label: '身份证'},
+    {value: IdentityType.Insurance, label: '医保'},
+    {value: IdentityType.Passport, label: '护照'},
+    {value: IdentityType.Military, label: '军官证'},
+    {value: IdentityType.Other, label: '其他'},
+  ];
+  identity: Identity = {identityType: null, identityNo: null};
+
+  private _idType = new Subject<IdentityType>();
+  private _idNo = new Subject<string>();
+  private propagateChange = (_: any) => {};
+  private sub: Subscription;
+
+  writeValue(obj: any): void {if (obj) {this.identity = obj; } }
+
+  registerOnChange(fn: any): void {this.propagateChange = fn; }
+  registerOnTouched(fn: any): void {}
+
+  ngOnInit(): void {
+    const val$ = Observable.combineLatest(this.idNo, this.idType, (_no, _type) => {
+      return {
+        identityType: _type,
+        identityNo: _no,
+      };
+    });
+    this.sub = val$.subscribe(id => this.propagateChange(id));
+  }
+
+  ngOnDestroy(): void {if (this.sub) {this.sub.unsubscribe(); } }
+
+
+  onIdTypeChange(idType: IdentityType) {this._idType.next(idType); }
+
+  onIdNoChange(idNo: string) {this._idNo.next(idNo); }
+
+  get idType(): Observable<IdentityType> {return this._idType.asObservable(); }
+
+  get idNo(): Observable<string> {return this._idNo.asObservable(); }
+
+  validate(c: FormControl): { [key: string]: any } {
+    const val = c.value;
+    if (!val) {return null; }
+    switch (val.identityType) {
+      case IdentityType.IdCard: {return this.validateIdCard(c); }
+      case IdentityType.Passport: {return this.validatePassport(c); }
+      case IdentityType.Military: {return this.validateMilitary(c); }
+      case IdentityType.Insurance:
+        return null;
+      default: {
+        return null;
+      }
+
+    }
+  }
+  private validateIdCard(c: FormControl): { [key: string]: any } {
+    const val = c.value.identityNo;
+    if (val.length !== 18) {
+      return {idInvalid: true};
+    }
+    const patter  = /^[1-9]\d{5}(18|19|([23]\d))\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\d{3}[0-9Xx]$/;
+    return patter.test(val) ? null : {idNotValid: true};
+  }
+
+   private validatePassport(c: FormControl): { [key: string]: any } {
+    const val = c.value.identityNo;
+    if (val.length !== 9) {
+      return {idInvalid: true};
+    }
+    const patter  = /^[GgEe]\d{8}$/;
+    return patter.test(val) ? null : {idNotValid: true};
+  }
+
+   private validateMilitary(c: FormControl): { [key: string]: any } {
+    const val = c.value.identityNo;
+    const patter  = /[\u4e00-\u9fa5](字第)(\d{4,8})(号?)$/;
+    return patter.test(val) ? null : {idNotValid: true};
+  }
+}
+# area.util.ts
+import {city_data} from './area.data';
+
+export const getProvinces = () => {
+  const provinces = [];
+  for (const province in city_data) {
+    provinces.push(province);
+  }
+  return provinces;
+}
+
+export const getCitiesByProvince = (province: string) => {
+  if (!province || !city_data[province]) {
+      return [];
+  }
+  const cities = [];
+  const val = city_data[province];
+  for (const city in val) {
+    cities.push(city);
+  }
+  return cities;
+}
+
+export const getAreaByCity = (province: string, city: string) => {
+  if (!province || !city_data[province] || !city_data[province][city]) {
+    return [];
+  }
+  return city_data[province][city];
+}
+
+# identity.util.ts
+import {GB2260} from './identity.data';
+
+export const extractInfo = (idNo: string) => {
+  const addrPart = idNo.substring(0, 6);
+  const birthPart = idNo.substring(6, 14);
+  return {
+    addrCode: addrPart,
+    dateOfBirth: birthPart
+  };
+};
+
+export const isValidAddr = (addr: string) => {
+  return GB2260[addr] !== undefined;
+};
+
+export const getAddrByCode = (code: string) => {
+  const province = GB2260[code.substring(0, 2) + '0000'];
+  const city = GB2260[code.substring(0, 4) + '00'].replace(province, '');
+  const district = GB2260[code].replace(province + city, '');
+  return {
+    province: province,
+    city: city,
+    district: district
+  };
+}
+
+
+```
 ## 6-9 实战身份验证控件和地址选择控件（下）
 # 第7章 使用 Redux 管理应用状态
 # 第8章 Angular 的测试
