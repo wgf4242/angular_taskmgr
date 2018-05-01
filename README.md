@@ -1,3 +1,6 @@
+npm i --save @ngrx/core@1.2.0 @ngrx/store@2.2.3 @ngrx/router-store@1.2.6 @ngrx/effects@2.0.4 @ngrx/store-devtools@3.2.4
+npm install --save ngrx-store-freeze
+
 # 第1章 课程介绍
 ## 1-2 环境搭建
 
@@ -4163,7 +4166,152 @@ export const getAddrByCode = (code: string) => {
 
 
 ```
-## 6-9 实战身份验证控件和地址选择控件（下）
 # 第7章 使用 Redux 管理应用状态
+## 7-1 Redux 的概念和实战(一)
+
+__Redux是什么__
+
+Redux 是一个状态的集中管理机制。全局的、唯一的、不可改变的内存状态【数据库】
+
+不可改变--不会改变自己原有状态，每次会返回一个全新的状态。
+
+状态：影响到UI变化的数据。
+
+Store, Action, Reducer,
+
+多人协作时，另一个人改变了某状态而没考虑你的业务逻辑导致了bug，防止这种情况。使用Redux管理。
+
+__第一个 reducer__。
+
+* reducer 是一个纯函数，可以接收到任何 Action 。
+* reducer 不改变状态，只返回新的状态。
+
+npm i --save @ngrx/core@1.2.0 @ngrx/store@2.2.3 @ngrx/router-store@1.2.6 @ngrx/effects@2.0.4 @ngrx/store-devtools@3.2.4
+
+
+相等的，返回的是新的对象，不是修改的原来的对象。
+
+      return { ...state, quote: action.payload};
+      return Object.assign({}, state, {quote: action.payload})
+
+redux 相关的导入方法
+```typescript
+import {StoreDevtoolsModule} from '@ngrx/store-devtools';
+import {StoreModule} from '@ngrx/store';
+import {RouterStoreModule} from '@ngrx/router-store';
+
+@NgModule({
+  imports: [
+    StoreModule.provideStore(reducer),
+    RouterStoreModule.connectRouter(),
+    StoreDevtoolsModule.instrumentOnlyWithExtension(),
+  ],
+})
+
+```
+
+ngrx提供了方法合并 reducer
+
+生产和开发的 区别， 不可改变的。
+const productionReducers: ActionReducer<State> = combineReducers(reducers);
+const developmentReducers: ActionReducer<State> = ...
+
+npm install --save ngrx-store-freeze
+
+使用它时，如果写入原有状态时会报错，在开发环境时希望有这种特性。
+
+compose把前面函数当成后面函数的参数传进去
+
+`const developmentReducers: ActionReducer<State> = compose(storeFreeze, combineReducers)(reducers);`
+
+先定义全局State，再定义分支State， 全局初始值，每项对应的分支初始值。
+
+reducers 全部包含分支。再combine起来成为全局的reducer。做生产环境和开发环境。再放到storeModule中。
+
+__Code__
+
+```typescript
+# quote.action.ts
+export const QUOTE = 'Quote';
+export const QUOTE_SUCCESS = 'Quote Success';
+export const QUOTE_FAILED = 'Failed';
+
+# src/app/reducers/index.ts
+import {NgModule} from '@angular/core';
+import {StoreDevtoolsModule} from '@ngrx/store-devtools';
+import {ActionReducer, combineReducers, StoreModule} from '@ngrx/store';
+import {RouterStoreModule} from '@ngrx/router-store';
+import * as fromQuote from './quote.reducer';
+import {storeFreeze} from 'ngrx-store-freeze';
+import {compose} from '@ngrx/core/compose';
+import {environment} from '../../environments/environment';
+
+export interface State {
+  quote: fromQuote.State;
+};
+
+const initialState: State = {
+  quote: fromQuote.initialState
+};
+
+const reducers = {
+  quote: fromQuote.reducer,
+};
+
+const productionReducers: ActionReducer<State> = combineReducers(reducers);
+const developmentReducers: ActionReducer<State> = compose(storeFreeze, combineReducers)(reducers);
+
+export function reducer(state = initialState, action: any): State {
+  return environment.production ? productionReducers(state, action) : developmentReducers(state, action);
+}
+
+@NgModule({
+  imports: [
+    StoreModule.provideStore(reducer),
+    RouterStoreModule.connectRouter(),
+    StoreDevtoolsModule.instrumentOnlyWithExtension(),
+  ],
+})
+export class AppStoreModule {}
+
+# quote.reducer.ts
+import * as quoteAction from '../actions/quote.action';
+export interface State {
+
+};
+
+export const initialState: State = {
+  quote: {
+    cn: '慧妍',
+    en: 'Aliquam erat volutpat.',
+    pic: '/assets/img/quotes/1.jpg'
+  }
+};
+
+export function reducer(state = initialState, action: {type: string, payload: any}): State {
+  switch ( action.type) {
+    case quoteAction.QUOTE_SUCCESS: {
+      return { ...state, quote: action.payload};
+      // return Object.assign({}, state, {quote: action.payload})
+    }
+    case quoteAction.QUOTE_FAILED:
+    default: {
+      return state;
+    }
+  }
+}
+
+```
+## 7-2 Redux 的概念和实战(二)
+## 7-3 什么是 Effects
+## 7-4 实战认证信息流
+## 7-5 实战项目信息流（上）
+## 7-6 实战项目信息流（中）
+## 7-7 实战项目信息流（下）
+## 7-8 实战任务列表信息流
+## 7-9 实战任务 Reducer
+## 7-10 实战任务 Effects
+## 7-11 实战任务使用 Reducer 和 Effects
+
 # 第8章 Angular 的测试
 # 第9章 课程总结
