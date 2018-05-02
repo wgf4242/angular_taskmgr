@@ -1,5 +1,6 @@
 npm i --save @ngrx/core@1.2.0 @ngrx/store@2.2.3 @ngrx/router-store@1.2.6 @ngrx/effects@2.0.4 @ngrx/store-devtools@3.2.4
 npm install --save ngrx-store-freeze
+npm i --save reselect
 
 # 第1章 课程介绍
 ## 1-2 环境搭建
@@ -4277,7 +4278,7 @@ export class AppStoreModule {}
 # quote.reducer.ts
 import * as quoteAction from '../actions/quote.action';
 export interface State {
-
+  quote: Quote;
 };
 
 export const initialState: State = {
@@ -4302,7 +4303,124 @@ export function reducer(state = initialState, action: {type: string, payload: an
 }
 
 ```
+
+路由改变后发送 `RouterStoreModule.connectRouter(),`
+
 ## 7-2 Redux 的概念和实战(二)
+
+没有对值直接进行操作。组件是不关心怎样处理的，只要一个结果。
+
+大家的操作都是有规矩的，统一进行操作，不会直接对状态进行修改。
+
+```typescript
+  quote$: Observable<Quote>;
+
+  constructor(private fb: FormBuilder,
+              private quoteService$: QuoteService,
+              private store$: Store<fromRoot.State>) {
+    this.quoteService$.getQuote().subscribe(q => {
+      this.quote$ = this.store$.select(state => state.quote.quote)
+      this.store$.dispatch({type: actions.QUOTE_SUCCESS, payload: q});
+    });
+  }
+```
+
+把内存数据处理的逻辑从组件中剥离了出来。目前 q 是any，要改造下指定为特定类型。
+
+npm i --save reselect
+
+createSelector(getQuoteState, fromQuote.getQuote);  createSelector可以将多个函数组合。
+
+__使用 reselect 进行状态函数的高阶运算__
+
+reselect: 带【记忆】功能的函数运算，无论多少个参数，最后一个才是用于函数计算，其他的都是它的输入
+
+```typescript
+export const getTasksWithOwner = createSelector(getTasks, getUserEntities, 
+    (tasks, entities) => {
+        return tasks.map(task => {
+            const owner = entities[task.ownerId];
+            const participants = task.participantIds.map(id => entities[id]);
+            return Object.assign({}, task, {owner: owner}, {participants: [...participants]});
+        });
+    });
+```
+
+Code:
+
+
+```typescript
+# quote.action.ts
+
+export const QUOTE = 'Quote';
+export const QUOTE_SUCCESS = 'Quote Success';
+export const QUOTE_FAILED = 'Failed';
+
+// ng-rx-actions
+
+import {Action} from '@ngrx/store';
+import {type} from '../utils/type.util';
+import {Quote} from '../domain';
+
+export const ActionTypes = {
+  LOAD: type('[Quote] Load'),
+  LOAD_SUCCESS: type('[Quote] Load Success'),
+  LOAD_FAIL: type('[Quote] Load Fail')
+}
+
+export class LoadAction implements Action {
+  type = ActionTypes.LOAD;
+ constructor(public payload: null) {}
+}
+
+export class LoadSucessAction implements Action {
+  type = ActionTypes.LOAD_SUCCESS;
+ constructor(public payload: Quote) {}
+}
+
+export class LoadFailAction implements Action {
+  type = ActionTypes.LOAD_FAIL;
+ constructor(public payload: string) {}
+}
+
+export type Action
+  = LoadAction
+  | LoadSucessAction
+  | LoadFailAction;
+
+# index.ts
+export const getQuoteState = (state: State) => state.quote;
+
+export const getQuote = createSelector(getQuoteState, fromQuote.getQuote);
+
+# quote.reducer.ts
+export function reducer(state = initialState, action: actions.Action): State {
+  switch ( action.type) {
+    case actions.ActionTypes.LOAD_SUCCESS: {
+      return { ...state, quote: <Quote>action.payload};
+      // return Object.assign({}, state, {quote: action.payload})
+    }
+    case actions.ActionTypes.LOAD_FAIL:
+    default: {
+      return state;
+    }
+  }
+}
+
+export const getQuote = (state: State) => state.quote;
+
+# type.util.ts
+let typeCache: { [label: string]: boolean } = {};
+export function type<T>(label: T | ''): T {
+  if (typeCache[<string>label]) {
+      throw new Error('Action type "label" is not unique');
+  }
+
+  typeCache[<string>label] = true;
+  return <T>label;
+}
+
+```
 ## 7-3 什么是 Effects
 ## 7-4 实战认证信息流
 ## 7-5 实战项目信息流（上）

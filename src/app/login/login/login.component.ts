@@ -1,8 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {QuoteService} from '../../services/quote.service';
 import {Quote} from '../../domain/quote.model';
-
+import {Observable} from 'rxjs/Observable';
+import {Store} from '@ngrx/store';
+import * as fromRoot from '../../reducers';
+import * as actions from '../../actions/quote.action';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -10,15 +13,15 @@ import {Quote} from '../../domain/quote.model';
 })
 export class LoginComponent implements OnInit {
   form: FormGroup;
-  // 为了防止为空给初始值
-  quote: Quote =  {
-    cn: '慧妍',
-    en: 'Aliquam erat volutpat.',
-    pic: '/assets/img/quotes/1.jpg'
-  };
-  constructor(private fb: FormBuilder, private quoteService: QuoteService) {
-    this.quoteService.getQuote().subscribe(q => {
-      this.quote = q;
+  quote$: Observable<Quote>;
+
+  constructor(private fb: FormBuilder,
+              private quoteService$: QuoteService,
+              private store$: Store<fromRoot.State>) {
+    this.quote$ = this.store$.select(fromRoot.getQuote);
+    this.quoteService$.getQuote().subscribe(q => {
+      this.store$.dispatch(new actions.LoadSucessAction(q));
+      this.store$.dispatch({type: actions.QUOTE_SUCCESS, payload: q});
     });
   }
 
@@ -36,7 +39,7 @@ export class LoginComponent implements OnInit {
     this.form.controls['email'].setValidators(this.validate);
   }
 
-  validate(c: FormControl): {[key: string]: any} {
+  validate(c: FormControl): { [key: string]: any } {
     if (!c.value) {
       return null;
     }
@@ -47,5 +50,10 @@ export class LoginComponent implements OnInit {
     return {
       emailNotValid: 'The email must start with wang'
     };
+  }
+
+  onClick(a) {
+    const s = a as Observable<any>;
+    s.subscribe(value => console.log(value));
   }
 }

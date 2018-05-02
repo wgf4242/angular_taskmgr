@@ -28,6 +28,7 @@ import 'rxjs/add/operator/count';
 import 'rxjs/add/operator/reduce';
 import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/distinctUntilChanged';
+import {AppStoreModule} from '../reducers';
 
 @NgModule({
   imports: [
@@ -35,6 +36,7 @@ import 'rxjs/add/operator/distinctUntilChanged';
     SharedModule,
     AppRoutingModule,
     ServicesModule.forRoot(),
+    AppStoreModule,
     BrowserAnimationsModule,
   ],
   declarations: [
