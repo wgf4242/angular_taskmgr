@@ -4370,17 +4370,20 @@ export const ActionTypes = {
 
 export class LoadAction implements Action {
   type = ActionTypes.LOAD;
- constructor(public payload: null) {}
+
+  constructor(public payload: null) {}
 }
 
 export class LoadSucessAction implements Action {
   type = ActionTypes.LOAD_SUCCESS;
- constructor(public payload: Quote) {}
+
+  constructor(public payload: Quote) {}
 }
 
 export class LoadFailAction implements Action {
   type = ActionTypes.LOAD_FAIL;
- constructor(public payload: string) {}
+
+  constructor(public payload: string) {}
 }
 
 export type Action
@@ -4389,13 +4392,73 @@ export type Action
   | LoadFailAction;
 
 # index.ts
+
+import {NgModule} from '@angular/core';
+import {StoreDevtoolsModule} from '@ngrx/store-devtools';
+import {ActionReducer, combineReducers, compose, StoreModule} from '@ngrx/store';
+import {routerReducer, StoreRouterConnectingModule} from '@ngrx/router-store';
+import * as fromQuote from './quote.reducer';
+import {storeFreeze} from 'ngrx-store-freeze';
+import {environment} from '../../environments/environment';
+import {createSelector} from 'reselect';
+import {Action} from '../actions/quote.action';
+
+export interface State {
+  quote: fromQuote.State;
+};
+
+const initialState: State = {
+  quote: fromQuote.initialState
+};
+
+const reducers = {
+  quote: fromQuote.reducer,
+  router: routerReducer,
+};
+
+const productionReducers: ActionReducer<State> = combineReducers(reducers);
+const developmentReducers: ActionReducer<State> = compose(storeFreeze, combineReducers)(reducers) as ActionReducer<State, Action>;
+
+export function reducer(state = initialState, action: any): State {
+  return environment.production ? productionReducers(state, action) : developmentReducers(state, action);
+}
+
 export const getQuoteState = (state: State) => state.quote;
 
 export const getQuote = createSelector(getQuoteState, fromQuote.getQuote);
 
+@NgModule({
+  imports: [
+    StoreModule.forRoot(reducers),
+    StoreRouterConnectingModule.forRoot({
+      stateKey: 'router', // name of reducer key
+    }),
+    StoreDevtoolsModule.instrument({
+      maxAge: 25, // Retains last 25 states
+      logOnly: environment.production, // Restrict extension to log-only mode
+    }),
+  ],
+})
+export class AppStoreModule {}
+
 # quote.reducer.ts
+import * as actions from '../actions/quote.action';
+import {Quote} from '../domain';
+
+export interface State {
+  quote: Quote;
+}
+
+export const initialState: State = {
+  quote: {
+    cn: '慧妍',
+    en: 'Aliquam erat volutpat.',
+    pic: '/assets/img/quotes/1.jpg'
+  }
+};
+
 export function reducer(state = initialState, action: actions.Action): State {
-  switch ( action.type) {
+  switch (action.type) {
     case actions.ActionTypes.LOAD_SUCCESS: {
       return { ...state, quote: <Quote>action.payload};
       // return Object.assign({}, state, {quote: action.payload})
@@ -4422,6 +4485,75 @@ export function type<T>(label: T | ''): T {
 
 ```
 ## 7-3 什么是 Effects
+
+```typescript
+npm install @ngrx/effects --save
+npm install -g concurrently
+
+```
+
+__什么是 Effiect?__
+
+action 想像为一个流的话，改变的是数据流。不改变数据， 改变外部状态的， 比如
+
+* DOM side effects
+* HTTP side effects
+* Other side effects
+
+和UI相关的数据处理 为reducer ，UI相关状态之外的改变叫 effects.
+
+ ```typescript
+ 
+# package.json
+    "server": "json-server --watch mock/data.json --port 3000",
+    "start": "convurrently \"ng server --port=4200 \" \"npm run server\"",
+
+# index.ts
+@NgModule({
+  imports: [EffectsModule.forRoot([QuoteEffects])],
+})
+export class AppEffectsModule {}
+
+# quote.effects.ts
+import {Injectable} from '@angular/core';
+import {Actions, Effect} from '@ngrx/effects';
+import {Observable} from 'rxjs/Observable';
+import {Action} from '@ngrx/store';
+import * as actions from '../actions/quote.action';
+import {QuoteService} from '../services/quote.service';
+
+@Injectable()
+export class QuoteEffects {
+  @Effect()
+  quote$: Observable<Action> = this.actions$
+    .ofType(actions.ActionTypes.LOAD)
+    // .map(toPayload)
+    .switchMap(_ => this.service$.getQuote()
+        .map(data => new actions.LoadSucessAction(data))
+        .catch(err =>  Observable.of(new actions.LoadFailAction(JSON.stringify(err)))
+      )
+  );
+
+  constructor(private actions$: Actions, private service$: QuoteService) {
+  }
+}
+
+# login.component.ts
+  constructor(private fb: FormBuilder,
+              private store$: Store<fromRoot.State>) {
+    this.quote$ = this.store$.select(fromRoot.getQuote);
+    this.store$.dispatch(new actions.LoadAction(null));
+  }
+
+
+ ```
+
+现在已经不关心真正的逻辑了，只要在关键的时候发出action即可。
+
+在处理完一个逻辑后，发送到另一个逻辑，完成逻辑的拼接。
+
+用了reducer和effects 进一步把程序的逻辑剥离出来了。
+
 ## 7-4 实战认证信息流
 ## 7-5 实战项目信息流（上）
 ## 7-6 实战项目信息流（中）

@@ -26,9 +26,11 @@ import 'rxjs/add/operator/switchMap';
 import 'rxjs/add/operator/mapTo';
 import 'rxjs/add/operator/count';
 import 'rxjs/add/operator/reduce';
+import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/distinctUntilChanged';
 import {AppStoreModule} from '../reducers';
+import {AppEffectsModule} from '../effects';
 
 @NgModule({
   imports: [
@@ -37,6 +39,7 @@ import {AppStoreModule} from '../reducers';
     AppRoutingModule,
     ServicesModule.forRoot(),
     AppStoreModule,
+    AppEffectsModule,
     BrowserAnimationsModule,
   ],
   declarations: [

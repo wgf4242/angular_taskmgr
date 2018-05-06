@@ -4,7 +4,8 @@
   "license": "MIT",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
+    "server": "json-server --watch mock/data.json --port 3000",
+    "start": "concurrently \"ng server --port=4200 \" \"npm run server\"",
     "build": "ng build --prod",
     "test": "ng test",
     "lint": "ng lint",
@@ -23,6 +24,7 @@
     "@angular/platform-browser": "^5.2.0",
     "@angular/platform-browser-dynamic": "^5.2.0",
     "@angular/router": "^5.2.0",
+    "@ngrx/effects": "^5.2.0",
     "@ngrx/router-store": "^5.2.0",
     "@ngrx/store": "^5.2.0",
     "@ngrx/store-devtools": "^5.2.0",
