@@ -1,6 +1,8 @@
-npm i --save @ngrx/core@1.2.0 @ngrx/store@2.2.3 @ngrx/router-store@1.2.6 @ngrx/effects@2.0.4 @ngrx/store-devtools@3.2.4
+```typescript
+npm i --save @ngrx/core@5.2.0 @ngrx/store@5.2.0 @ngrx/router-store@5.2.0 @ngrx/effects@5.2.0 @ngrx/store-devtools@5.2.0
 npm install --save ngrx-store-freeze
 npm i --save reselect
+```
 
 # 第1章 课程介绍
 ## 1-2 环境搭建
@@ -3434,6 +3436,7 @@ export  class UserService {
 认证service 会有验证和登录。这里没有后台。没有删除用户
 
 ```typescript
+# auth.service.ts
 export  class AuthService {
   private readonly domain = 'users';
   private headers = new HttpHeaders({'Content-Type': 'application/json'});
@@ -4502,7 +4505,7 @@ action 想像为一个流的话，改变的是数据流。不改变数据， 改
 
 和UI相关的数据处理 为reducer ，UI相关状态之外的改变叫 effects.
 
- ```typescript
+```typescript
  
 # package.json
     "server": "json-server --watch mock/data.json --port 3000",
@@ -4544,9 +4547,7 @@ export class QuoteEffects {
     this.quote$ = this.store$.select(fromRoot.getQuote);
     this.store$.dispatch(new actions.LoadAction(null));
   }
-
-
- ```
+```
 
 现在已经不关心真正的逻辑了，只要在关键的时候发出action即可。
 
@@ -4555,6 +4556,216 @@ export class QuoteEffects {
 用了reducer和effects 进一步把程序的逻辑剥离出来了。
 
 ## 7-4 实战认证信息流
+
+登录Action: 登录，成功，失败
+
+Code:
+
+```typescript
+# auth.action.ts
+
+export const ActionTypes = {
+  LOGIN: type('[Auth] Login'),
+  LOGIN_SUCCESS: type('[Auth] Login Success'),
+  LOGIN_FAIL: type('[Auth] Login Fail'),
+  REGISTER: type('[Auth] Register'),
+  REGISTER_SUCCESS: type('[Auth] Register Success'),
+  REGISTER_FAIL: type('[Auth] Register Fail'),
+  LOGOUT: type('[Auth] Logout'),
+}
+
+export class LoginAction implements Action {
+  type = ActionTypes.LOGIN;
+  constructor(public payload: {email: string; password: string}) {}
+}
+
+export class LoginSuccessAction implements Action {
+  type = ActionTypes.LOGIN_SUCCESS;
+  constructor(public payload: Auth) {}
+}
+
+export class LoginFailAction implements Action {
+  type = ActionTypes.LOGIN_FAIL;
+  constructor(public payload: string) {}
+}
+
+export class RegisterAction implements Action {
+  type = ActionTypes.REGISTER;
+  constructor(public payload: {email: string; password: string}) {}
+}
+
+export class RegisterSuccessAction implements Action {
+  type = ActionTypes.REGISTER_SUCCESS;
+  constructor(public payload: Auth) {}
+}
+
+export class RegisterFailAction implements Action {
+  type = ActionTypes.REGISTER_FAIL;
+ constructor(public payload: string) {}
+}
+export class LogoutAction implements Action {
+  type = ActionTypes.LOGOUT;
+ constructor(public payload: null) {}
+}
+
+export type Actions = LoginAction | LoginSuccessAction | LoginFailAction | RegisterAction | RegisterSuccessAction | RegisterFailAction | LogoutAction;
+
+# quote.action.ts
+export const ActionTypes = {
+  LOAD: type('[Quote] Load'),
+  LOAD_SUCCESS: type('[Quote] Load Success'),
+  LOAD_FAIL: type('[Quote] Load Fail')
+}
+
+export class LoadAction implements Action {
+  type = ActionTypes.LOAD;
+ constructor(public payload: null) {}
+}
+
+export class LoadSuccessAction implements Action {
+  type = ActionTypes.LOAD_SUCCESS;
+ constructor(public payload: Quote) {}
+}
+
+export class LoadFailAction implements Action {
+  type = ActionTypes.LOAD_FAIL;
+ constructor(public payload: string) {}
+}
+
+export type Actions = LoadAction | LoadSuccessAction | LoadFailAction;
+# header.component.html
+  <button mat-icon-button (click)="openSidebar()" *ngIf="(auth$ | async)?.token" >
+  <span><a mat-button *ngIf="(auth$ | async)?.token" (click)="logout()">退出</a></span>
+# header.component.ts
+  constructor(private store$: Store<fromRoot.State>) {this.auth$ = this.store$.select(getAuthState); }
+  logout() {this.store$.dispatch(new actions.LogoutAction(null)); }
+
+# auth.effects.ts
+export class AuthEffects {
+
+  @Effect()
+  login$: Observable<Action> = this.actions$.pipe(
+    ofType(actions.ActionTypes.LOGIN),
+    map((action: LoginAction) => action.payload),
+    switchMap(({ email, password }) =>
+      this.service$.login(email, password).pipe(
+        map(auth => (new actions.LoginSuccessAction(auth))),
+        catchError((err) => of(new actions.LoginFailAction(JSON.stringify(err))))))
+  );
+
+  @Effect()
+  register$: Observable<Action> = this.actions$.pipe(
+    ofType(actions.ActionTypes.REGISTER),
+    map((action: RegisterAction) => action.payload),
+    switchMap((user: User) =>
+      this.service$.register(user).pipe(
+        map(auth => (new actions.RegisterSuccessAction(auth))),
+        catchError((err) => of(new actions.RegisterFailAction(JSON.stringify(err))))))
+  );
+
+  @Effect({ dispatch: false })
+  logout$: Observable<Action> = this.actions$.pipe(
+    ofType(actions.ActionTypes.LOGOUT),
+    tap(() => this.router.navigate(['/']))
+  );
+
+  @Effect({ dispatch: false })
+  loginAndNavigate$: Observable<Action> = this.actions$.pipe(
+    ofType(actions.ActionTypes.LOGIN_SUCCESS),
+    tap(() => this.router.navigate(['/projects'])));
+
+  @Effect({ dispatch: false })
+  registerAndNavigate$: Observable<Action> = this.actions$.pipe(
+    ofType(actions.ActionTypes.REGISTER_SUCCESS),
+    tap(() => this.router.navigate(['/projects'])));
+
+  constructor(private actions$: Actions, private service$: AuthService, private router: Router ) { }
+}
+# index.ts
+@NgModule({
+  imports: [EffectsModule.forFeature([QuoteEffects, AuthEffects, ]) ]
+})
+export class AppEffectsModule {}
+
+# quote.effects.ts
+export class QuoteEffects {
+
+  @Effect()
+  quote$: Observable<Action> = this.actions$
+    .ofType(actions.ActionTypes.LOAD)
+    // .map(toPayload) // this action default is null
+    .switchMap(_ => this.service$.getQuote()
+        .map(data => new actions.LoadSuccessAction(data))
+        .catch(err =>  Observable.of(new actions.LoadFailAction(JSON.stringify(err)))
+      )
+  );
+
+  constructor(private actions$: Actions, private service$: QuoteService) {}
+}
+
+# login.component.ts
+  constructor(private fb: FormBuilder, private store$: Store<fromRoot.State>) {
+    this.quote$ = this.store$.select(fromRoot.getQuote);
+    this.store$.dispatch(new quoteActions.LoadAction(null));
+  }
+  onSubmit({value, valid}, ev: Event) {... this.store$.dispatch(new authActions.LoginAction(value)); }
+
+# register.component.ts
+  onSubmit({value, valid}, ev: Event) {... this.store$.dispatch(new authActions.RegisterAction(value)); }
+
+# auth.reducer.ts
+export const initialState: Auth = {};
+
+export function reducer(state = initialState, action: actions.Actions): Auth {
+  switch ( action.type) {
+    case actions.ActionTypes.REGISTER_SUCCESS:
+    case actions.ActionTypes.LOGIN_SUCCESS: {return {...<Auth>action.payload}; }
+    case actions.ActionTypes.REGISTER_FAIL:
+    case actions.ActionTypes.LOGIN_FAIL: {return initialState; }
+    default: {return state; }
+  } }
+
+# index.ts
+export interface State {quote: fromQuote.State; auth: Auth; };
+const initialState: State = {quote: fromQuote.initialState, auth: fromAuth.initialState, };
+const reducers = {quote: fromQuote.reducer, auth: fromAuth.reducer, router: fromRouter.routerReducer };
+
+@NgModule({
+  imports: [
+    StoreModule.forRoot(reducers),
+    StoreRouterConnectingModule.forRoot({stateKey: 'router'}),
+    StoreDevtoolsModule.instrument({
+      maxAge: 25, 
+      logOnly: environment.production, 
+    }),
+    EffectsModule.forRoot([]),
+    AppEffectsModule,
+  ],
+})
+export class AppStoreModule {}
+
+# quote.reducer.ts
+export const getQuote = (state: State) => state.quote;
+
+# auth-guard.service.ts
+export class AuthGuardService implements CanActivate {
+  constructor(private store$: Store<fromRoot.State>, private router: Router) {}
+  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot ): Observable<boolean> {
+    return this.store$
+      .select(getAuthState)
+      .map(auth => {
+        const result = auth.token !== null && auth.token !== undefined;
+        if (result) {
+            this.router.navigate['/login'];
+        }
+        return result;
+      })
+      .defaultIfEmpty(false);
+  } }
+# auth.service.ts
+--- delete user.id = null
+```
+
 ## 7-5 实战项目信息流（上）
 ## 7-6 实战项目信息流（中）
 ## 7-7 实战项目信息流（下）

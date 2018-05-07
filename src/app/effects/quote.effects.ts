@@ -11,9 +11,9 @@ export class QuoteEffects {
   @Effect()
   quote$: Observable<Action> = this.actions$
     .ofType(actions.ActionTypes.LOAD)
-    // .map(toPayload)
+    // .map(toPayload) // this action default is null
     .switchMap(_ => this.service$.getQuote()
-        .map(data => new actions.LoadSucessAction(data))
+        .map(data => new actions.LoadSuccessAction(data))
         .catch(err =>  Observable.of(new actions.LoadFailAction(JSON.stringify(err)))
       )
   );
