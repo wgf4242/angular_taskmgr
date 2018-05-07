@@ -21,7 +21,7 @@ export class LoadAction implements Action {
   constructor(public payload: null) {}
 }
 
-export class LoadSucessAction implements Action {
+export class LoadSuccessAction implements Action {
   type = ActionTypes.LOAD_SUCCESS;
 
   constructor(public payload: Quote) {}
@@ -33,7 +33,7 @@ export class LoadFailAction implements Action {
   constructor(public payload: string) {}
 }
 
-export type Action
+export type Actions
   = LoadAction
-  | LoadSucessAction
+  | LoadSuccessAction
   | LoadFailAction;

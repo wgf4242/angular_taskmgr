@@ -1,23 +1,27 @@
 import {NgModule} from '@angular/core';
 import {StoreDevtoolsModule} from '@ngrx/store-devtools';
-import {ActionReducer, combineReducers, compose, StoreModule} from '@ngrx/store';
+import {Action, ActionReducer, combineReducers, compose, StoreModule} from '@ngrx/store';
 import {routerReducer, StoreRouterConnectingModule} from '@ngrx/router-store';
 import * as fromQuote from './quote.reducer';
+import * as fromAuth from './auth.reducer';
 import {storeFreeze} from 'ngrx-store-freeze';
 import {environment} from '../../environments/environment';
 import {createSelector} from 'reselect';
-import {Action} from '../actions/quote.action';
+import {Auth} from '../domain/auth.model';
 
 export interface State {
   quote: fromQuote.State;
+  auth: Auth;
 };
 
 const initialState: State = {
-  quote: fromQuote.initialState
+  quote: fromQuote.initialState,
+  auth: fromAuth.initialState
 };
 
 const reducers = {
   quote: fromQuote.reducer,
+  auth: fromAuth.reducer,
   router: routerReducer,
 };
 
@@ -29,6 +33,7 @@ export function reducer(state = initialState, action: any): State {
 }
 
 export const getQuoteState = (state: State) => state.quote;
+export const getAuthState = (state: State) => state.auth;
 
 export const getQuote = createSelector(getQuoteState, fromQuote.getQuote);
 
