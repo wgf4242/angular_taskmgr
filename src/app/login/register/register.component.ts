@@ -3,6 +3,11 @@ import {FormBuilder, FormGroup} from '@angular/forms';
 import {isValidDate} from '../../utils/date.util';
 import {Subscription} from 'rxjs/Subscription';
 import {extractInfo, getAddrByCode, isValidAddr} from '../../utils/identity.util';
+import {Store} from '@ngrx/store';
+import * as fromRoot from '../../reducers';
+import * as actions from '../../actions/quote.action';
+import * as authActions from '../../actions/auth.action';
+
 
 @Component({
   selector: 'app-register',
@@ -16,7 +21,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
   sub: Subscription;
   private readonly avatarName = 'avatars';
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder, private store$: Store<fromRoot.State>) {
   }
 
   ngOnInit() {
@@ -43,10 +48,10 @@ export class RegisterComponent implements OnInit, OnDestroy {
         const addr = getAddrByCode(info.addrCode);
         this.form.get('address').patchValue(addr);
       }
-      if(isValidDate(info.dateOfBirth)) {
+      if (isValidDate(info.dateOfBirth)) {
         this.form.get('dateOfBirth').patchValue(info.dateOfBirth);
       }
-    })
+    });
   }
 
   onSubmit({value, valid}, ev: Event) {
@@ -54,7 +59,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
     if (!valid) {
       return;
     }
-    console.log(value);
+    this.store$.dispatch(new authActions.RegisterAction(value));
   }
 
   ngOnDestroy() {

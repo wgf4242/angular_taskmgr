@@ -36,22 +36,17 @@ export class AuthEffects {
   @Effect()
   logout$: Observable<Action> = this.actions$.pipe(
     ofType(actions.ActionTypes.LOGOUT),
-    tap(authed => {
-      this.router.navigate['/'];
-    })
-   );
+    tap(() => this.router.navigate['/']));
 
   @Effect()
   loginAndNavigate$: Observable<Action> = this.actions$.pipe(
     ofType(actions.ActionTypes.LOGIN_SUCCESS),
-    // map(_ => go(['/projects'])
-   );
+    tap(() => this.router.navigate['/projects']));
 
   @Effect()
   registerAndNavigate$: Observable<Action> = this.actions$.pipe(
     ofType(actions.ActionTypes.REGISTER_SUCCESS),
-    // map(_ => go(['/projects'])
-   );
+    tap(() => this.router.navigate['/projects']));
 
   constructor(
     private actions$: Actions,

@@ -6,7 +6,8 @@ import {AuthEffects} from './auth.effects';
 @NgModule({
   imports: [
     EffectsModule.forRoot([
-      QuoteEffects, AuthEffects
+      QuoteEffects,
+      AuthEffects,
     ])
   ],
   exports: [],

@@ -5,6 +5,8 @@ import {Observable} from 'rxjs/Observable';
 import {Store} from '@ngrx/store';
 import * as fromRoot from '../../reducers';
 import * as actions from '../../actions/quote.action';
+import * as authActions from '../../actions/auth.action';
+
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -29,9 +31,10 @@ export class LoginComponent implements OnInit {
 
   onSubmit({value, valid}, ev: Event) {
     ev.preventDefault();
-    console.log(JSON.stringify((value)));
-    console.log(JSON.stringify((valid)));
-    this.form.controls['email'].setValidators(this.validate);
+    if (!valid) {
+        return;
+    }
+    this.store$.dispatch(new authActions.LoginAction(value));
   }
 
   validate(c: FormControl): { [key: string]: any } {
