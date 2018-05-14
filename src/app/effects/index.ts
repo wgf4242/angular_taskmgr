@@ -5,7 +5,7 @@ import {AuthEffects} from './auth.effects';
 
 @NgModule({
   imports: [
-    EffectsModule.forRoot([
+    EffectsModule.forFeature([
       QuoteEffects,
       AuthEffects,
     ])

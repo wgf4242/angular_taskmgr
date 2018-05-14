@@ -5,7 +5,6 @@ import {Subscription} from 'rxjs/Subscription';
 import {extractInfo, getAddrByCode, isValidAddr} from '../../utils/identity.util';
 import {Store} from '@ngrx/store';
 import * as fromRoot from '../../reducers';
-import * as actions from '../../actions/quote.action';
 import * as authActions from '../../actions/auth.action';
 
 

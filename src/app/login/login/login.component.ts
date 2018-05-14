@@ -24,8 +24,8 @@ export class LoginComponent implements OnInit {
 
   ngOnInit() {
     this.form = this.fb.group({
-      email: ['wang@163.com', Validators.compose([Validators.required, Validators.email, this.validate])],
-      password: ['', Validators.required],
+      email: ['lisi@independent.co.uk', Validators.compose([Validators.required, Validators.email])],
+      password: ['123456', Validators.required],
     });
   }
 
@@ -37,21 +37,4 @@ export class LoginComponent implements OnInit {
     this.store$.dispatch(new authActions.LoginAction(value));
   }
 
-  validate(c: FormControl): { [key: string]: any } {
-    if (!c.value) {
-      return null;
-    }
-    const pattern = /^wang+/;
-    if (pattern.test(c.value)) {
-      return null;
-    }
-    return {
-      emailNotValid: 'The email must start with wang'
-    };
-  }
-
-  onClick(a) {
-    const s = a as Observable<any>;
-    s.subscribe(value => console.log(value));
-  }
 }
