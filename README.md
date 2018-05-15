@@ -4767,6 +4767,129 @@ export class AuthGuardService implements CanActivate {
 ```
 
 ## 7-5 实战项目信息流（上）
+```typescript
+# project.action.ts
+export const ActionTypes = {
+  ADD: type('[Project] Add'),
+  ADD_SUCCESS: type('[Project] Add Success'),
+  ADD_FAIL: type('[Project] Add Fail'),
+  UPDATE: type('[Project] Update'),
+  UPDATE_SUCCESS: type('[Project] Update Success'),
+  UPDATE_FAIL: type('[Project] Update Fail'),
+  DELETE: type('[Project] Delete'),
+  DELETE_SUCCESS: type('[Project] Delete Success'),
+  DELETE_FAIL: type('[Project] Delete Fail'),
+  LOAD: type('[Project] Load'),
+  LOAD_SUCCESS: type('[Project] Load Success'),
+  LOAD_FAIL: type('[Project] Load Fail'),
+  INVITE: type('[Project] Invite'),
+  INVITE_SUCCESS: type('[Project] Invite Success'),
+  INVITE_FAIL: type('[Project] Invite Fail'),
+  SELECT_PROJECT: type('[Project] Select Project'),
+
+}
+export class AddAction implements Action {
+  type = ActionTypes.ADD;
+  constructor(public payload: Project) {}
+}
+export class AddSuccessAction implements Action {
+  type = ActionTypes.ADD_SUCCESS;
+  constructor(public payload: Project) {}
+}
+export class AddFailAction implements Action {
+  type = ActionTypes.ADD_FAIL;
+  constructor(public payload: string) {}
+}
+export class UpdateAction implements Action {
+  type = ActionTypes.UPDATE;
+  constructor(public payload: Project) {}
+}
+export class UpdateSuccessAction implements Action {
+  type = ActionTypes.UPDATE_SUCCESS;
+  constructor(public payload: Project) {}
+}
+export class UpdateFailAction implements Action {
+  type = ActionTypes.UPDATE_FAIL;
+  constructor(public payload: string) {}
+}
+export class DeleteAction implements Action {
+  type = ActionTypes.DELETE;
+  constructor(public payload: Project) {}
+}
+export class DeleteSuccessAction implements Action {
+  type = ActionTypes.DELETE_SUCCESS;
+  constructor(public payload: Project) {}
+}
+export class DeleteFailAction implements Action {
+  type = ActionTypes.DELETE_FAIL;
+  constructor(public payload: string) {}
+}
+export class LoadAction implements Action {
+  type = ActionTypes.LOAD;
+  constructor(public payload: null) {}
+}
+export class LoadSuccessAction implements Action {
+  type = ActionTypes.LOAD_SUCCESS;
+  constructor(public payload: Project[]) {}
+}
+export class LoadFailAction implements Action {
+  type = ActionTypes.LOAD_FAIL;
+  constructor(public payload: string) {}
+}
+export class InviteAction implements Action {
+  type = ActionTypes.INVITE;
+  constructor(public payload: {projectId: string; members: User[]}) {}
+}
+export class InviteSuccessAction implements Action {
+  type = ActionTypes.INVITE_SUCCESS;
+  constructor(public payload: Project) {}
+}
+export class InviteFailAction implements Action {
+  type = ActionTypes.INVITE_FAIL;
+  constructor(public payload: string) {}
+}
+export class SelectAction implements Action {
+  type = ActionTypes.SELECT_PROJECT;
+  constructor(public payload: Project) {}
+}
+
+# project.reducer.ts
+
+export interface State {
+     ids: string[];
+     entities: {[id: string]: Project};
+     selectedId: string | null;
+};
+
+const initialState: State = {ids: [], entities: {}, selectedId: null, };
+
+const addProject = (state, action) => {
+  const project = action.payload;
+  if (state.entities[project.id]) {return state; }
+  const ids = [...state.ids, project.id];
+  const entities = {...state.entities, [project.id]: project};
+  return {...state, ids: ids, entities: entities};
+};
+
+const updateProject = (state, action) => {
+  const project = action.payload;
+  const entities = {...state.entities, [project.id]: project};
+  return {...state, entities: entities};
+}
+
+export function reducer(state = initialState, action: actions.Actions ): State {
+  switch (action.type) {
+    case actions.ActionTypes.ADD_SUCCESS: {return addProject(state, action); }
+    case actions.ActionTypes.DELETE_SUCCESS: {return delProject(state, action); }
+    case actions.ActionTypes.UPDATE_SUCCESS: {return updateProject(state, action); }
+    case actions.ActionTypes.LOAD_SUCCESS: {return loadProject(state, action); }
+    case actions.ActionTypes.SELECT_PROJECT: {return {...state, selectedId: action.payload.id}; }
+    default: {return state; }
+  }
+}
+
+```
+
 ## 7-6 实战项目信息流（中）
 ## 7-7 实战项目信息流（下）
 ## 7-8 实战任务列表信息流
