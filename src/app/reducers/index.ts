@@ -5,6 +5,7 @@ import * as fromRouter from '@ngrx/router-store';
 import {StoreRouterConnectingModule} from '@ngrx/router-store';
 import * as fromQuote from './quote.reducer';
 import * as fromAuth from './auth.reducer';
+import * as fromProjects from './project.reducer';
 import {storeFreeze} from 'ngrx-store-freeze';
 import {environment} from '../../environments/environment';
 import {createSelector} from 'reselect';
@@ -15,16 +16,19 @@ import {AppEffectsModule} from '../effects';
 export interface State {
   quote: fromQuote.State;
   auth: Auth;
+  projects: fromProjects.State;
 };
 
 const initialState: State = {
   quote: fromQuote.initialState,
   auth: fromAuth.initialState,
+  projects: fromProjects.initialState
 };
 
 const reducers = {
   quote: fromQuote.reducer,
   auth: fromAuth.reducer,
+  projects: fromProjects.reducer,
   router: fromRouter.routerReducer
 };
 
@@ -37,8 +41,10 @@ export function reducer(state = initialState, action: any): State {
 
 export const getQuoteState = (state: State) => state.quote;
 export const getAuthState = (state: State) => state.auth;
+export const getProjectState = (state: State) => state.projects;
 
 export const getQuote = createSelector(getQuoteState, fromQuote.getQuote);
+export const getProjects = createSelector(getProjectState, fromProjects.getAll);
 
 @NgModule({
   imports: [

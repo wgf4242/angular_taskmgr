@@ -4891,6 +4891,51 @@ export function reducer(state = initialState, action: actions.Actions ): State {
 ```
 
 ## 7-6 实战项目信息流（中）
+
+    npm install -P lodash
+    npm install -D @types/lodash
+
+difference 使不一样的会被保留下来
+
+    import * as _ from "lodash";
+    const newIds = _.difference(incomingIds, state.ids);
+
+```typescript
+# index.ts
+import * as fromProjects from './project.reducer';
+projects: fromProjects.State;
+projects: fromProjects.reducer,
+export const getProjectState = (state: State) => state.projects;
+export const getProjects = createSelector(getProjectState, fromProjects.getAll);
+
+# project.reducer.ts
+const delProject = (state, action) => {
+  const project = action.payload;
+  const newIds = state.iods.filter(id => id !== project.id);
+  const newEntities = newIds.reduce((entities, id: string) => ({...entities, [id]: state.entities[id]}), {});
+  return {
+    ids: newIds,
+    entities: newEntities,
+    selectedId: null
+  };
+}
+
+const loadProjects = (state, action) => {
+  const projects = action.payload;
+  const incomingIds = projects.map(p => p.id);
+  const newIds = _.difference(incomingIds, state.ids);
+  const incomingEntities = -_.chain(projects)
+  .keyBy('id')
+  .mapValues(o => o)
+  .value();
+  const newEntities = newIds.reduce((entities, id: string ) => ({...entities, [id]: incomingEntities[id]}), {});
+  return {
+    ids: [...state.ids, ...newIds],
+    entities: [...state.entities, ...newEntities],
+    selectedId: null
+  };
+}
+```
 ## 7-7 实战项目信息流（下）
 ## 7-8 实战任务列表信息流
 ## 7-9 实战任务 Reducer
