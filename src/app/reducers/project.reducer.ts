@@ -1,4 +1,4 @@
-import * as _ from "lodash";
+import * as _ from 'lodash';
 import { createSelector } from 'reselect';
 import * as actions from '../actions/project.action';
 import { Project } from './../domain/project.model';
@@ -46,11 +46,11 @@ const loadProjects = (state, action) => {
   const projects = action.payload;
   const incomingIds = projects.map(p => p.id);
   const newIds = _.difference(incomingIds, state.ids);
-  const incomingEntities = -_.chain(projects)
-  .keyBy('id')
-  .mapValues(o => o)
-  .value();
-  const newEntities = newIds.reduce((entities, id: string ) => ({...entities, [id]: incomingEntities[id]}), {});
+  const incomingEntities = _.chain(projects)
+    .keyBy('id')
+    .mapValues(o => o)
+    .value();
+  const newEntities = newIds.reduce((entities, id: string) => ({ ...entities, [id]: incomingEntities[id] }), {});
   return {
     ids: [...state.ids, ...newIds],
     entities: {...state.entities, ...newEntities},
@@ -75,7 +75,8 @@ export function reducer(state = initialState, action: actions.Actions ): State {
       return loadProjects(state, action);
     }
     case actions.ActionTypes.SELECT_PROJECT: {
-      return {...state, selectedId: action.payload.id};
+      const select_actions = action as actions.SelectAction;
+      return {...state, selectedId: select_actions.payload.id};
     }
     default: {
       return state;

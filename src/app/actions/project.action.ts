@@ -1,5 +1,4 @@
-import { User } from './../domain/user.model';
-import { Project } from './../domain/project.model';
+import { User, Project } from '../domain';
 import {Action} from '@ngrx/store';
 import {type} from '../utils/type.util';
 
@@ -122,4 +121,19 @@ export class SelectAction implements Action {
 }
 
 
-export type Actions = null;
+export type Actions = AddAction
+  | AddSuccessAction
+  | AddFailAction
+  | UpdateAction
+  | UpdateSuccessAction
+  | UpdateFailAction
+  | DeleteAction
+  | DeleteSuccessAction
+  | DeleteFailAction
+  | LoadAction
+  | LoadSuccessAction
+  | LoadFailAction
+  | InviteAction
+  | InviteSuccessAction
+  | InviteFailAction
+  | SelectAction;

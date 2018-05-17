@@ -25,6 +25,7 @@ import 'rxjs/add/operator/mergeMap';
 import 'rxjs/add/operator/switchMap';
 import 'rxjs/add/operator/mapTo';
 import 'rxjs/add/operator/count';
+import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/reduce';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/defaultIfEmpty';

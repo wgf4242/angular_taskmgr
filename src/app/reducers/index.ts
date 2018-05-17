@@ -10,7 +10,6 @@ import {storeFreeze} from 'ngrx-store-freeze';
 import {environment} from '../../environments/environment';
 import {createSelector} from 'reselect';
 import {Auth} from '../domain/auth.model';
-import {EffectsModule} from '@ngrx/effects';
 import {AppEffectsModule} from '../effects';
 
 export interface State {
@@ -29,7 +28,7 @@ const reducers = {
   quote: fromQuote.reducer,
   auth: fromAuth.reducer,
   projects: fromProjects.reducer,
-  router: fromRouter.routerReducer
+  // router: fromRouter.routerReducer
 };
 
 const productionReducers: ActionReducer<State> = combineReducers(reducers);
@@ -49,12 +48,11 @@ export const getProjects = createSelector(getProjectState, fromProjects.getAll);
 @NgModule({
   imports: [
     StoreModule.forRoot(reducers),
-    StoreRouterConnectingModule.forRoot({stateKey: 'router'}),
+    // StoreRouterConnectingModule.forRoot({stateKey: 'router'}),
     StoreDevtoolsModule.instrument({
       maxAge: 25, // Retains last 25 states
       logOnly: environment.production, // Restrict extension to log-only mode
     }),
-    EffectsModule.forRoot([]),
     AppEffectsModule,
   ],
 })

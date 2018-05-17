@@ -4924,7 +4924,7 @@ const loadProjects = (state, action) => {
   const projects = action.payload;
   const incomingIds = projects.map(p => p.id);
   const newIds = _.difference(incomingIds, state.ids);
-  const incomingEntities = -_.chain(projects)
+  const incomingEntities = _.chain(projects)
   .keyBy('id')
   .mapValues(o => o)
   .value();
@@ -4937,6 +4937,129 @@ const loadProjects = (state, action) => {
 }
 ```
 ## 7-7 实战项目信息流（下）
+ngrx基于rx 的，所有 rx 操作符都可以用。
+
+```typescript
+# src/app/effects/index.ts
+    EffectsModule.forRoot([... ProjectEffects])
+
+# project.effects.ts
+@Injectable()
+export class ProjectEffects {
+
+  @Effect()
+  loadProjects$: Observable<Action> = this.actions$.pipe(
+    ofType(actions.ActionTypes.LOAD),
+    map((action: LoadAction) => action.payload),
+    withLatestFrom(this.store$.select(fromRoot.getAuthState)),
+    switchMap(([_, auth]) => this.service$.get(auth.userId).pipe(
+        map(projects => new actions.LoadSuccessAction(projects)),
+        catchError((err) => of(new actions.LoadFailAction(JSON.stringify(err))))))
+  );
+
+  @Effect()
+  addProjects$: Observable<Action> = this.actions$.pipe(
+    ofType(actions.ActionTypes.ADD),
+    map((action: AddAction) => action.payload),
+    withLatestFrom(this.store$.select(fromRoot.getAuthState)),
+    switchMap(([project, auth]) => {
+      const added = {...project, members: [`${auth.userId}`]};
+      return this.service$.add(added).pipe(
+        map(auth => new actions.AddSuccessAction(project)),
+        catchError((err) => of(new actions.AddFailAction(JSON.stringify(err))))
+      );
+    })
+  );
+
+  @Effect()
+  updateProjects$: Observable<Action> = this.actions$.pipe(
+    ofType(actions.ActionTypes.UPDATE),
+    map((action: UpdateAction) => action.payload),
+    switchMap((project) => {
+      return this.service$.update(project).pipe(
+        map(auth => new actions.UpdateSuccessAction(project)),
+        catchError((err) => of(new actions.UpdateFailAction(JSON.stringify(err))))
+      );
+    })
+  );
+
+  @Effect()
+  delProjects$: Observable<Action> = this.actions$.pipe(
+    ofType(actions.ActionTypes.DELETE),
+    map((action: DeleteAction) => action.payload),
+    switchMap((project) => {
+      console.log(project.id);
+      return this.service$.del(project).pipe(
+        map(auth => new actions.DeleteSuccessAction(project)),
+        catchError((err) => of(new actions.DeleteFailAction(JSON.stringify(err))))
+      );
+    })
+  );
+
+  @Effect({ dispatch: false })
+  selectProjects$ = this.actions$.pipe(
+    ofType(actions.ActionTypes.SELECT_PROJECT),
+    map((action: SelectAction) => action.payload),
+    tap((project) => this.router.navigate([`/tasklists/${project.id}`]))
+  );
+
+  @Effect()
+  invite$: Observable<Action> = this.actions$.pipe(
+    ofType(actions.ActionTypes.INVITE),
+    map((action: InviteAction) => action.payload),
+    switchMap(({projectId, members}) => {
+      return this.service$.invite(projectId, members).pipe(
+        map(project => (new actions.InviteSuccessAction(project))),
+        catchError((err) => of(new actions.InviteFailAction(JSON.stringify(err))))
+      );
+    })
+  );
+
+  constructor(
+    private actions$: Actions,
+    private store$: Store<fromRoot.State>,
+    private service$: ProjectService,
+    private router: Router
+  ) { }
+}
+
+# auth.reducer.ts
+    case actions.ActionTypes.LOGIN_SUCCESS: {
+      const auth = <Auth>action.payload;
+      return {
+        ...auth,
+        token: auth.token,
+        userId: auth.user.id
+      };
+    }
+
+# src/app/reducers/index.ts
+
+    case actions.ActionTypes.SELECT_PROJECT: {
+      const select_actions = action as actions.SelectAction;
+      return {...state, selectedId: select_actions.payload.id};
+    }
+# project.reducer.ts
+    case actions.ActionTypes.SELECT_PROJECT: {
+      const select_actions = action as actions.SelectAction;
+      return {...state, selectedId: select_actions.payload.id};
+    }
+
+# project.service.ts    
+  invite(projectId: string, users: User[]): Observable<Project> {
+    const uri = `${this.config.uri}/${this.domain}/${projectId}`;
+    return this.http
+    .get(uri)
+    .switchMap((project: Project) => {
+        const existingMembers = project.members;
+        const inviteIds = users.map(user => user.id);
+        const newIds = _.union(existingMembers, inviteIds)
+      return this.http
+        .patch<Project>(uri, JSON.stringify({members: newIds}), {headers: this.headers});
+    });
+  }
+```
+
 ## 7-8 实战任务列表信息流
 ## 7-9 实战任务 Reducer
 ## 7-10 实战任务 Effects

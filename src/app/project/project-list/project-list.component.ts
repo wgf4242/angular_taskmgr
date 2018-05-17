@@ -1,15 +1,17 @@
-import {ChangeDetectionStrategy, ChangeDetectorRef, Component, HostBinding, OnDestroy, OnInit} from '@angular/core';
-import {MatDialog} from '@angular/material';
-import {NewProjectComponent} from '../new-project/new-project.component';
-import {InviteComponent} from '../invite/invite.component';
-import {ConfirmDialogComponent} from '../../shared/confirm-dialog/confirm-dialog.component';
-import {slideToRight} from '../../anims/router.anim';
-import {listAnimation} from '../../anims/list.anim';
-import {ProjectService} from '../../services/project.service';
+import { AddAction, UpdateAction, DeleteAction } from './../../actions/project.action';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, HostBinding, OnDestroy, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material';
+import { Store } from '@ngrx/store';
 import * as _ from 'lodash';
-import {Project} from '../../domain';
-import {Subscription} from 'rxjs/Subscription';
-
+import { Observable } from 'rxjs/Observable';
+import * as actions from "../../actions/project.action";
+import { listAnimation } from '../../anims/list.anim';
+import { slideToRight } from '../../anims/router.anim';
+import { Project } from '../../domain';
+import * as fromRoot from "../../reducers";
+import { ConfirmDialogComponent } from '../../shared/confirm-dialog/confirm-dialog.component';
+import { InviteComponent } from '../invite/invite.component';
+import { NewProjectComponent } from '../new-project/new-project.component';
 @Component({
   selector: 'app-project-list',
   templateUrl: './project-list.component.html',
@@ -17,27 +19,20 @@ import {Subscription} from 'rxjs/Subscription';
   animations: [slideToRight, listAnimation],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ProjectListComponent implements OnInit, OnDestroy {
+export class ProjectListComponent {
 
   @HostBinding('@routeAnim') state;
 
-  projects;
-  sub: Subscription;
+  projects$: Observable<Project[]>;
+  listAnim$: Observable<number>;
 
-  constructor(private dialog: MatDialog, private cd: ChangeDetectorRef, private service$: ProjectService) {
-  }
-
-  ngOnInit() {
-    this.sub = this.service$.get('1').subscribe(projects => {
-      this.projects = projects;
-      this.cd.markForCheck();
-    });
-  }
-
-  ngOnDestroy() {
-    if (this.sub) {
-      this.sub.unsubscribe();
-    }
+  constructor(
+    private dialog: MatDialog,
+    private store$: Store<fromRoot.State>
+  ) {
+    this.store$.dispatch(new actions.LoadAction(null));
+    this.projects$ = this.store$.select(fromRoot.getProjects);
+    this.listAnim$ = this.projects$.map(p => p.length);
   }
 
   openNewProjectDialog() {
@@ -50,10 +45,8 @@ export class ProjectListComponent implements OnInit, OnDestroy {
       .take(1)
       .filter(n => n)
       .map(val => ({...val, coverImg: this.buildImgSrc(val.coverImg)}))
-      .switchMap(v => this.service$.add(v))
       .subscribe(project => {
-          this.projects = [...this.projects, project];
-          this.cd.markForCheck();
+        this.store$.dispatch(new actions.AddAction(project));
       });
   }
 
@@ -67,11 +60,8 @@ export class ProjectListComponent implements OnInit, OnDestroy {
       .take(1)
       .filter(n => n)
       .map(val => ({...val, id: project.id, coverImg: this.buildImgSrc(val.coverImg)}))
-      .switchMap(v => this.service$.update(v))
       .subscribe(project => {
-        const index = this.projects.map(p => p.id).indexOf(project.id);
-        this.projects = [...this.projects.slice(0, index), project, ...this.projects.slice(index + 1)]
-        this.cd.markForCheck();
+        this.store$.dispatch(new actions.UpdateAction(project));
       });
   }
 
@@ -80,10 +70,8 @@ export class ProjectListComponent implements OnInit, OnDestroy {
     dialogRef.afterClosed()
       .take(1)
       .filter(n => n)
-      .switchMap(v => this.service$.del(project))
-      .subscribe(prj => {
-        this.projects = this.projects.filter(p => p.id !== project.id)
-        this.cd.markForCheck();
+      .subscribe(_ => {
+        this.store$.dispatch(new actions.DeleteAction(project));
       });
   }
 
