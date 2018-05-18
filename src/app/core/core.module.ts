@@ -24,6 +24,7 @@ import 'rxjs/add/operator/startWith';
 import 'rxjs/add/operator/mergeMap';
 import 'rxjs/add/operator/switchMap';
 import 'rxjs/add/operator/mapTo';
+import 'rxjs/add/operator/pluck';
 import 'rxjs/add/operator/count';
 import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/reduce';

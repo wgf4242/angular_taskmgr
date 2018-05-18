@@ -15,7 +15,6 @@ export  class TaskListService {
 
   // POST
   add(taskList: TaskList): Observable<TaskList> {
-    taskList.id = null;
     const uri = `${this.config.uri}/${this.domain}`;
     return this.http
       .post<TaskList>(uri, JSON.stringify(taskList), {headers: this.headers});
@@ -26,7 +25,7 @@ export  class TaskListService {
     const uri = `${this.config.uri}/${this.domain}/${taskList.id}`;
     const toUpdate = {
       name: taskList.name
-    }
+    };
     return this.http
       .patch<TaskList>(uri, JSON.stringify(toUpdate), {headers: this.headers});
   }

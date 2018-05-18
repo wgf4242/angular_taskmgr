@@ -5061,6 +5061,318 @@ export class ProjectEffects {
 ```
 
 ## 7-8 实战任务列表信息流
+
+任务列表触发： 点击select时触发， 加载所有的任务列表。
+
+加载出来的集合是查询，有新增，有修改，有删除。有drag&drop。
+
+应用是数据库， reducer是表，构建表的结构。建立 task-list.reducer.ts
+
+后面的建立起来比较方便，复制粘贴，替换即可。
+
+删除一个项目时，应及联删除一个列表，在选择一个项目时，selectedIds也应该被改变。
+
+监听项目的 action. reducer 会接收所有的 action. 
+
+prjActions.ActionTypes.SELECT_PROJECT 这时 payload 携带的是 Project
+
+    const selectedIds = state.ids.filter(id => state.entities[id].projectId === selected.id) 这时state.entities[id]是tasklist，
+
+```typescript
+# task-list.action.ts
+import { User, TaskList } from '../domain';
+import {Action} from '@ngrx/store';
+import {type} from '../utils/type.util';
+
+export const ActionTypes = {
+  ADD: type('[TaskList] Add'),
+  ADD_SUCCESS: type('[TaskList] Add Success'),
+  ADD_FAIL: type('[TaskList] Add Fail'),
+  UPDATE: type('[TaskList] Update'),
+  UPDATE_SUCCESS: type('[TaskList] Update Success'),
+  UPDATE_FAIL: type('[TaskList] Update Fail'),
+  DELETE: type('[TaskList] Delete'),
+  DELETE_SUCCESS: type('[TaskList] Delete Success'),
+  DELETE_FAIL: type('[TaskList] Delete Fail'),
+  LOAD: type('[TaskList] Load'),
+  LOAD_SUCCESS: type('[TaskList] Load Success'),
+  LOAD_FAIL: type('[TaskList] Load Fail'),
+  SWAP: type('[TaskList] Swap'),
+  SWAP_SUCCESS: type('[TaskList] Swap Success'),
+  SWAP_FAIL: type('[TaskList] Swap Fail'),
+};
+
+export class AddAction implements Action {
+  type = ActionTypes.ADD;
+  constructor(public payload: TaskList) {}
+}
+
+export class AddSuccessAction implements Action {
+  type = ActionTypes.ADD_SUCCESS;
+  constructor(public payload: TaskList) {}
+}
+
+export class AddFailAction implements Action {
+  type = ActionTypes.ADD_FAIL;
+  constructor(public payload: string) {}
+}
+
+export class UpdateAction implements Action {
+  type = ActionTypes.UPDATE;
+  constructor(public payload: TaskList) {}
+}
+
+export class UpdateSuccessAction implements Action {
+  type = ActionTypes.UPDATE_SUCCESS;
+  constructor(public payload: TaskList) {}
+}
+
+export class UpdateFailAction implements Action {
+  type = ActionTypes.UPDATE_FAIL;
+  constructor(public payload: string) {}
+}
+
+
+export class DeleteAction implements Action {
+  type = ActionTypes.DELETE;
+  constructor(public payload: TaskList) {}
+}
+
+export class DeleteSuccessAction implements Action {
+  type = ActionTypes.DELETE_SUCCESS;
+  constructor(public payload: TaskList) {}
+}
+
+export class DeleteFailAction implements Action {
+  type = ActionTypes.DELETE_FAIL;
+  constructor(public payload: string) {}
+}
+
+
+export class LoadAction implements Action {
+  type = ActionTypes.LOAD;
+  constructor(public payload: string) {}
+}
+
+export class LoadSuccessAction implements Action {
+  type = ActionTypes.LOAD_SUCCESS;
+  constructor(public payload: TaskList[]) {}
+}
+
+export class LoadFailAction implements Action {
+  type = ActionTypes.LOAD_FAIL;
+  constructor(public payload: string) {}
+}
+
+export class SwapAction implements Action {
+  type = ActionTypes.SWAP;
+  constructor(public payload: {src: TaskList; target: TaskList}) {}
+}
+
+export class SwapSuccessAction implements Action {
+  type = ActionTypes.SWAP_SUCCESS;
+  constructor(public payload: TaskList[]) {}
+}
+
+export class SwapFailAction implements Action {
+  type = ActionTypes.SWAP_FAIL;
+  constructor(public payload: string) {}
+}
+
+export type Actions = AddAction | AddSuccessAction | AddFailAction | UpdateAction | UpdateSuccessAction | UpdateFailAction | DeleteAction | DeleteSuccessAction | DeleteFailAction | LoadAction | LoadSuccessAction | LoadFailAction | SwapAction | SwapSuccessAction | SwapFailAction;
+
+# project.effects.ts
+  @Effect({ dispatch: false })
+  loadTaskLists$ = this.actions$.pipe(
+    ofType(actions.ActionTypes.SELECT_PROJECT),
+    map((action: actions.SelectAction) => action.payload),
+    map(project => new listActions.LoadAction(project.id))
+  );
+  @Effect()
+  invite$: Observable<Action> = this.actions$.pipe(
+    ofType(actions.ActionTypes.INVITE),
+    map((action: actions.InviteAction) => action.payload),
+    switchMap(({projectId, members}) => this.service$.invite(projectId, members).pipe(
+        map(project => (new actions.InviteSuccessAction(project))),
+        catchError((err) => of(new actions.InviteFailAction(JSON.stringify(err))))
+    ))
+  );
+# quote.effects.ts
+
+# task-list.effects.ts
+@Injectable()
+export class TaskListEffects {
+
+  @Effect()
+  loadTaskLists$: Observable<Action> = this.actions$.pipe(
+    ofType(actions.ActionTypes.LOAD),
+    map((action: actions.LoadAction) => action.payload),
+    switchMap(projectId => this.service$.get(projectId).pipe(
+        map(taskLists => new actions.LoadSuccessAction(taskLists)),
+        catchError((err) => of(new actions.LoadFailAction(JSON.stringify(err))))))
+  );
+
+  @Effect()
+  addTaskLists$: Observable<Action> = this.actions$.pipe(
+    ofType(actions.ActionTypes.ADD),
+    map((action: actions.AddAction) => action.payload),
+    switchMap(taskList => this.service$.add(taskList).pipe(
+        map(tl => new actions.AddSuccessAction(tl)),
+        catchError((err) => of(new actions.AddFailAction(JSON.stringify(err))))
+    ))
+  );
+
+  @Effect()
+  updateTaskLists$: Observable<Action> = this.actions$.pipe(
+    ofType(actions.ActionTypes.UPDATE),
+    map((action: actions.UpdateAction) => action.payload),
+    switchMap((taskList) => this.service$.update(taskList).pipe(
+        map(tl => new actions.UpdateSuccessAction(tl)),
+        catchError((err) => of(new actions.UpdateFailAction(JSON.stringify(err))))
+    ))
+  );
+
+  @Effect()
+  delTaskLists$: Observable<Action> = this.actions$.pipe(
+    ofType(actions.ActionTypes.DELETE),
+    map((action: actions.DeleteAction) => action.payload),
+    switchMap((project) => this.service$.del(project).pipe(
+        map(tl => new actions.DeleteSuccessAction(tl)),
+        catchError((err) => of(new actions.DeleteFailAction(JSON.stringify(err))))
+    ))
+  );
+
+  @Effect({ dispatch: false })
+  swap$ = this.actions$.pipe(
+    ofType(actions.ActionTypes.SWAP),
+    map((action: actions.SwapAction) => action.payload),
+    switchMap(({src, target}) => this.service$.swapOrder(src, target).pipe(
+      map(taskLists => new actions.SwapSuccessAction(taskLists)),
+      catchError(err => Observable.of(new actions.SwapFailAction(JSON.stringify(err))))
+    ))
+  );
+
+  constructor(
+    private actions$: Actions,
+    private store$: Store<fromRoot.State>,
+    private service$: TaskListService,
+    private router: Router
+  ) { }
+}
+
+# project-item.component.html
+<mat-card (click)="onClick()" >
+    <button mat-button type="button" (click)="onEditClick($event)">
+    <button mat-button type="button" (click)="onInviteClick($event)">
+    <button mat-button type="button" (click)="onDelClick($event)">
+# project-item.component.ts  
+  @Output() onSelected = new EventEmitter();
+  onInviteClick(ev: Event) {
+    ev.stopPropagation();
+    this.onInvite.emit();
+  }
+  onEditClick(ev: Event) {
+    ev.stopPropagation();
+    this.onEdit.emit();
+  }
+  onDelClick(ev: Event) {
+    ev.stopPropagation();
+    this.onDel.emit();
+  }
+  onClick() {
+    this.onSelected.emit();
+  }
+
+# project-list.component.html
+  (onSelected)="selectProject(project)"
+# project-list.component.ts
+  selectProject(project: Project) {
+    this.store$.dispatch(new actions.SelectAction(project));
+  }
+
+# src/app/reducers/index.ts
+  ...taskLists: fromTaskList.State;
+  ...taskLists: fromTaskList.initialState
+  ...taskLists: fromTaskList.reducer,
+export function logger(reducer: ActionReducer<State>): ActionReducer<State> {
+  return function(state: State, action: any): State {
+    console.log('state', state);
+    console.log('action', action);
+    return reducer(state, action);
+  };
+}
+export const metaReducers: MetaReducer<State>[] = !environment.production ? [logger , storeFreeze] : [];
+export const getTaskListState = (state: State) => state.taskLists;
+export const getTaskLists = createSelector(getTaskListState, fromTaskList.getSelected);
+    
+@NgModule({
+  imports: [
+    StoreModule.forRoot(reducers, { metaReducers }),
+  ]
+})
+
+# new-task-list.component.html
+<form [formGroup]="form">
+      <input type="text" matInput placeholder="列表名称" formControlName="name">
+    <button type="button" mat-raised-button color="primary" (click)="onClick(form)" [disabled]="!form.valid">保存</button>
+
+# new-task-list.component.ts
+  form: FormGroup;
+  constructor(
+    private fb: FormBuilder,
+    @Inject(MAT_DIALOG_DATA) private data,
+    private dialogRef: MatDialogRef<NewTaskListComponent>) {
+  }
+  ngOnInit() {
+    this.title = this.data.title;
+    this.form = this.fb.group({
+      name: [this.data.taskList ? this.data.TaskList : '', Validators.required]
+    });
+  }
+  onClick({value, valid}) {
+    if (!valid) {return; }
+    this.dialogRef.close(value);
+  }
+
+# task-home.component.html
+  <app-task-list *ngFor="let list of lists$ | async" class="list-container"
+                     (delList)="launchConfirmDialog(list)"
+                     (editList)="launchEditListDialog(list)"
+<button class="fab-button" mat-fab type="button" (click)="launchNewListDialog($event)">
+
+# task-home.component.ts
+  projectId$: Observable<string>;
+  lists$: Observable<TaskList[]>;
+  constructor(
+    private dialog: MatDialog,
+    private cd: ChangeDetectorRef,
+    private store: Store<fromRoot.State>,
+    private route: ActivatedRoute) {
+      this.projectId$ = this.route.paramMap.pluck('id');
+      this.lists$ = this.store.select(fromRoot.getTaskLists);
+    }
+  launchConfirmDialog(list: TaskList) {
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {data: {title: '删除任务列表:', content: '您确认删除该列表么'}});
+    dialogRef.afterClosed()
+      .take(1)
+      .filter(n => n)
+      .subscribe(result => this.store.dispatch(new actions.DeleteAction(list)));
+  }
+  launchEditListDialog(list: TaskList) {
+    const dialogRef = this.dialog.open(NewTaskListComponent, {data: {title: '更改列表名称:', taskList: list}});
+    dialogRef.afterClosed()
+    .take(1)
+    .subscribe(result => this.store.dispatch(new actions.UpdateAction({...result, id: list.id})));
+}
+  launchNewListDialog(ev: Event) {
+    const dialogRef = this.dialog.open(NewTaskListComponent, {data: {title: '新建列表:'}});
+    dialogRef.afterClosed().subscribe(result => this.store.dispatch(new actions.AddAction(result)));
+  }
+
+# task-routing.module.ts
+const routes: Routes = [{path: 'tasklists/:id', component: TaskHomeComponent}, ];
+```
+
 ## 7-9 实战任务 Reducer
 ## 7-10 实战任务 Effects
 ## 7-11 实战任务使用 Reducer 和 Effects

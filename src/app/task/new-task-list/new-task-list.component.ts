@@ -1,3 +1,4 @@
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import {ChangeDetectionStrategy, Component, Inject, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
 
@@ -8,17 +9,26 @@ import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class NewTaskListComponent implements OnInit {
+  form: FormGroup;
   title = '';
 
-  constructor(@Inject(MAT_DIALOG_DATA) private data,
-              private dialogRef: MatDialogRef<NewTaskListComponent>) {
+  constructor(
+    private fb: FormBuilder,
+    @Inject(MAT_DIALOG_DATA) private data,
+    private dialogRef: MatDialogRef<NewTaskListComponent>) {
   }
 
   ngOnInit() {
     this.title = this.data.title;
+    this.form = this.fb.group({
+      name: [this.data.taskList ? this.data.TaskList : '', Validators.required]
+    });
   }
 
-  onClick() {
-    this.dialogRef.close(this.title);
+  onClick({value, valid}) {
+    if (!valid) {
+      return;
+    }
+    this.dialogRef.close(value);
   }
 }

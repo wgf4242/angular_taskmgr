@@ -1,3 +1,4 @@
+import { catchError, map } from 'rxjs/operators';
 import {Injectable} from '@angular/core';
 import {Actions, Effect} from '@ngrx/effects';
 import {Observable} from 'rxjs/Observable';
@@ -12,11 +13,11 @@ export class QuoteEffects {
   quote$: Observable<Action> = this.actions$
     .ofType(actions.ActionTypes.LOAD)
     // .map(toPayload) // this action default is null
-    .switchMap(_ => this.service$.getQuote()
-        .map(data => new actions.LoadSuccessAction(data))
-        .catch(err =>  Observable.of(new actions.LoadFailAction(JSON.stringify(err)))
-      )
-  );
+    .switchMap(_ => this.service$.getQuote().pipe(
+      map(data => new actions.LoadSuccessAction(data)),
+      catchError(err => Observable.of(new actions.LoadFailAction(JSON.stringify(err)))
+      ))
+    );
 
   constructor(private actions$: Actions, private service$: QuoteService) {
   }

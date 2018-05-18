@@ -19,8 +19,7 @@ export const ActionTypes = {
   INVITE_SUCCESS: type('[Project] Invite Success'),
   INVITE_FAIL: type('[Project] Invite Fail'),
   SELECT_PROJECT: type('[Project] Select Project'),
-
-}
+};
 
 export class AddAction implements Action {
   type = ActionTypes.ADD;

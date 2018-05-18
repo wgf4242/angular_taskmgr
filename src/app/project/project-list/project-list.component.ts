@@ -1,17 +1,16 @@
-import { AddAction, UpdateAction, DeleteAction } from './../../actions/project.action';
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, HostBinding, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, HostBinding } from '@angular/core';
 import { MatDialog } from '@angular/material';
 import { Store } from '@ngrx/store';
 import * as _ from 'lodash';
 import { Observable } from 'rxjs/Observable';
-import * as actions from "../../actions/project.action";
+import * as actions from '../../actions/project.action';
 import { listAnimation } from '../../anims/list.anim';
 import { slideToRight } from '../../anims/router.anim';
-import { Project } from '../../domain';
-import * as fromRoot from "../../reducers";
+import * as fromRoot from '../../reducers';
 import { ConfirmDialogComponent } from '../../shared/confirm-dialog/confirm-dialog.component';
 import { InviteComponent } from '../invite/invite.component';
 import { NewProjectComponent } from '../new-project/new-project.component';
+import { Project } from './../../domain/project.model';
 @Component({
   selector: 'app-project-list',
   templateUrl: './project-list.component.html',
@@ -83,5 +82,9 @@ export class ProjectListComponent {
   private buildImgSrc(img: string): string {
     console.log(img);
     return img.indexOf('_') > -1 ? img.split('_')[0] + '.jpg' : img;
+  }
+
+  selectProject(project: Project) {
+    this.store$.dispatch(new actions.SelectAction(project));
   }
 }

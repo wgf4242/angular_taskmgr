@@ -14,6 +14,7 @@ export class ProjectItemComponent implements OnInit {
   @Output() onInvite = new EventEmitter();
   @Output() onEdit = new EventEmitter();
   @Output() onDel = new EventEmitter();
+  @Output() onSelected = new EventEmitter();
   @HostBinding('@card') cardState = 'out';
 
   @HostListener('mouseenter')
@@ -32,15 +33,22 @@ export class ProjectItemComponent implements OnInit {
   ngOnInit() {
   }
 
-  onInviteClick() {
+  onInviteClick(ev: Event) {
+    ev.stopPropagation();
     this.onInvite.emit();
   }
 
-  onEditClick() {
+  onEditClick(ev: Event) {
+    ev.stopPropagation();
     this.onEdit.emit();
   }
 
-  onDelClick() {
+  onDelClick(ev: Event) {
+    ev.stopPropagation();
     this.onDel.emit();
+  }
+
+  onClick() {
+    this.onSelected.emit();
   }
 }
