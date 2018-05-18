@@ -5260,6 +5260,129 @@ export class TaskListEffects {
   ) { }
 }
 
+# task-list.reducer.ts
+export interface State {
+     ids: string[];
+     entities: {[id: string]: TaskList};
+     selectedIds: string[];
+}
+
+export const initialState: State = {
+    ids: [],
+    entities: {},
+    selectedIds: [],
+};
+
+const addTaskList = (state, action) => {
+  const taskList = action.payload;
+  if (state.entities[taskList.id]) {
+    return state;
+  }
+  const newIds = [...state.ids, taskList.id];
+  const newEntities = {...state.entities, [taskList.id]: taskList};
+  const newSelectedIds = [...state.selectedIds, taskList.id];
+  return {...state, ids: newIds, entities: newEntities, selectedIds: newSelectedIds};
+};
+
+const updateTaskList = (state, action) => {
+  const taskList = action.payload;
+  const newEntities = {...state.entities, [taskList.id]: taskList};
+  return {...state, entities: newEntities};
+};
+
+const delTaskList = (state, action) => {
+  const taskList = action.payload;
+  const newIds = state.iods.filter(id => id !== taskList.id);
+  const newEntities = newIds.reduce((entities, id: string) => ({...entities, [id]: state.entities[id]}), {});
+  const newSelectedIds = state.selectIds.filter(id => id !== taskList.id);
+  return {
+    ids: newIds,
+    entities: newEntities,
+    selectedIds: newSelectedIds,
+  };
+};
+
+const loadTaskLists = (state, action) => {
+  const projects = action.payload;
+  const incomingIds = projects.map(p => p.id);
+  const newIds = _.difference(incomingIds, state.ids);
+  const incomingEntities = _.chain(projects)
+    .keyBy('id')
+    .mapValues(o => o)
+    .value();
+  const newEntities = newIds.reduce((entities, id: string) => ({ ...entities, [id]: incomingEntities[id] }), {});
+  return {
+    ids: [...state.ids, ...newIds],
+    entities: {...state.entities, ...newEntities},
+    selectedIds: incomingIds,
+  };
+};
+
+const swapTaskLists = (state, action) => {
+  const taskList = <TaskList[]>action.payload;
+  const updatedEntities = _.chain(taskList)
+    .mapValues(o => o)
+    .value();
+  const newEntities = {...state.entities, ...updatedEntities};
+  return {...state, entities: newEntities };
+};
+
+const selectPrj = (state, action) => {
+  const selected = <Project>action.papload;
+  const selectedIds = state.ids.filter(id => state.entities[id].projectId === selected.id);
+  return {...state, selectedIds: selectedIds };
+};
+
+const delListsByPrj = (state, action) => {
+  const project = <Project>action.payload;
+  const taskListIds = project.taskLists;
+  const remainingIds = _.difference(state.ids, taskListIds);
+  const remainingEntities = remainingIds.reduce((entities, id) => ({...entities, [id]: state.entitites}), {});
+  return {
+    ids: [...remainingIds],
+    entities: remainingEntities,
+    selectedIds: []
+  };
+};
+
+export function reducer(state = initialState, action: actions.Actions ): State {
+  switch (action.type) {
+    case actions.ActionTypes.ADD_SUCCESS: {
+      return addTaskList(state, action);
+    }
+    case actions.ActionTypes.DELETE_SUCCESS: {
+      return delTaskList(state, action);
+    }
+    case actions.ActionTypes.UPDATE_SUCCESS: {
+      return updateTaskList(state, action);
+    }
+    case actions.ActionTypes.LOAD_SUCCESS: {
+      return loadTaskLists(state, action);
+    }
+    case actions.ActionTypes.SWAP_SUCCESS: {
+      return swapTaskLists(state, action);
+    }
+    case prjActions.ActionTypes.SELECT_PROJECT: {
+      return selectPrj(state, action);
+    }
+
+    case prjActions.ActionTypes.DELETE_SUCCESS: {
+      return delListsByPrj(state, action);
+    }
+    default: {
+      return state;
+    }
+  }
+}
+
+export const getIds = (state: State) => state.ids;
+export const getEntities = (state: State) => state.entities;
+export const getSelectedIds = (state: State) => state.selectedIds;
+
+export const getSelected = createSelector(getSelectedIds, getEntities, (selectedIds, entities) => {
+  return selectedIds.map(id => entities[id]);
+});
+
 # project-item.component.html
 <mat-card (click)="onClick()" >
     <button mat-button type="button" (click)="onEditClick($event)">
@@ -5374,6 +5497,464 @@ const routes: Routes = [{path: 'tasklists/:id', component: TaskHomeComponent}, ]
 ```
 
 ## 7-9 实战任务 Reducer
+task, 增删改查，完成，移动，批量移动 ---- action..
+
+一个action发出后，可能会影响状态，也有可能是先进行effects 回来再影响它的状态。
+
+```typescript
+# task.action.ts
+export const ActionTypes = {
+  ADD: type('[Task] Add'),
+  ADD_SUCCESS: type('[Task] Add Success'),
+  ADD_FAIL: type('[Task] Add Fail'),
+  UPDATE: type('[Task] Update'),
+  UPDATE_SUCCESS: type('[Task] Update Success'),
+  UPDATE_FAIL: type('[Task] Update Fail'),
+  DELETE: type('[Task] Delete'),
+  DELETE_SUCCESS: type('[Task] Delete Success'),
+  DELETE_FAIL: type('[Task] Delete Fail'),
+  LOAD: type('[Task] Load'),
+  LOAD_SUCCESS: type('[Task] Load Success'),
+  LOAD_FAIL: type('[Task] Load Fail'),
+  MOVE: type('[Task] Move'),
+  MOVE_SUCCESS: type('[Task] Move Success'),
+  MOVE_FAIL: type('[Task] Move Fail'),
+  MOVE_ALL: type('[Task] Move All'),
+  MOVE_ALL_SUCCESS: type('[Task] Move All Success'),
+  MOVE_ALL_FAIL: type('[Task] Move All Fail'),
+  COMPLETE: type('[Task] Complete'),
+  COMPLETE_SUCCESS: type('[Task] Complete Success'),
+  COMPLETE_FAIL: type('[Task] Complete Fail'),
+};
+export class AddAction implements Action {
+  type = ActionTypes.ADD;
+  constructor(public payload: Task) {}
+}
+export class AddSuccessAction implements Action {
+  type = ActionTypes.ADD_SUCCESS;
+  constructor(public payload: Task) {}
+}
+export class AddFailAction implements Action {
+  type = ActionTypes.ADD_FAIL;
+  constructor(public payload: string) {}
+}
+export class UpdateAction implements Action {
+  type = ActionTypes.UPDATE;
+  constructor(public payload: Task) {}
+}
+export class UpdateSuccessAction implements Action {
+  type = ActionTypes.UPDATE_SUCCESS;
+  constructor(public payload: Task) {}
+}
+export class UpdateFailAction implements Action {
+  type = ActionTypes.UPDATE_FAIL;
+  constructor(public payload: string) {}
+}
+export class DeleteAction implements Action {
+  type = ActionTypes.DELETE;
+  constructor(public payload: Task) {}
+}
+export class DeleteSuccessAction implements Action {
+  type = ActionTypes.DELETE_SUCCESS;
+  constructor(public payload: Task) {}
+}
+export class DeleteFailAction implements Action {
+  type = ActionTypes.DELETE_FAIL;
+  constructor(public payload: string) {}
+}
+export class LoadAction implements Action {
+  type = ActionTypes.LOAD;
+  constructor(public payload: TaskList[]) {}
+}
+export class LoadSuccessAction implements Action {
+  type = ActionTypes.LOAD_SUCCESS;
+  constructor(public payload: Task[]) {}
+}
+export class LoadFailAction implements Action {
+  type = ActionTypes.LOAD_FAIL;
+  constructor(public payload: string) {}
+}
+export class MoveAction implements Action {
+  type = ActionTypes.MOVE;
+  constructor(public payload: {taskId: string; taskListId: string}) {}
+}
+export class MoveSuccessAction implements Action {
+  type = ActionTypes.MOVE_SUCCESS;
+  constructor(public payload: Task) {}
+}
+export class MoveFailAction implements Action {
+  type = ActionTypes.MOVE_FAIL;
+  constructor(public payload: string) {}
+}
+export class MoveAllAction implements Action {
+  type = ActionTypes.MOVE_ALL;
+  constructor(public payload: {srcListId: string; targetListId: string}) {}
+}
+export class MoveAllSuccessAction implements Action {
+  type = ActionTypes.MOVE_ALL_SUCCESS;
+  constructor(public payload: Task[]) {}
+}
+export class MoveAllFailAction implements Action {
+  type = ActionTypes.MOVE_ALL_FAIL;
+  constructor(public payload: string) {}
+}
+export class CompleteAction implements Action {
+  type = ActionTypes.COMPLETE;
+  constructor(public payload: Task) {}
+}
+export class CompleteSuccessAction implements Action {
+  type = ActionTypes.COMPLETE_SUCCESS;
+  constructor(public payload: Task) {}
+}
+export class CompleteFailAction implements Action {
+  type = ActionTypes.COMPLETE_FAIL;
+  constructor(public payload: string) {}
+}
+
+
+export type Actions = AddAction
+  | AddSuccessAction | AddFailAction | UpdateAction
+  | UpdateSuccessAction | UpdateFailAction | DeleteAction
+  | DeleteSuccessAction | DeleteFailAction | LoadAction
+  | LoadSuccessAction | LoadFailAction | MoveAction
+  | MoveSuccessAction | MoveFailAction | MoveAllAction
+  | MoveAllSuccessAction | MoveAllFailAction | CompleteAction
+  | CompleteSuccessAction | CompleteFailAction;
+
+# user.action.ts
+export interface UserProject {
+  user: User;
+  projectId: string;
+}
+
+export const ActionTypes = {
+  ADD:              type('[User] Add User Project'),
+  ADD_SUCCESS:      type('[User] Add User Project Success'),
+  ADD_FAIL:         type('[User] Add User Project Fail'),
+  UPDATE:           type('[User] Update User Project'),
+  UPDATE_SUCCESS:   type('[User] Update User Project Success'),
+  UPDATE_FAIL:      type('[User] Update User Project Fail'),
+  DELETE:           type('[User] Delete User Project'),
+  DELETE_SUCCESS:   type('[User] Delete User Project Success'),
+  DELETE_FAIL:      type('[User] Delete User Project Fail'),
+  LOAD:             type('[User] Load User by Project'),
+  LOAD_SUCCESS:     type('[User] Load User by Project Success'),
+  LOAD_FAIL:        type('[User] Load User by Project Fail'),
+  SEARCH:             type('[User] Search'),
+  SEARCH_SUCCESS:     type('[User] Search Success'),
+  SEARCH_FAIL:        type('[User] Search Fail'),
+};
+
+export class AddAction implements Action {
+  type = ActionTypes.ADD;
+  constructor(public payload: UserProject) {}
+}
+export class AddSuccessAction implements Action {
+  type = ActionTypes.ADD_SUCCESS;
+  constructor(public payload: User) {}
+}
+export class AddFailAction implements Action {
+  type = ActionTypes.ADD_FAIL;
+  constructor(public payload: string) {}
+}
+export class UpdateAction implements Action {
+  type = ActionTypes.UPDATE;
+  constructor(public payload: Project) {}
+}
+export class UpdateSuccessAction implements Action {
+  type = ActionTypes.UPDATE_SUCCESS;
+  constructor(public payload: User[]) {}
+}
+export class UpdateFailAction implements Action {
+  type = ActionTypes.UPDATE_FAIL;
+  constructor(public payload: string) {}
+}
+export class DeleteAction implements Action {
+  type = ActionTypes.DELETE;
+  constructor(public payload: UserProject) {}
+}
+export class DeleteSuccessAction implements Action {
+  type = ActionTypes.DELETE_SUCCESS;
+  constructor(public payload: User) {}
+}
+export class DeleteFailAction implements Action {
+  type = ActionTypes.DELETE_FAIL;
+  constructor(public payload: string) {}
+}
+export class LoadAction implements Action {
+  type = ActionTypes.LOAD;
+  constructor(public payload: string) {}
+}
+export class LoadSuccessAction implements Action {
+  type = ActionTypes.LOAD_SUCCESS;
+  constructor(public payload: User[]) {}
+}
+export class LoadFailAction implements Action {
+  type = ActionTypes.LOAD_FAIL;
+  constructor(public payload: string) {}
+}
+export class SearchAction implements Action {
+  type = ActionTypes.SEARCH;
+  constructor(public payload: string) {}
+}
+export class SearchSuccessAction implements Action {
+  type = ActionTypes.SEARCH_SUCCESS;
+  constructor(public payload: User[]) {}
+}
+export class SearchFailAction implements Action {
+  type = ActionTypes.SEARCH_FAIL;
+  constructor(public payload: string) {}
+}
+
+export type Actions
+  = AddAction
+  | AddSuccessAction
+  | AddFailAction
+  | UpdateAction
+  | UpdateSuccessAction
+  | UpdateFailAction
+  | DeleteAction
+  | DeleteSuccessAction
+  | DeleteFailAction
+  | LoadAction
+  | LoadSuccessAction
+  | LoadFailAction
+  | SearchAction
+  | SearchSuccessAction
+  | SearchFailAction;
+
+# reducers/index.ts
+export interface State {...
+  tasks: fromTask.State;
+  users: fromUser.State;
+}
+
+const initialState: State = {...
+  tasks: fromTask.initialState,
+  users: fromUser.initialState,
+};
+
+const reducers: ActionReducerMap<State> = {...
+  tasks: fromTask.reducer,
+  users: fromUser.reducer,
+};
+export const getTaskState = (state: State) => state.tasks;
+export const getUserState = (state: State) => state.users;
+
+export const getTasks = createSelector(getTaskState, fromTask.getTasks);
+export const getUsers = createSelector(getUserState, fromUser.getUsers);
+
+export const getUserEntities = createSelector(getUserState, fromUser.getEntities);
+export const getTasksWithOwners = createSelector(getTasks, getUserEntities, (tasks , userEntities) => {
+  return tasks.map(task => {
+    return {
+      ...task,
+    owner: userEntities[task.ownerId],
+    participants: task.participantIds.map(id => userEntities[id])
+    };
+  });
+});
+
+export const getTasksByLists = createSelector(getTaskLists, getTasksWithOwners, (lists, tasks) => {
+  return lists.map(list => {
+    return {
+      ...list,
+      tasks: tasks.filter(task => task.taskListId === list.id)
+    };
+  });
+});
+
+export const getProjectUsers = (projectId: string) => createSelector(getProjectState, getUserEntities, (state, entities) => {
+  return state.entities[projectId].members.map(id => entities[id]);
+});
+
+# task.reducer.ts
+export interface State {
+     ids: string[];
+     entities: {[id: string]: Task};
+}
+
+export const initialState: State = {
+    ids: [],
+    entities: {},
+};
+
+const addTask = (state, action) => {
+  const taskList = action.payload;
+  if (state.entities[taskList.id]) {
+    return state;
+  }
+  const newIds = [...state.ids, taskList.id];
+  const newEntities = {...state.entities, [taskList.id]: taskList};
+  return {...state, ids: newIds, entities: newEntities};
+};
+
+const updateTask = (state, action) => {
+  const taskList = action.payload;
+  const newEntities = {...state.entities, [taskList.id]: taskList};
+  return {...state, entities: newEntities};
+};
+
+const delTask = (state, action) => {
+  const taskList = action.payload;
+  const newIds = state.iods.filter(id => id !== taskList.id);
+  const newEntities = newIds.reduce((entities, id: string) => ({...entities, [id]: state.entities[id]}), {});
+  return {
+    ids: newIds,
+    entities: newEntities,
+  };
+};
+
+const loadTasks = (state, action) => {
+  const tasks = action.payload;
+  const incomingIds = tasks.map(p => p.id);
+  const newIds = _.difference(incomingIds, state.ids);
+  const incomingEntities = _.chain(tasks)
+    .keyBy('id')
+    .mapValues(o => o)
+    .value();
+  const newEntities = newIds.reduce((entities, id: string) => ({ ...entities, [id]: incomingEntities[id] }), {});
+  return {
+    ids: [...state.ids, ...newIds],
+    entities: {...state.entities, ...newEntities},
+  };
+};
+
+const moveAllTasks = (state, action) => {
+  const tasks = <Task[]>action.papload;
+  const updatedEntities = tasks.reduce((entities, task) => ({...entities, [task.id]: task}), {});
+  return {
+    ...state,
+    entities: {...state.entities, ...updatedEntities}
+  };
+};
+
+const delByPrj = (state, action) => {
+  const project = <Project>action.payload;
+  const taskListIds = project.taskLists;
+  const remainingIds = state.ids.filter(id => taskListIds.indexOf(state.entities[id].taskListId) === -1);
+  const remainingEntities = remainingIds.reduce((entities, id) => ({...entities, [id]: state.entitites}), {});
+  return {
+    ids: [...remainingIds],
+    entities: remainingEntities,
+  };
+};
+
+export function reducer(state = initialState, action: actions.Actions ): State {
+  switch (action.type) {
+    case actions.ActionTypes.ADD_SUCCESS: {
+      return addTask(state, action);
+    }
+    case actions.ActionTypes.DELETE_SUCCESS: {
+      return delTask(state, action);
+    }
+    case actions.ActionTypes.COMPLETE_SUCCESS:
+    case actions.ActionTypes.MOVE_SUCCESS:
+    case actions.ActionTypes.UPDATE_SUCCESS: {
+      return updateTask(state, action);
+    }
+    case actions.ActionTypes.LOAD_SUCCESS: {
+      return loadTasks(state, action);
+    }
+    case actions.ActionTypes.MOVE_ALL_SUCCESS: {
+      return moveAllTasks(state, action);
+    }
+    case prjActions.ActionTypes.DELETE_SUCCESS: {
+      return delByPrj(state, action);
+    }
+    default: {
+      return state;
+    }
+  }
+}
+
+export const getIds = (state: State) => state.ids;
+export const getEntities = (state: State) => state.entities;
+
+export const getTasks = createSelector(getIds, getEntities, (ids, entities) => {
+  return ids.map(id => entities[id]);
+});
+
+# user.reducer.ts
+export interface State {
+     ids: string[];
+     entities: {[id: string]: User};
+}
+
+export const initialState: State = {
+    ids: [],
+    entities: {},
+};
+
+const addUser = (state, action) => {
+  const user = action.payload;
+  const newIds = [...state.ids, user.id];
+  const newEntities = { ...state.entities, [user.id]: user };
+  return state.entities[user.id] ?
+    { ...state, entities: newEntities } : { ...state, ids: newIds, entities: newEntities};
+};
+
+const updateUser = (state, action) => {
+  const users = <User[]>action.payload;
+  const incomingEntities = _.chain(users)
+    .keyBy('id')
+    .mapValues(o => o)
+    .value();
+  const newEntities = {...state.entities, ...incomingEntities};
+  return {...state, entities: newEntities};
+};
+
+const delUser = (state, action) => {
+  const user = action.payload;
+  const newEntities = { ...state.entities, [user.id]: user };
+  return state.entities[user.id] ?
+    {...state, entities: newEntities} : state;
+};
+
+const loadUsers = (state, action) => {
+  const users = action.payload;
+  const incomingIds = users.map(p => p.id);
+  const newIds = _.difference(incomingIds, state.ids);
+  const incomingEntities = _.chain(users)
+    .keyBy('id')
+    .mapValues(o => o)
+    .value();
+  const newEntities = newIds.reduce((entities, id: string) => ({ ...entities, [id]: incomingEntities[id] }), {});
+  return {
+    ids: [...state.ids, ...newIds],
+    entities: {...state.entities, ...newEntities},
+  };
+};
+
+export function reducer(state = initialState, action: actions.Actions ): State {
+  switch (action.type) {
+    case actions.ActionTypes.ADD_SUCCESS: {
+      return addUser(state, action);
+    }
+    case actions.ActionTypes.DELETE_SUCCESS: {
+      return delUser(state, action);
+    }
+    case actions.ActionTypes.UPDATE_SUCCESS: {
+      return updateUser(state, action);
+    }
+    case actions.ActionTypes.SEARCH_SUCCESS:
+    case actions.ActionTypes.LOAD_SUCCESS: {
+      return loadUsers(state, action);
+    }
+    default: {
+      return state;
+    }
+  }
+}
+
+export const getIds = (state: State) => state.ids;
+export const getEntities = (state: State) => state.entities;
+
+export const getUsers = createSelector(getIds, getEntities, (ids, entities) => {
+  return ids.map(id => entities[id]);
+});
+
+```
 ## 7-10 实战任务 Effects
 ## 7-11 实战任务使用 Reducer 和 Effects
 
