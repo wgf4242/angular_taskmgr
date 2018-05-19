@@ -5956,6 +5956,218 @@ export const getUsers = createSelector(getIds, getEntities, (ids, entities) => {
 
 ```
 ## 7-10 实战任务 Effects
+
+Code:
+```typescript
+# effects/index.ts
+  imports: [EffectsModule.forRoot([...
+    TaskListEffects,
+    UserEffects,
+      TaskEffects
+    ])]
+# project.effects.ts
+  @Effect()
+  addProjects$: Observable<Action> = this.actions$.pipe(
+    ofType(actions.ActionTypes.ADD),
+    map((action: actions.AddAction) => action.payload),
+    withLatestFrom(this.store$.select(fromRoot.getAuthState).map(auth => auth.user)), //.debug('auth')),
+    switchMap(([project, user]) => {
+      const added = {...project, members: [`${user.id}`]};
+      return this.service$.add(added).pipe(
+        map(prj => new actions.AddSuccessAction(prj)),
+        catchError((err) => of(new actions.AddFailAction(JSON.stringify(err))))
+      );
+    })
+  );
+
+  @Effect()
+  loadUsers$: Observable<Action> = this.actions$.pipe(
+    ofType(actions.ActionTypes.LOAD_SUCCESS),
+    map((action: actions.LoadAction) => action.payload),
+    switchMap((projects: Project[]) => Observable.from(projects.map(prj => prj.id)).pipe(
+        map(projectId => new userActions.LoadAction(projectId))
+    ))
+  );
+
+  @Effect()
+  addUserProject$: Observable<Action> = this.actions$.pipe(
+    ofType(actions.ActionTypes.ADD_SUCCESS),
+    map((action: actions.AddSuccessAction) => action.payload),
+    map(project => project.id),
+    withLatestFrom(this.store$.select(fromRoot.getAuthState).map(auth => auth.user), (projectId, user) => {
+      return new userActions.AddAction({user: user, projectId: projectId});
+    })
+  );
+
+  @Effect()
+  removeUserProject$: Observable<Action> = this.actions$.pipe(
+    ofType(actions.ActionTypes.DELETE_SUCCESS),
+    map((action: actions.DeleteSuccessAction) => action.payload),
+    map(project => project.id),
+    withLatestFrom(this.store$.select(fromRoot.getAuthState).map(auth => auth.user), (projectId, user) => {
+      return new userActions.DeleteAction({user: user, projectId: projectId});
+    })
+  );
+
+  @Effect()
+  updateUserProject$: Observable<Action> = this.actions$.pipe(
+    ofType(actions.ActionTypes.INVITE_SUCCESS),
+    map((action: actions.InviteSuccessAction) => action.payload),
+    map(project => new userActions.UpdateAction(project))
+  );
+
+# task-list.effects.ts
+  @Effect()
+  loadTasksInLists$ = this.actions$.pipe(
+    ofType(actions.ActionTypes.LOAD),
+    map((action: taskActions.LoadAction) => action.payload),
+    map(lists => new taskActions.LoadAction(lists))
+  );
+
+# task.effects.ts
+@Injectable()
+export class TaskEffects {
+
+  @Effect()
+  loadTasks$: Observable<Action> = this.actions$.pipe(
+    ofType(actions.ActionTypes.LOAD),
+    map((action: actions.LoadAction) => action.payload),
+    switchMap(taskList => this.service$.getByLists(taskList).pipe(
+        map(tasks => new actions.LoadSuccessAction(tasks)),
+        catchError((err) => of(new actions.LoadFailAction(JSON.stringify(err))))))
+  );
+
+  @Effect()
+  addTasks$: Observable<Action> = this.actions$.pipe(
+    ofType(actions.ActionTypes.ADD),
+    map((action: actions.AddAction) => action.payload),
+    switchMap(task => this.service$.add(task).pipe(
+        map(t => new actions.AddSuccessAction(t)),
+        catchError((err) => of(new actions.AddFailAction(JSON.stringify(err))))
+    ))
+  );
+
+  @Effect()
+  updateTasks$: Observable<Action> = this.actions$.pipe(
+    ofType(actions.ActionTypes.UPDATE),
+    map((action: actions.UpdateAction) => action.payload),
+    switchMap((task) => this.service$.update(task).pipe(
+        map(t => new actions.UpdateSuccessAction(t)),
+        catchError((err) => of(new actions.UpdateFailAction(JSON.stringify(err))))
+    ))
+  );
+
+  @Effect()
+  delTasks$: Observable<Action> = this.actions$.pipe(
+    ofType(actions.ActionTypes.DELETE),
+    map((action: actions.DeleteAction) => action.payload),
+    switchMap((task) => this.service$.del(task).pipe(
+        map(t => new actions.DeleteSuccessAction(t)),
+        catchError((err) => of(new actions.DeleteFailAction(JSON.stringify(err))))
+    ))
+  );
+
+  @Effect()
+  completeTasks$: Observable<Action> = this.actions$.pipe(
+    ofType(actions.ActionTypes.COMPLETE),
+    map((action: actions.CompleteAction) => action.payload),
+    switchMap((task) => this.service$.complete(task).pipe(
+        map(t => new actions.CompleteSuccessAction(t)),
+        catchError((err) => of(new actions.CompleteFailAction(JSON.stringify(err))))
+    ))
+  );
+
+  @Effect()
+  move = this.actions$.pipe(
+    ofType(actions.ActionTypes.MOVE),
+    map((action: actions.MoveAction) => action.payload),
+    switchMap(({taskId, taskListId}) => this.service$.move(taskId, taskListId).pipe(
+      map(task => new actions.MoveSuccessAction(task)),
+      catchError(err => Observable.of(new actions.MoveFailAction(JSON.stringify(err))))
+    ))
+  );
+
+  @Effect()
+  moveAll = this.actions$.pipe(
+    ofType(actions.ActionTypes.MOVE_ALL),
+    map((action: actions.MoveAllAction) => action.payload),
+    switchMap(({srcListId, targetListId}) => this.service$.moveAll(srcListId, targetListId).pipe(
+      map(tasks => new actions.MoveAllSuccessAction(tasks)),
+      catchError(err => Observable.of(new actions.MoveAllFailAction(JSON.stringify(err))))
+    ))
+  );
+
+  constructor(
+    private actions$: Actions,
+    private store$: Store<fromRoot.State>,
+    private service$: TaskService,
+    private router: Router
+  ) { }
+}
+
+# user.effects.ts
+@Injectable()
+export class UserEffects {
+
+  @Effect()
+  loadUsers$: Observable<Action> = this.actions$.pipe(
+    ofType(actions.ActionTypes.LOAD),
+    map((action: actions.LoadAction) => action.payload),
+    switchMap(projectId => this.service$.gethUsersByProject(projectId).pipe(
+        map(users => new actions.LoadSuccessAction(users)),
+        catchError((err) => of(new actions.LoadFailAction(JSON.stringify(err))))))
+  );
+
+  @Effect()
+  addUserProjectRef$: Observable<Action> = this.actions$.pipe(
+    ofType(actions.ActionTypes.ADD),
+    map((action: actions.AddAction) => action.payload),
+    switchMap(({user, projectId}) => this.service$.addProjectRef(user, projectId).pipe(
+        map(u => new actions.AddSuccessAction(u)),
+        catchError((err) => of(new actions.AddFailAction(JSON.stringify(err))))
+    ))
+  );
+
+  @Effect()
+  updateUserProjectRef$: Observable<Action> = this.actions$.pipe(
+    ofType(actions.ActionTypes.UPDATE),
+    map((action: actions.UpdateAction) => action.payload),
+    switchMap(project => this.service$.batchUpdateProjectRef(project).pipe(
+        map(users => new actions.UpdateSuccessAction(users)),
+        catchError((err) => of(new actions.UpdateFailAction(JSON.stringify(err))))
+    ))
+  );
+
+  @Effect()
+  delUserProjectRef$: Observable<Action> = this.actions$.pipe(
+    ofType(actions.ActionTypes.DELETE),
+    map((action: actions.DeleteAction) => action.payload),
+    switchMap(({user, projectId}) => this.service$.removeProjectRef(user, projectId).pipe(
+        map(u => new actions.DeleteSuccessAction(u)),
+        catchError((err) => of(new actions.DeleteFailAction(JSON.stringify(err))))
+    ))
+  );
+
+  @Effect()
+  search$ = this.actions$.pipe(
+    ofType(actions.ActionTypes.SEARCH),
+    map((action: actions.SearchAction) => action.payload),
+    switchMap(str => this.service$.searchUsers(str).pipe(
+      map(taskLists => new actions.SearchSuccessAction(taskLists)),
+      catchError(err => Observable.of(new actions.SearchFailAction(JSON.stringify(err))))
+    ))
+  );
+
+  constructor(
+    private actions$: Actions,
+    private store$: Store<fromRoot.State>,
+    private service$: UserService,
+    private router: Router
+  ) { }
+}
+# services.module.ts
+import         UserService,
+```
 ## 7-11 实战任务使用 Reducer 和 Effects
 
 # 第8章 Angular 的测试
