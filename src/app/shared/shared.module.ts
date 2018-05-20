@@ -1,23 +1,19 @@
-import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
+import {NgModule} from '@angular/core';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {
-  MatAutocompleteModule, MatButtonModule, MatButtonToggleModule, MatCardModule, MatCheckboxModule, MatChipsModule, MatDatepickerModule,
-  MatDialogModule,
-  MatGridListModule,
-  MatIconModule,
-  MatInputModule, MatListModule,
-  MatMenuModule, MatNativeDateModule, MatRadioModule, MatSelectModule, MatSidenavModule, MatSlideToggleModule, MatTabsModule,
-  MatTooltipModule
+  MatAutocompleteModule, MatButtonModule, MatButtonToggleModule, MatCardModule, MatCheckboxModule, MatChipsModule,
+  MatDatepickerModule, MatDialogModule, MatGridListModule, MatIconModule, MatInputModule, MatListModule, MatMenuModule, MatNativeDateModule,
+  MatRadioModule, MatSelectModule, MatSidenavModule, MatSlideToggleModule, MatTabsModule, MatTooltipModule
 } from '@angular/material';
 import {MatToolbarModule} from '@angular/material/toolbar';
-import {ConfirmDialogComponent} from './confirm-dialog/confirm-dialog.component';
 import {DirectiveModule} from '../directive/directive.module';
-import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {ImageListSelectComponent} from './image-list-select/image-list-select.component';
 import {AgeInputComponent} from './age-input/age-input.component';
+import {AreaListComponent} from './area-list/area-list.component';
 import {ChipsListComponent} from './chips-list/chips-list.component';
-import { IdentityInputComponent } from './identity-input/identity-input.component';
-import { AreaListComponent } from './area-list/area-list.component';
+import {ConfirmDialogComponent} from './confirm-dialog/confirm-dialog.component';
+import {IdentityInputComponent} from './identity-input/identity-input.component';
+import {ImageListSelectComponent} from './image-list-select/image-list-select.component';
 
 @NgModule({
   imports: [
@@ -29,7 +25,6 @@ import { AreaListComponent } from './area-list/area-list.component';
     MatButtonModule,
     MatCardModule,
     MatInputModule,
-    MatSidenavModule,
     MatListModule,
     MatSlideToggleModule,
     MatGridListModule,
@@ -71,7 +66,6 @@ import { AreaListComponent } from './area-list/area-list.component';
     MatDatepickerModule,
     MatSelectModule,
     MatDialogModule,
-    MatSidenavModule,
     MatChipsModule,
     MatAutocompleteModule,
     MatTabsModule,

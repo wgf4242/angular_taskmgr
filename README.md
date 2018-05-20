@@ -2053,7 +2053,7 @@ export class QuickTaskComponent implements OnInit {
 # task-home.component.ts
   handleQuickTask(desc: string) {console.log(desc); }
 ```
-## 4-6 响应式表单处理和自定义表单控件（上）
+## 4-6 响应式表单处理和自定义表单控件(上)
 
 __响应式表单__
 
@@ -2399,7 +2399,7 @@ zip 多个值都改变时才更新。需要一一对应的关系
 
 理解 Rx 的关键是要把任何变化想像成事件流。
 
-## 5-2 常见操作符（一）
+## 5-2 常见操作符(一)
 
 __常见创建类的操作符__
 
@@ -2478,7 +2478,7 @@ export class QuoteService {
       providers: [QuoteService]
       
 ```
-## 5-3 常见操作符（二）
+## 5-3 常见操作符(二)
 
 __Observable的性质__
 
@@ -2592,7 +2592,7 @@ Observable.prototype.debug = function (message: string) {
 ```
 
 
-## 5-4 常见操作符（三）
+## 5-4 常见操作符(三)
 
 过滤类操作符：
 debounce, debounceTime, distinct, distinctUntilChanged,
@@ -2708,7 +2708,7 @@ age                a   a    a
 
 合并起来，符合 combineLatest 合并流。得到合并流后转换为日期。再将日期流合并。--添加区分来源，防止相互反应。
 
-## 5-6 实战复杂表单控件（中）
+## 5-6 实战复杂表单控件(中)
 
 判断流是从 birthday 还是 age 来的。
 
@@ -2721,7 +2721,7 @@ combineLatest(ageNum$, ageUnit$ 需要两个都有值，我们一个初始值即
 用 debounceTime 过滤掉没用的值。
 用 distinctUntilChanged 过滤掉一样的值。
 
-## 5-7 实战复杂表单控件（下）
+## 5-7 实战复杂表单控件(下)
 
 组合验证需要知道组合验证的名子，
 
@@ -3122,7 +3122,7 @@ export  class ProjectService {
   ngOnInit() {this.service$.get('1').subscribe(projects => this.projects = projects); }
 
 ```
-## 6-2 实战服务逻辑（上）
+## 6-2 实战服务逻辑(上)
 项目列表(name, order, projectid)-任务列表
 
 任务列表-增删改查 和project 类似，但多了一个移动。但只改变了内存，没有改变服务器的数据。
@@ -3171,7 +3171,7 @@ export  class TaskListService {
 ```
 
 
-## 6-3 实战服务逻辑（中）
+## 6-3 实战服务逻辑(中)
 
 ```typescript
 npm i --save lodash
@@ -3362,7 +3362,7 @@ export  class TaskService {
 
 ```
 
-## 6-4 实战服务逻辑（下）
+## 6-4 实战服务逻辑(下)
 
 * 查询用户，搜索建议
 
@@ -3828,7 +3828,7 @@ clear时怎么办？把null放进来。其他的地方误接收时会收到 null
 
 现在直接定义流， name$ ，在 html中 item | async 使用。
 
-## 6-7 实战身份验证控件和地址选择控件（上）
+## 6-7 实战身份验证控件和地址选择控件(上)
 
 证件类型，证件号码。 不同的证件类型有不同的校验。省市区联动。最后填上街道。。
 
@@ -3841,7 +3841,7 @@ ng g c shared/identity-input -spec false
 ng g c shared/area-list -spec false
 ```
 
-## 6-8 实战身份验证控件和地址选择控件（中）
+## 6-8 实战身份验证控件和地址选择控件(中)
 ```typescript
 #area-list.component.css
 .street {flex: 1 1 100%; }
@@ -4766,7 +4766,7 @@ export class AuthGuardService implements CanActivate {
 --- delete user.id = null
 ```
 
-## 7-5 实战项目信息流（上）
+## 7-5 实战项目信息流(上)
 ```typescript
 # project.action.ts
 export const ActionTypes = {
@@ -4890,7 +4890,7 @@ export function reducer(state = initialState, action: actions.Actions ): State {
 
 ```
 
-## 7-6 实战项目信息流（中）
+## 7-6 实战项目信息流(中)
 
     npm install -P lodash
     npm install -D @types/lodash
@@ -4936,7 +4936,7 @@ const loadProjects = (state, action) => {
   };
 }
 ```
-## 7-7 实战项目信息流（下）
+## 7-7 实战项目信息流(下)
 ngrx基于rx 的，所有 rx 操作符都可以用。
 
 ```typescript
@@ -6304,4 +6304,144 @@ form: FormGroup;
 
 ```
 # 第8章 Angular 的测试
+## 8-1 Angular 测试框架介绍
+自动化测试的好处：不会因为修改某个bug进行了重构，导致某个功能就不可用了。不会有回退的现象。
+
+__测试如此简单 __
+
+* 基于Karma和Jasmine的单元测试框架
+
+* 基于Protractor的端到端(e2e)测试框架
+
+* Angular-CLI中提供的测试命令和配置
+
+单元测试---一个函数 或一个类是好用的。输入输出是按期望做的就OK了。
+
+集成测试是需要程序跑起来的才能测试。。
+
+```typescript
+describe('测试登录组件：LoginComponent'，()=>
+//省略其他
+});
+```
+
+__测试的基本步骤__
+
+* 命名你的测试包·
+
+* 准备测试环境·
+
+有的测试环境需要前置条件。比如测试UI时，先要将module导入。beforeEach在每个测试里都要把环境搭一下。
+
+* 编写测试用例
+
+
+```typescript
+describe('测试登录组件：LoginComponent'， () => {
+    beforeEach(async (() => {
+                    TestBed.configureTestingModule({
+                            declarations: [LoginComponent],
+                            imports: [
+                                SharedModule,
+                                StoreModule.provideStore(reducer),
+                                BrowserAnimationsModule]
+                                .compileComponents(); //compile
+                            })
+                    }))});
+```
+
+编写测试用例
+
+```typescript
+it('组件模板的元素应该被正确创建'，() => {
+    const compiled=fixture.debugElement.nativeElement;
+    expect(compiled.querySelector('.card md-card-header md-card-title')
+    .innerText).tocontain('登录');
+    });
+```
+
+expted 期望 x 为 y。
+
+__测试时遇到这样那样的问题__
+
+* Got jasmineRequire is not defined --- 放弃cnpm用原始 npm
+
+* Could not find Angular Material core theme. -- 把karmar的css文件放置进去。
+
+* Observable测试的正确姿势
+
+__实战__
+
+ng g class reducers/auth.reducer --spec true
+
+使用 ng test 进行测试
+
+如果需要 rxjs包在 test.ts中引入 rxjs/Rx 只能在测试中这样做 Rx 包很大。
+
+    import 'rxjs/Rx';
+
+改造 AppCompoennt, 让它通过
+
+TestBed 用测试环境创建组件，得到一个app的实例，应该是一个对象。
+```typescript
+  it('应该创建应用', async(() => {
+    const fixture = TestBed.createComponent(AppComponent);
+    const app = fixture.debugElement.componentInstance;
+    expect(app).toBeTruthy();
+  }));
+```
+
+CLI 默认创建一个 app title的测试用例，我们不需要时删除它。
+
+.nativeElement; 渲染之后的DOM节点元素。
+
+karmar 行为驱动的描述语言，像自然语言，适合阅读。
+
+```typescript
+# auth.reducer.spec.ts
+import { reducer } from './auth.reducer';
+import * as fromAuth from './auth.reducer';
+import * as actions from '../actions/auth.action';
+import { async } from '@angular/core/testing';
+
+describe('测试 AuthReducer', () => {
+  describe('未定义Action', () => {
+    it('应该返回一个默认状态', async(() => {
+      const action = {} as any;
+      const result = reducer(undefined, action);
+      expect(result).toBeTruthy(fromAuth.initialState);
+    }));
+  });
+
+  describe('登录成功', () => {
+    it('应该返回一个 Err 为 undefined 而 userId 不为空的 Auth 对象', async(() => {
+      const action = {
+        type: actions.ActionTypes.LOGIN_SUCCESS,
+        payload: {
+          token: '',
+          user: {id: '1', email: 'dev@local.dev'} } 
+        } as any;
+      const result = reducer(undefined, action);
+      expect(result).toBeTruthy(fromAuth.initialState);
+    }));
+  });
+
+});
+
+# app.component.spec.ts
+      imports: [
+        MatSidenavModule,
+        RouterModule.forRoot([]),
+        CoreModule,
+      ],
+      providers: [ { privide: APP_BASE_HREF, useValue: '/' } ]
+# karma.conf.js
+    files:[
+      { pattern: './src/test.ts', watched: false },
+      { pattern: './node_modules/@angular/material/prebuilt-themes/indigo-pink.css' }
+    ],
+```
+
+## 8-2 单元测试 Service 和 Effects 以及集成测试
+
 # 第9章 课程总结
