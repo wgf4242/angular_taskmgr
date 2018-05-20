@@ -10,7 +10,7 @@ import * as fromRoot from '../../reducers';
 import { ConfirmDialogComponent } from '../../shared/confirm-dialog/confirm-dialog.component';
 import { InviteComponent } from '../invite/invite.component';
 import { NewProjectComponent } from '../new-project/new-project.component';
-import { Project } from './../../domain/project.model';
+import { Project } from '../../domain';
 @Component({
   selector: 'app-project-list',
   templateUrl: './project-list.component.html',
@@ -49,8 +49,11 @@ export class ProjectListComponent {
       });
   }
 
-  launchInviteDialog() {
-    const dialogRef = this.dialog.open(InviteComponent, {data: {members: []}});
+  launchInviteDialog(project: Project) {
+    this.store$.select(fromRoot.getProjectUsers(project.id))
+      .map(users => this.dialog.open(InviteComponent, {data: {members: [users]}}))
+      .switchMap(dialogRef => dialogRef.afterClosed().take(1).filter(n => n))
+      .subscribe(val => this.store$.dispatch(new actions.InviteAction({projectId: project.id, members: val})));
   }
 
   launcherUpdateDialog(project: Project) {

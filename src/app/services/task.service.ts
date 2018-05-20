@@ -15,7 +15,6 @@ export  class TaskService {
 
   // POST
   add(task: Task): Observable<Task> {
-    task.id = null;
     const uri = `${this.config.uri}/${this.domain}`;
     return this.http
       .post<Task>(uri, JSON.stringify(task), {headers: this.headers});
@@ -32,7 +31,7 @@ export  class TaskService {
       ownerId: task.ownerId,
       participantIds: task.participantIds,
       remark: task.remark
-    }
+    };
     return this.http
       .patch<Task>(uri, JSON.stringify(toUpdate), {headers: this.headers});
   }

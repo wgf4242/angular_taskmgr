@@ -10,6 +10,8 @@ import {Store} from '@ngrx/store';
 import {ActivatedRoute} from '@angular/router';
 import {TaskList} from '../../domain';
 import * as actions from '../../actions/task-list.action';
+import * as taskActions from '../../actions/task.action';
+import { CopyTaskComponent } from '../copy-task/copy-task.component';
 
 @Component({
   selector: 'app-task-home',
@@ -30,22 +32,35 @@ export class TaskHomeComponent implements OnInit {
     private store: Store<fromRoot.State>,
     private route: ActivatedRoute) {
       this.projectId$ = this.route.paramMap.pluck('id');
-      this.lists$ = this.store.select(fromRoot.getTaskLists);
+      this.lists$ = this.store.select(fromRoot.getTasksByLists);
     }
 
   ngOnInit() {
   }
 
-  launchNewTaskDialog() {
-    const dialogRef = this.dialog.open(NewTaskComponent, {data: {title: '新建任务'}});
+  launchNewTaskDialog(list) {
+    const user$ = this.store.select(fromRoot.getAuthState).map(auth => auth.user);
+    user$.take(1)
+    .map(user => this.dialog.open(NewTaskComponent, {data: {title: '新建任务:', owner: user}}))
+    .switchMap(dialogRef => dialogRef.afterClosed().take(1).filter(n => n))
+    .subscribe(val => this.store.dispatch(
+      new taskActions.AddAction({...val, taskListId: list.id, completed: false, createDate: new Date()})));
   }
 
-  launchCopyTaskDialog() {
-    // const dialogRef = this.dialog.open(CopyTaskComponent, {width: '250px', data: {lists: this.lists}});
+  launchCopyTaskDialog(list) {
+    // 传入目标list，排除自己所在的list
+    this.lists$.map(l => l.filter(n => n.id !== list.id))
+      .map(li => this.dialog.open(CopyTaskComponent, {data: {lists: li}}))
+      .switchMap(dialogRef => dialogRef.afterClosed().take(1).filter(n => n))
+      .subscribe(val => this.store.dispatch(new taskActions.MoveAllAction({srcListId: list.id, targetListId: val})));
   }
 
   launchUpdateTaskDialog(task) {
     const dialogRef = this.dialog.open(NewTaskComponent, {width: '250px', data: {title: '修改任务:', task: task}});
+    dialogRef.afterClosed()
+    .take(1)
+    .filter(n => n)
+    .subscribe(val => this.store.dispatch(new taskActions.UpdateAction({...task, val})));
   }
 
   launchConfirmDialog(list: TaskList) {
@@ -85,7 +100,17 @@ export class TaskHomeComponent implements OnInit {
     }
   }
 
-  handleQuickTask(desc: string) {
-    console.log(desc);
+  handleQuickTask(desc: string, list) {
+    console.log('handle quick task:', desc, list);
+    const user$ = this.store.select(fromRoot.getAuthState).map(auth => auth.user);
+    user$.take(1).subscribe(user => this.store.dispatch(new taskActions.AddAction({
+      desc: desc,
+      priority: 3,
+      taskListId: list.id,
+      ownerId: user.id,
+      completed: false,
+      createDate: new Date(),
+      participantIds: []
+    })));
   }
 }

@@ -6169,6 +6169,139 @@ export class UserEffects {
 import         UserService,
 ```
 ## 7-11 实战任务使用 Reducer 和 Effects
+invite 改造。给初始值。邀请时不要重复添加
 
+默认当前是执行者
+
+
+```typescript
+# project-list.component.ts
+  launchInviteDialog(project: Project) {
+    this.store$.select(fromRoot.getProjectUsers(project.id))
+      .map(users => this.dialog.open(InviteComponent, {data: {members: [users]}}))
+      .switchMap(dialogRef => dialogRef.afterClosed().take(1).filter(n => n))
+      .subscribe(val => this.store$.dispatch(new actions.InviteAction({projectId: project.id, members: val})));
+  }
+# copy-task.component.html
+<form [formGroup]="form" (ngSubmit)="onSubmit(form, $event)">
+    ...<mat-select placeholder="请选择目标列表" formControlName="targetListId">
+      <mat-option *ngFor="let list of lists" [value]="list.id">{{list.name}}</mat-option>
+    ...<button type="submit" mat-raised-button color="primary" [disabled]="!form.valid">保存</button>
+
+# copy-task.component.ts
+  form: FormGroup;
+  constructor(
+    @Inject(MAT_DIALOG_DATA) private data,
+    private fb: FormBuilder,
+    private dialogRef: MatDialogRef<CopyTaskComponent>
+  ) { }
+  ngOnInit() {
+    this.lists = this.data.lists;
+    this.form = this.fb.group({targetListId: [] });
+  }
+
+  onSubmit({value, valid}, ev: Event) {
+    ev.preventDefault();
+    if (!valid) {return; }
+    this.dialogRef.close(value.targetListId);
+  }
+# new-task.component.html
+<form [formGroup]="form" (ngSubmit)="onSubmit(form, $event)">
+    <input matInput type="text" placeholder="任务内容" formControlName="desc">
+    <mat-radio-group formControlName="priority">
+    <div class="full-width">
+      <app-chips-list label="更改执行者" [multiple]="false" formControlName="owner"></app-chips-list>
+    </div>
+      <input matInput [matDatepicker]="dueDatepicker" type="text" placeholder="任务截止日期" formControlName="dueDate">
+   <div class="full-width">
+      <app-chips-list label="更改参与者" [multiple]="false" formControlName="followers"></app-chips-list>
+    </div>
+      <input matInput [matDatepicker]="reminderDatepicker" type="text" placeholder="提醒日期" formControlName="reminder">
+    <textarea matInput placeholder="备注" formControlName="remark"></textarea>
+    <button type="submit" mat-raised-button color="primary" [disabled]="!form.valid">保存</button>
+
+# new-task.component.ts
+form: FormGroup;
+  constructor(
+    @Inject(MAT_DIALOG_DATA) private data,
+    private fb: FormBuilder,
+    private dialogRef: MatDialogRef<NewTaskComponent>
+  ) { }
+
+  ngOnInit() {
+    this.title = this.data.title;
+    this.form = this.fb.group({
+      desc: [this.data.task ? this.data.task.desc : '', Validators.required],
+      priority: [this.data.task ? this.data.task.priority : 3, Validators.required],
+      owner: [this.data.task ? [this.data.task.owner] : [this.data.owner]],
+      followers: [this.data.task ? [...this.data.task.participants] : []],
+      dueDate: [this.data.task ? this.data.task.dueDate : '', ],
+      reminder: [this.data.task ? this.data.task.reminder : '', ],
+      remark: [this.data.task ? this.data.task.remark : ''],
+    });
+  }
+
+  onSubmit({value, valid}, ev: Event) {
+    ev.preventDefault();
+    if (!valid) {
+      return;
+    }
+    this.dialogRef.close({
+      ...value,
+      ownerId: value.owner.length > 0 ? value.owner[0].id : null,
+      participantIds: value.followers.map(f => f.id)
+    });
+  }
+# task-home.component.html
+    <app-task-header [header]="list.name"
+                     (newTask)="launchNewTaskDialog(list)"
+                     (moveAll)="launchCopyTaskDialog(list)"
+                     (delList)="launchConfirmDialog(list)"
+                     (editList)="launchEditListDialog(list)"
+    ></app-task-header>
+    <app-quick-task (quickTask)="handleQuickTask($event, list)"></app-quick-task>
+
+# task-home.component.ts
+  constructor(...
+    private route: ActivatedRoute) {...
+      this.lists$ = this.store.select(fromRoot.getTasksByLists);
+    }
+  launchNewTaskDialog(list) {
+    const user$ = this.store.select(fromRoot.getAuthState).map(auth => auth.user);
+    user$.take(1)
+    .map(user => this.dialog.open(NewTaskComponent, {data: {title: '新建任务:', owner: user}}))
+    .switchMap(dialogRef => dialogRef.afterClosed().take(1).filter(n => n))
+    .subscribe(val => this.store.dispatch(
+      new taskActions.AddAction({...val, taskListId: list.id, completed: false, createDate: new Date()})));
+  }
+  launchCopyTaskDialog(list) {
+    // 传入目标list，排除自己所在的list
+    this.lists$.map(l => l.filter(n => n.id !== list.id))
+      .map(li => this.dialog.open(CopyTaskComponent, {data: {lists: li}}))
+      .switchMap(dialogRef => dialogRef.afterClosed().take(1).filter(n => n))
+      .subscribe(val => this.store.dispatch(new taskActions.MoveAllAction({srcListId: list.id, targetListId: val})));
+  }
+  launchUpdateTaskDialog(task) {
+    const dialogRef = this.dialog.open(NewTaskComponent, {width: '250px', data: {title: '修改任务:', task: task}});
+    dialogRef.afterClosed()
+    .take(1)
+    .filter(n => n)
+    .subscribe(val => this.store.dispatch(new taskActions.UpdateAction({...task, val})));
+  }
+  handleQuickTask(desc: string, list) {
+    console.log('handle quick task:', desc, list);
+    const user$ = this.store.select(fromRoot.getAuthState).map(auth => auth.user);
+    user$.take(1).subscribe(user => this.store.dispatch(new taskActions.AddAction({
+      desc: desc,
+      priority: 3,
+      taskListId: list.id,
+      ownerId: user.id,
+      completed: false,
+      createDate: new Date(),
+      participantIds: []
+    })));
+  }
+
+```
 # 第8章 Angular 的测试
 # 第9章 课程总结
