@@ -6443,5 +6443,247 @@ describe('测试 AuthReducer', () => {
 ```
 
 ## 8-2 单元测试 Service 和 Effects 以及集成测试
+测试 Observable , 测试 Http
 
+虚拟一个http环境。测试  effcts.
+
+    ng g s services/auth --spec true
+
+auth.service.ts 中注入了 http 和 BASE_CONFIG ， 我们在测试时也要提供。
+
+
+__e2e测试__
+
+    ng e2e
+  
+```typescript
+
+# app.e2e-spec.ts
+import { TaskmgrPage } from './app.po';
+import { createWriteStream } from 'fs';
+
+function writeScreenShot(data, filename) {
+  const stream = createWriteStream(filename);
+  stream.write(new Buffer(data, 'base64'));
+  stream.end();
+}
+
+describe('taskmgr App', () => {
+  let page: TaskmgrPage;
+
+  beforeEach(() => {
+    page = new TaskmgrPage();
+  });
+
+  it('should display welcome message', () => {
+    page.navigateTo();
+    page.fillInfo().then(result => writeScreenShot(result, 'sc001.jpg'));
+    expect(page.getParagraphText()).toContain('企业协作平台');
+  });
+});
+
+# app.po.ts
+import { browser, by, element } from 'protractor';
+
+export class TaskmgrPage {
+  navigateTo() {return browser.get('/'); }
+
+  getParagraphText() {return element(by.css('app-root mat-sidenav-container')).getText(); }
+
+  fillInfo() {
+    element(by.id('mat-input-0')).sendKeys('dev');
+    element(by.id('mat-input-1')).sendKeys('dev');
+    element(by.buttonText('登录')).click();
+    return browser.takeScreenshot();
+  }
+}
+
+# auth.effects.spec.ts
+import * as actions from '../actions/auth.action';
+import {fakeAsync, TestBed} from '@angular/core/testing';
+import {AuthEffects} from './auth.effects';
+import {AuthService} from '../services/auth.service';
+import {Observable} from 'rxjs/Observable';
+import {cold, hot} from 'jasmine-marbles';
+import {MyEffects} from './my-effects';
+
+
+describe('Auth.Effects', () => {
+  // let effects: MyEffects;
+  // let actions: Observable<any>;
+  beforeEach(() => TestBed.configureTestingModule({
+    imports: [
+
+    ],
+    providers: [
+      AuthEffects,
+      {
+        provide: AuthService,
+        useValue: jasmine.createSpyObj('authService', ['login', 'register'])
+      }
+    ]
+  }));
+  function setup(methodName: string, params: {returnedAuth: any}) {
+    const authService = TestBed.get(AuthService);
+    if (params) {
+      if (methodName === 'login') {
+        authService.login.and.returnValue(params.returnedAuth);
+      } else {
+        authService.register.and.returnValue(params.returnedAuth);
+      }
+      return {
+        runner: TestBed.get(EffectsRunner),
+        authEffects: TestBed.get(AuthEffects)
+      };
+    }
+  }
+  it('登录成功发送 SuccessAction', fakeAsync(() => {
+    const auth = {
+      token: '',
+      user: {
+        id: '123abc',
+        name: 'wang',
+        password: '123',
+        email: 'wang@163.com'
+      }
+    };
+
+    const {runner, authEffects} = setup('login', {returnedAuth: Observable.of(auth)});
+    const expectedResult = new actions.LoginSuccessAction(auth);
+    runner.queue(new actions.LoginAction({email: 'wang@dev.local', password: '123abc'}));
+    authEffects.login$.subscribe(_result => expect(_result).toEqual(expectedResult));
+  }));
+});
+
+# auth.service.spec.ts
+import { TestBed, inject } from '@angular/core/testing';
+
+import { AuthService } from './auth.service';
+import { HttpClientModule, HttpClient } from '@angular/common/http';
+import { User } from '../domain';
+
+
+describe('AuthService', () => {
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      imports: [HttpClientModule]
+      providers: [
+        {
+          provide: 'BASE_CONFIG',
+          useValue: {
+            uri: 'http://localhost:3000'
+          }
+        },
+        {
+          provide: HttpClient,
+          useFactory: (mockBackend, options) => {
+            return new Http(mockBackend, options);
+          }
+          deps: [Mockbackend, BaseResponseOptions]
+        }
+        Mockbackend,
+        BaseResponseOptions,
+        , AuthService]
+    });
+  });
+
+  it('注册后应该返回一个 Observable<Auth>', inject([AuthService, Mockbackend ], (service: AuthService) => {
+    const mockUser: User = {
+      name: 'someuser@dev.local',
+      password: '123abc',
+      email: 'someuser@dev.local'
+    };
+    const mockResponse = {
+      id: 'obj123abc',
+      name: 'someuser@dev.local',
+      email: 'someuser@dev.local',
+      password: '123abc'
+    };
+    mockBackend.connections.subscribe(conn => {
+      conn.mockResopnse(new Response(new ReponseOptions({
+        body: JSON.stringify(mockResponse)
+      })));
+    });
+    service.register(mockUser).subscribe(auth => {
+      expect(auth.token).toBeDefined();
+      expect(auth.user).toBeDefined();
+      expect(auth.user.id).toEqual(mockResponse.id);
+    });
+  }));
+});
+
+
+```
 # 第9章 课程总结
+
+## 9-1 第三方组件的集成和懒加载
+日历视图
+使用 angular-calendar 组件
+
+```typescript
+npm i -P angular-calendar
+ng g m my-calendar
+ng g c my-calendar/calendar-home -is -it
+```
+
+
+改为 index.ts 缩短导入路径。组织成inline，简化。一般不要超过400行。
+
+懒加载
+## 9-2 项目总结
+
+原型构建-组件封装-逻辑抽象-业务剥离
+
+原型构建后， 用 json-server 快速构建模拟后端。
+
+组件封装， 抽离复用部分。
+
+逻辑抽象 越简单越好，因为设计的再好早晚也会过时。
+
+## 文件的组织
+
+目录组织
+
+按角色，按模块，混合形式。
+
+__对象的各种层次__
+
+DomainModel , CacheModel, StateModel, DataModel, ViewModel
+
+DomainModel 在显示时不够用，在视图中可能要使用 ViewModel 多显示一些东西。
+
+## Debug的N种方式
+
+* VScode, WebStorm, Chrome, Log
+
+1. VSCode , install Debugger for Chrome, 端口4200。下断点。 `npm start`
+
+2. WebStorm, run-Edit Configuration - Add Javascript Debug , 设置好端口
+
+3. Chrome Dev Tools , Source - Openfile, app.component.ts 直接设置断点
+
+## 基于 Token 的鉴权
+1. Http Post 发送名密码 ， 
+2. 服务器端 创建JWT Token 返回给用户， 用户访问的每个请求都会携带 Token
+3. 发送受保护的API请求 (在 Authorization Header 中携带 Token)
+4. 返回请求数据
+
+## 权限管理
+后端负主要责任，前端的权限管理能力并不是很强
+
+__类型__
+
+* ACL -  Access Control List , 例文件系统 ，针对每个对象赋予一个权限
+* RBAC - Role Based Access Control
+
+ACL加入Group概念后就=RBAC ，通常意义上ACL针对颗粒度更小。
+
+RBAC 更多基于业务。
+
+__层次__
+
+* API、文件
+* 业务
+* 可视 前端完成的大部分是可视层次。前端主要是显示或隐藏一些信息。
+
+

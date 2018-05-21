@@ -1,17 +1,17 @@
-import {Observable} from 'rxjs/Observable';
-import {ChangeDetectionStrategy, ChangeDetectorRef, Component, HostBinding, OnInit} from '@angular/core';
-import {MatDialog} from '@angular/material';
-import {NewTaskComponent} from '../new-task/new-task.component';
-import {ConfirmDialogComponent} from '../../shared/confirm-dialog/confirm-dialog.component';
-import {NewTaskListComponent} from '../new-task-list/new-task-list.component';
-import {slideToRight} from '../../anims/router.anim';
-import * as fromRoot from '../../reducers';
-import {Store} from '@ngrx/store';
-import {ActivatedRoute} from '@angular/router';
-import {TaskList} from '../../domain';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, HostBinding, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material';
+import { ActivatedRoute } from '@angular/router';
+import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs/Observable';
 import * as actions from '../../actions/task-list.action';
 import * as taskActions from '../../actions/task.action';
+import { slideToRight } from '../../anims/router.anim';
+import { TaskList } from '../../domain';
+import * as fromRoot from '../../reducers';
+import { ConfirmDialogComponent } from '../../shared/confirm-dialog/confirm-dialog.component';
 import { CopyTaskComponent } from '../copy-task/copy-task.component';
+import { NewTaskListComponent } from '../new-task-list/new-task-list.component';
+import { NewTaskComponent } from '../new-task/new-task.component';
 
 @Component({
   selector: 'app-task-home',
@@ -31,7 +31,7 @@ export class TaskHomeComponent implements OnInit {
     private cd: ChangeDetectorRef,
     private store: Store<fromRoot.State>,
     private route: ActivatedRoute) {
-      this.projectId$ = this.route.paramMap.pluck('id');
+      this.projectId$ = this.route.paramMap.map(p => p.get('id'));
       this.lists$ = this.store.select(fromRoot.getTasksByLists);
     }
 
@@ -75,6 +75,7 @@ export class TaskHomeComponent implements OnInit {
     const dialogRef = this.dialog.open(NewTaskListComponent, {data: {title: '更改列表名称:', taskList: list}});
     dialogRef.afterClosed()
     .take(1)
+    .withLatestFrom(this.projectId$, (val, projectId) => ({...val, projectId: projectId}))
     .subscribe(result => this.store.dispatch(new actions.UpdateAction({...result, id: list.id})));
 }
 

@@ -76,5 +76,8 @@ export  class TaskService {
 
   }
 
-
+  getUserTasks(userId: string): Observable<Task[]> {
+    const uri = `${this.config.uri}/${this.domain}`;
+    return this.http.get<Task[]>(uri, {params: {ownerId: userId}});
+  }
 }

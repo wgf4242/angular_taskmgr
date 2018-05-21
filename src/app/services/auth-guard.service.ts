@@ -1,9 +1,9 @@
-import {Injectable} from '@angular/core';
-import {ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot} from '@angular/router';
-import {Observable} from 'rxjs/Observable';
-import {Store} from '@ngrx/store';
+import { Injectable } from '@angular/core';
+import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot } from '@angular/router';
+import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs/Observable';
 import * as fromRoot from '../reducers';
-import {getAuthState} from '../reducers';
+import { getAuthState } from '../reducers';
 
 @Injectable()
 export class AuthGuardService implements CanActivate {
@@ -18,7 +18,7 @@ export class AuthGuardService implements CanActivate {
       .select(getAuthState)
       .map(auth => {
         const result = auth.token !== null && auth.token !== undefined;
-        if (result) {
+        if (!result) {
             this.router.navigate['/login'];
         }
         return result;

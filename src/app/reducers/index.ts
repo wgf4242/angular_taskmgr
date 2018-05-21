@@ -12,6 +12,7 @@ import * as fromQuote from './quote.reducer';
 import * as fromTaskList from './task-list.reducer';
 import * as fromTask from './task.reducer';
 import * as fromUser from './user.reducer';
+import * as authAction from '../actions/auth.action';
 
 export interface State {
   quote: fromQuote.State;
@@ -51,7 +52,9 @@ export function logger(reducer: ActionReducer<State>): ActionReducer<State> {
   return function(state: State, action: any): State {
     console.log('state', state);
     console.log('action', action);
-    return reducer(state, action);
+    return action.type === authAction.ActionTypes.LOGOUT ?
+      initialState :
+      reducer(state, action);
   };
 }
 
