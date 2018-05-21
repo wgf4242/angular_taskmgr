@@ -64,7 +64,7 @@ const getColor = (priority: number) => {
       </mwl-calendar-day-view>
       <mwl-calendar-month-view *ngSwitchDefault></mwl-calendar-month-view>
     </div>
-      <ng-container>
+      </ng-container>
     </mat-card>
 
   `,
